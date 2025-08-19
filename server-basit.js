@@ -9,6 +9,10 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Basit admin bilgileri (gerçek projede şifre hash'lenir)
+const ADMIN_EMAIL = "admin@arsarazi.com";
+const ADMIN_PASSWORD = "admin123";
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -115,29 +119,39 @@ if (!fs.existsSync(DB_FILE)) {
                 notlar: "Müşteri 3.2M teklif etti"
             }
         ],
-        istatistikler: {
-            toplam_gayrimenkul: 324,
-            toplam_musteri: 1245,
-            aktif_ilan: 142,
-            bu_ay_satis: 23,
-            bu_ay_kiralama: 45,
-            toplam_gelir: 2400000
-        }
+        admin_girisleri: [],
+        iletisim_mesajlari: []
     };
     
     fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
-    console.log('✅ Veritabanı dosyası oluşturuldu: database.json');
+    console.log('✅ Veritabanı oluşturuldu:', DB_FILE);
 }
 
-// Veritabanını oku
-function readDB() {
-    const data = fs.readFileSync(DB_FILE, 'utf8');
-    return JSON.parse(data);
+// Veritabanı okuma fonksiyonu
+function readDatabase() {
+    try {
+        const data = fs.readFileSync(DB_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('❌ Veritabanı okuma hatası:', error);
+        return { gayrimenkuller: [], musteriler: [], islemler: [], admin_girisleri: [], iletisim_mesajlari: [] };
+    }
 }
 
-// Veritabanına yaz
-function writeDB(data) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+// Veritabanı yazma fonksiyonu
+function writeDatabase(data) {
+    try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+        return true;
+    } catch (error) {
+        console.error('❌ Veritabanı yazma hatası:', error);
+        return false;
+    }
+}
+
+// Basit admin doğrulama
+function checkAdmin(email, password) {
+    return email === ADMIN_EMAIL && password === ADMIN_PASSWORD;
 }
 
 // ========== API ENDPOINTS ==========
@@ -159,7 +173,7 @@ app.get('/api/test', (req, res) => {
 
 // İstatistikler
 app.get('/api/istatistikler', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     res.json({
         durum: 'Başarılı',
         veri: db.istatistikler
@@ -170,7 +184,7 @@ app.get('/api/istatistikler', (req, res) => {
 
 // Tüm gayrimenkulleri getir
 app.get('/api/gayrimenkuller', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     res.json({
         durum: 'Başarılı',
         toplam: db.gayrimenkuller.length,
@@ -180,7 +194,7 @@ app.get('/api/gayrimenkuller', (req, res) => {
 
 // Tek gayrimenkul getir
 app.get('/api/gayrimenkuller/:id', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const gayrimenkul = db.gayrimenkuller.find(g => g.id === req.params.id);
     
     if (gayrimenkul) {
@@ -198,7 +212,7 @@ app.get('/api/gayrimenkuller/:id', (req, res) => {
 
 // Yeni gayrimenkul ekle
 app.post('/api/gayrimenkuller', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const yeniGayrimenkul = {
         id: `GM-${Date.now()}`,
         ...req.body,
@@ -206,7 +220,7 @@ app.post('/api/gayrimenkuller', (req, res) => {
     };
     
     db.gayrimenkuller.push(yeniGayrimenkul);
-    writeDB(db);
+    writeDatabase(db);
     
     res.json({
         durum: 'Başarılı',
@@ -217,7 +231,7 @@ app.post('/api/gayrimenkuller', (req, res) => {
 
 // Gayrimenkul güncelle
 app.put('/api/gayrimenkuller/:id', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const index = db.gayrimenkuller.findIndex(g => g.id === req.params.id);
     
     if (index !== -1) {
@@ -226,7 +240,7 @@ app.put('/api/gayrimenkuller/:id', (req, res) => {
             ...req.body,
             guncelleme_tarihi: new Date().toISOString()
         };
-        writeDB(db);
+        writeDatabase(db);
         
         res.json({
             durum: 'Başarılı',
@@ -243,12 +257,12 @@ app.put('/api/gayrimenkuller/:id', (req, res) => {
 
 // Gayrimenkul sil
 app.delete('/api/gayrimenkuller/:id', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const index = db.gayrimenkuller.findIndex(g => g.id === req.params.id);
     
     if (index !== -1) {
         db.gayrimenkuller.splice(index, 1);
-        writeDB(db);
+        writeDatabase(db);
         
         res.json({
             durum: 'Başarılı',
@@ -266,7 +280,7 @@ app.delete('/api/gayrimenkuller/:id', (req, res) => {
 
 // Tüm müşterileri getir
 app.get('/api/musteriler', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     res.json({
         durum: 'Başarılı',
         toplam: db.musteriler.length,
@@ -276,7 +290,7 @@ app.get('/api/musteriler', (req, res) => {
 
 // Tek müşteri getir
 app.get('/api/musteriler/:id', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const musteri = db.musteriler.find(m => m.id === req.params.id);
     
     if (musteri) {
@@ -294,7 +308,7 @@ app.get('/api/musteriler/:id', (req, res) => {
 
 // Yeni müşteri ekle
 app.post('/api/musteriler', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const yeniMusteri = {
         id: `MUS-${Date.now()}`,
         ...req.body,
@@ -302,7 +316,7 @@ app.post('/api/musteriler', (req, res) => {
     };
     
     db.musteriler.push(yeniMusteri);
-    writeDB(db);
+    writeDatabase(db);
     
     res.json({
         durum: 'Başarılı',
@@ -315,7 +329,7 @@ app.post('/api/musteriler', (req, res) => {
 
 // Tüm işlemleri getir
 app.get('/api/islemler', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     res.json({
         durum: 'Başarılı',
         toplam: db.islemler.length,
@@ -325,7 +339,7 @@ app.get('/api/islemler', (req, res) => {
 
 // Yeni işlem ekle
 app.post('/api/islemler', (req, res) => {
-    const db = readDB();
+    const db = readDatabase();
     const yeniIslem = {
         id: `ISL-${Date.now()}`,
         ...req.body,
@@ -333,12 +347,101 @@ app.post('/api/islemler', (req, res) => {
     };
     
     db.islemler.push(yeniIslem);
-    writeDB(db);
+    writeDatabase(db);
     
     res.json({
         durum: 'Başarılı',
         mesaj: 'İşlem eklendi',
         veri: yeniIslem
+    });
+});
+
+// ========== ADMIN API ==========
+
+// Admin giriş
+app.post('/api/admin/giris', (req, res) => {
+    const { email, password } = req.body;
+    
+    if (checkAdmin(email, password)) {
+        // Giriş kaydını veritabanına ekle
+        const db = readDatabase();
+        const girisKaydi = {
+            id: `GIRIS-${Date.now()}`,
+            email: email,
+            tarih: new Date().toISOString(),
+            ip: req.ip || 'bilinmiyor'
+        };
+        
+        db.admin_girisleri.push(girisKaydi);
+        writeDatabase(db);
+        
+        res.json({
+            durum: 'Başarılı',
+            mesaj: 'Admin girişi başarılı',
+            admin: {
+                email: email,
+                yetki: 'admin'
+            }
+        });
+    } else {
+        res.status(401).json({
+            durum: 'Hata',
+            mesaj: 'E-posta veya şifre hatalı'
+        });
+    }
+});
+
+// Admin giriş geçmişi
+app.get('/api/admin/girisler', (req, res) => {
+    const db = readDatabase();
+    res.json({
+        durum: 'Başarılı',
+        toplam: db.admin_girisleri.length,
+        veri: db.admin_girisleri
+    });
+});
+
+// ========== İLETİŞİM API ==========
+
+// İletişim mesajı gönder
+app.post('/api/iletisim', (req, res) => {
+    const { ad, email, telefon, mesaj } = req.body;
+    
+    if (!ad || !email || !mesaj) {
+        return res.status(400).json({
+            durum: 'Hata',
+            mesaj: 'Ad, e-posta ve mesaj alanları zorunludur'
+        });
+    }
+    
+    const db = readDatabase();
+    const yeniMesaj = {
+        id: `MSG-${Date.now()}`,
+        ad: ad,
+        email: email,
+        telefon: telefon || '',
+        mesaj: mesaj,
+        durum: 'Yeni',
+        tarih: new Date().toISOString()
+    };
+    
+    db.iletisim_mesajlari.push(yeniMesaj);
+    writeDatabase(db);
+    
+    res.json({
+        durum: 'Başarılı',
+        mesaj: 'Mesajınız başarıyla gönderildi',
+        veri: yeniMesaj
+    });
+});
+
+// İletişim mesajlarını getir
+app.get('/api/iletisim', (req, res) => {
+    const db = readDatabase();
+    res.json({
+        durum: 'Başarılı',
+        toplam: db.iletisim_mesajlari.length,
+        veri: db.iletisim_mesajlari
     });
 });
 
