@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Müşteri Yönetimi - Arsarazi CRM</title>
+    <title>Müşteriler - Arsarazi CRM</title>
     
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,23 +28,32 @@
     </script>
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .customer-card { transition: all 0.3s ease; }
-        .customer-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .sidebar-item:hover { background-color: rgba(82, 185, 71, 0.1); }
+        .sidebar-item.active { background-color: rgba(82, 185, 71, 0.2); border-left: 4px solid #52B947; }
+        .sidebar { height: 100vh; position: fixed; left: 0; top: 0; }
+        .main-content { margin-left: 16rem; }
+        @media (max-width: 768px) {
+            .sidebar { position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
+    <div class="flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg">
+        <aside class="sidebar w-64 bg-white shadow-lg flex flex-col">
             <div class="p-4 border-b">
-                <div class="flex items-center">
+                <div class="flex items-center logo-container">
                     <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
                          alt="Arsarazi Logo" 
                          class="h-10 w-auto mr-2">
@@ -52,470 +61,508 @@
                 </div>
             </div>
             
-            <nav class="p-4">
-                <a href="dashboard.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+            <nav class="p-4 flex-1">
+                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-line w-6 text-gray-600"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                <a href="crm-properties.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                <a href="crm-properties.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-building w-6 text-gray-600"></i>
                     <span class="ml-3">Gayrimenkuller</span>
                 </a>
-                <a href="crm-customers.html" class="flex items-center p-3 rounded-lg mb-2 bg-primary-green/20 border-l-4 border-primary-green">
+                <a href="crm-customers.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-users w-6 text-primary-green"></i>
-                    <span class="ml-3 font-medium">Müşteriler</span>
+                    <span class="ml-3">Müşteriler</span>
                 </a>
-                <a href="crm-transactions.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                <a href="crm-transactions.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
                     <span class="ml-3">İşlemler</span>
                 </a>
-                <a href="crm-documents.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                <a href="crm-documents.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-file-alt w-6 text-gray-600"></i>
                     <span class="ml-3">Dokümanlar</span>
                 </a>
+                <a href="crm-reports.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-bar w-6 text-gray-600"></i>
+                    <span class="ml-3">Raporlar</span>
+                </a>
+                <a href="crm-calendar.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="crm-settings.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-cog w-6 text-gray-600"></i>
+                    <span class="ml-3">Ayarlar</span>
+                </a>
+                
+                <div class="border-t pt-4 mt-4">
+                    <a href="index.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                        <i class="fas fa-globe w-6 text-gray-600"></i>
+                        <span class="ml-3">Web Sitesine Git</span>
+                    </a>
+                    <button onclick="logout()" class="sidebar-item w-full flex items-center p-3 rounded-lg text-red-600 hover:bg-red-50">
+                        <i class="fas fa-sign-out-alt w-6"></i>
+                        <span class="ml-3">Çıkış Yap</span>
+                    </button>
+                </div>
             </nav>
+            
+            <div class="p-4 border-t mt-auto">
+                <div class="flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=52B947&color=fff" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@arsarazi.com</p>
+                    </div>
+                </div>
+            </div>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
-            <!-- Header -->
+        <main class="main-content flex-1">
+            <!-- Top Bar -->
             <header class="bg-white shadow-sm border-b">
                 <div class="flex items-center justify-between px-6 py-4">
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-800">Müşteri Yönetimi</h1>
-                        <p class="text-sm text-gray-500">Toplam 1,245 müşteri • 324 yatırımcı • 512 alıcı • 409 satıcı</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="openCustomerModal()" class="bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition flex items-center">
-                            <i class="fas fa-user-plus mr-2"></i> Yeni Müşteri
+                    <h1 class="text-2xl font-bold text-gray-800">Müşteri Yönetimi</h1>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="showAddCustomerModal()" class="bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Yeni Müşteri
                         </button>
-                        <button onclick="importCustomers()" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
-                            <i class="fas fa-upload mr-2"></i> İçe Aktar
-                        </button>
+                        <a href="index.html" class="p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-home text-xl"></i>
+                        </a>
                     </div>
                 </div>
             </header>
 
-            <!-- Stats Bar -->
-            <div class="bg-white p-4 border-b">
-                <div class="grid grid-cols-5 gap-4 text-center">
-                    <div class="border-r">
-                        <p class="text-2xl font-bold text-primary-green">324</p>
-                        <p class="text-sm text-gray-600">Yatırımcı</p>
-                    </div>
-                    <div class="border-r">
-                        <p class="text-2xl font-bold text-primary-blue">512</p>
-                        <p class="text-sm text-gray-600">Alıcı</p>
-                    </div>
-                    <div class="border-r">
-                        <p class="text-2xl font-bold text-yellow-600">409</p>
-                        <p class="text-sm text-gray-600">Satıcı</p>
-                    </div>
-                    <div class="border-r">
-                        <p class="text-2xl font-bold text-purple-600">₺45.2M</p>
-                        <p class="text-sm text-gray-600">Toplam Yatırım</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-green-600">₺8.7M</p>
-                        <p class="text-sm text-gray-600">Toplam Kar</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filters -->
-            <div class="bg-white p-4 border-b">
-                <div class="flex items-center space-x-4">
-                    <select class="border rounded-lg px-3 py-2">
-                        <option>Tüm Tipler</option>
-                        <option>Yatırımcı</option>
-                        <option>Alıcı</option>
-                        <option>Satıcı</option>
-                        <option>Kiracı</option>
-                    </select>
-                    <select class="border rounded-lg px-3 py-2">
-                        <option>Tüm Şehirler</option>
-                        <option>Balıkesir</option>
-                        <option>İstanbul</option>
-                        <option>Ankara</option>
-                        <option>İzmir</option>
-                    </select>
-                    <select class="border rounded-lg px-3 py-2">
-                        <option>Puan</option>
-                        <option>5 Yıldız</option>
-                        <option>4+ Yıldız</option>
-                        <option>3+ Yıldız</option>
-                    </select>
-                    <input type="text" placeholder="Müşteri ara..." class="flex-1 border rounded-lg px-3 py-2">
-                    <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
-                        <i class="fas fa-search mr-2"></i> Ara
-                    </button>
-                </div>
-            </div>
-
-            <!-- Customers Grid -->
-            <div class="p-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Customer Card 1 - Yatırımcı -->
-                    <div class="customer-card bg-white rounded-lg shadow p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Ahmet+Yilmaz&background=52B947&color=fff" 
-                                     class="w-12 h-12 rounded-full mr-3">
-                                <div>
-                                    <h3 class="font-semibold text-gray-800">Ahmet Yılmaz</h3>
-                                    <span class="inline-block px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                                        Yatırımcı
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                            </div>
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Filters and Search -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <select id="customerType" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="">Tüm Türler</option>
+                                <option value="Alıcı">Alıcı</option>
+                                <option value="Satıcı">Satıcı</option>
+                                <option value="Yatırımcı">Yatırımcı</option>
+                                <option value="Potansiyel">Potansiyel</option>
+                            </select>
+                            <select id="customerStatus" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="">Tüm Durumlar</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Pasif">Pasif</option>
+                                <option value="Potansiyel">Potansiyel</option>
+                            </select>
+                            <select id="customerSource" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="">Tüm Kaynaklar</option>
+                                <option value="Web Sitesi">Web Sitesi</option>
+                                <option value="Referans">Referans</option>
+                                <option value="Sosyal Medya">Sosyal Medya</option>
+                                <option value="Telefon">Telefon</option>
+                            </select>
                         </div>
-                        
-                        <div class="space-y-2 text-sm">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-phone w-5"></i>
-                                <span>0532 123 45 67</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-envelope w-5"></i>
-                                <span>ahmet.yilmaz@email.com</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-map-marker-alt w-5"></i>
-                                <span>Karesi, Balıkesir</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-2 text-sm">
-                            <div>
-                                <p class="text-gray-500">Sahip Olduğu</p>
-                                <p class="font-semibold">12 Gayrimenkul</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Toplam Yatırım</p>
-                                <p class="font-semibold text-primary-green">₺8.5M</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Toplam Kar</p>
-                                <p class="font-semibold text-green-600">₺2.1M</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Son İşlem</p>
-                                <p class="font-semibold">15.03.2024</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t flex justify-between">
-                            <button onclick="viewCustomerDetail('CUS-001')" class="text-primary-blue hover:text-blue-dark">
-                                <i class="fas fa-eye mr-1"></i> Detay
-                            </button>
-                            <button onclick="viewCustomerProperties('CUS-001')" class="text-primary-green hover:text-green-dark">
-                                <i class="fas fa-building mr-1"></i> Portföy
-                            </button>
-                            <button onclick="contactCustomer('CUS-001')" class="text-yellow-600 hover:text-yellow-700">
-                                <i class="fas fa-phone mr-1"></i> Ara
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Customer Card 2 - Alıcı -->
-                    <div class="customer-card bg-white rounded-lg shadow p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Ayse+Demir&background=0B5394&color=fff" 
-                                     class="w-12 h-12 rounded-full mr-3">
-                                <div>
-                                    <h3 class="font-semibold text-gray-800">Ayşe Demir</h3>
-                                    <span class="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                                        Alıcı
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="far fa-star text-sm text-gray-300"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-2 text-sm">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-phone w-5"></i>
-                                <span>0544 987 65 43</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-envelope w-5"></i>
-                                <span>ayse.demir@email.com</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-map-marker-alt w-5"></i>
-                                <span>Bandırma, Balıkesir</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-2 text-sm">
-                            <div>
-                                <p class="text-gray-500">Bütçe</p>
-                                <p class="font-semibold">₺500K - ₺1M</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">İlgilendiği</p>
-                                <p class="font-semibold">Arsa, Villa</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Görüntülenen</p>
-                                <p class="font-semibold">8 İlan</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Son Aktivite</p>
-                                <p class="font-semibold">2 gün önce</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t flex justify-between">
-                            <button onclick="viewCustomerDetail('CUS-002')" class="text-primary-blue hover:text-blue-dark">
-                                <i class="fas fa-eye mr-1"></i> Detay
-                            </button>
-                            <button onclick="sendProperty('CUS-002')" class="text-primary-green hover:text-green-dark">
-                                <i class="fas fa-share mr-1"></i> İlan Gönder
-                            </button>
-                            <button onclick="scheduleAppointment('CUS-002')" class="text-yellow-600 hover:text-yellow-700">
-                                <i class="fas fa-calendar mr-1"></i> Randevu
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Customer Card 3 - Satıcı -->
-                    <div class="customer-card bg-white rounded-lg shadow p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Mehmet+Kaya&background=FFC000&color=333" 
-                                     class="w-12 h-12 rounded-full mr-3">
-                                <div>
-                                    <h3 class="font-semibold text-gray-800">Mehmet Kaya</h3>
-                                    <span class="inline-block px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
-                                        Satıcı
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="fas fa-star text-sm"></i>
-                                <i class="far fa-star text-sm text-gray-300"></i>
-                                <i class="far fa-star text-sm text-gray-300"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-2 text-sm">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-phone w-5"></i>
-                                <span>0555 678 90 12</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-envelope w-5"></i>
-                                <span>mehmet.kaya@email.com</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-map-marker-alt w-5"></i>
-                                <span>Altıeylül, Balıkesir</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-2 text-sm">
-                            <div>
-                                <p class="text-gray-500">Satıştaki</p>
-                                <p class="font-semibold">3 Gayrimenkul</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Toplam Değer</p>
-                                <p class="font-semibold text-primary-green">₺2.3M</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Satılan</p>
-                                <p class="font-semibold">5 Gayrimenkul</p>
-                            </div>
-                            <div>
-                                <p class="text-gray-500">Son Satış</p>
-                                <p class="font-semibold">01.03.2024</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t flex justify-between">
-                            <button onclick="viewCustomerDetail('CUS-003')" class="text-primary-blue hover:text-blue-dark">
-                                <i class="fas fa-eye mr-1"></i> Detay
-                            </button>
-                            <button onclick="viewSellerProperties('CUS-003')" class="text-primary-green hover:text-green-dark">
-                                <i class="fas fa-home mr-1"></i> İlanları
-                            </button>
-                            <button onclick="createOffer('CUS-003')" class="text-yellow-600 hover:text-yellow-700">
-                                <i class="fas fa-hand-holding-usd mr-1"></i> Teklif
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="searchInput" placeholder="Müşteri ara..." class="border rounded-lg px-4 py-2 text-sm">
+                            <button onclick="searchCustomers()" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
+                                <i class="fas fa-search"></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pagination -->
-                <div class="mt-6 flex justify-between items-center">
-                    <div class="text-sm text-gray-600">
-                        1,245 kayıttan 1-9 arası gösteriliyor
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">←</button>
-                        <button class="px-3 py-1 border rounded bg-primary-green text-white">1</button>
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">2</button>
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">3</button>
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">...</button>
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">139</button>
-                        <button class="px-3 py-1 border rounded hover:bg-gray-100">→</button>
+                <!-- Customers Table -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Müşteri</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İletişim</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tür</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kaynak</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Son İşlem</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Customers will be loaded here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Customer Modal -->
-    <div id="customerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b">
-                <h2 class="text-2xl font-bold">Yeni Müşteri Ekle</h2>
+    <!-- Add Customer Modal -->
+    <div id="addCustomerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold">Yeni Müşteri Ekle</h3>
+                <button onclick="closeAddCustomerModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="p-6">
-                <form id="customerForm">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Müşteri Tipi *</label>
-                            <select class="w-full border rounded-lg px-3 py-2">
-                                <option>Yatırımcı</option>
-                                <option>Alıcı</option>
-                                <option>Satıcı</option>
-                                <option>Kiracı</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Ad Soyad *</label>
-                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Ad Soyad">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">TC/VKN *</label>
-                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="TC Kimlik No veya Vergi No">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Telefon *</label>
-                            <input type="tel" class="w-full border rounded-lg px-3 py-2" placeholder="05XX XXX XX XX">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">E-posta</label>
-                            <input type="email" class="w-full border rounded-lg px-3 py-2" placeholder="email@örnek.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Şehir</label>
-                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Şehir">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Min Bütçe</label>
-                            <input type="number" class="w-full border rounded-lg px-3 py-2" placeholder="₺">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Max Bütçe</label>
-                            <input type="number" class="w-full border rounded-lg px-3 py-2" placeholder="₺">
-                        </div>
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-2">İlgilendiği Türler</label>
-                            <div class="flex flex-wrap gap-2">
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2"> Arsa
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2"> Villa
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2"> Daire
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2"> Tarla
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2"> Dükkan
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-2">Notlar</label>
-                            <textarea class="w-full border rounded-lg px-3 py-2" rows="3"></textarea>
-                        </div>
+            
+            <form id="addCustomerForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ad Soyad</label>
+                        <input type="text" id="customerName" required class="w-full border rounded-lg px-4 py-2">
                     </div>
-                    <div class="mt-6 flex justify-end space-x-3">
-                        <button type="button" onclick="closeCustomerModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100">
-                            İptal
-                        </button>
-                        <button type="submit" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-green-dark">
-                            Kaydet
-                        </button>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
+                        <input type="email" id="customerEmail" class="w-full border rounded-lg px-4 py-2">
                     </div>
-                </form>
-            </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
+                        <input type="tel" id="customerPhone" required class="w-full border rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Müşteri Türü</label>
+                        <select id="customerType" required class="w-full border rounded-lg px-4 py-2">
+                            <option value="">Seçin</option>
+                            <option value="Alıcı">Alıcı</option>
+                            <option value="Satıcı">Satıcı</option>
+                            <option value="Yatırımcı">Yatırımcı</option>
+                            <option value="Potansiyel">Potansiyel</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Durum</label>
+                        <select id="customerStatus" required class="w-full border rounded-lg px-4 py-2">
+                            <option value="">Seçin</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Pasif">Pasif</option>
+                            <option value="Potansiyel">Potansiyel</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kaynak</label>
+                        <select id="customerSource" class="w-full border rounded-lg px-4 py-2">
+                            <option value="">Seçin</option>
+                            <option value="Web Sitesi">Web Sitesi</option>
+                            <option value="Referans">Referans</option>
+                            <option value="Sosyal Medya">Sosyal Medya</option>
+                            <option value="Telefon">Telefon</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bütçe Min (₺)</label>
+                        <input type="number" id="budgetMin" class="w-full border rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bütçe Max (₺)</label>
+                        <input type="number" id="budgetMax" class="w-full border rounded-lg px-4 py-2">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Adres</label>
+                    <textarea id="customerAddress" rows="2" class="w-full border rounded-lg px-4 py-2"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Notlar</label>
+                    <textarea id="customerNotes" rows="3" class="w-full border rounded-lg px-4 py-2"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-6">
+                    <button type="button" onclick="closeAddCustomerModal()" class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-50">
+                        İptal
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-green-dark">
+                        Müşteri Ekle
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        // Modal Functions
-        function openCustomerModal() {
-            document.getElementById('customerModal').classList.remove('hidden');
-        }
+        let customers = [
+            {
+                id: 1,
+                name: 'Ahmet Yılmaz',
+                email: 'ahmet@email.com',
+                phone: '+90 532 123 4567',
+                type: 'Alıcı',
+                status: 'Aktif',
+                source: 'Web Sitesi',
+                budgetMin: 1000000,
+                budgetMax: 3000000,
+                address: 'Balıkesir, Türkiye',
+                notes: 'Arsa alımı için ilgileniyor',
+                lastActivity: '2024-12-15'
+            },
+            {
+                id: 2,
+                name: 'Fatma Demir',
+                email: 'fatma@email.com',
+                phone: '+90 533 987 6543',
+                type: 'Satıcı',
+                status: 'Aktif',
+                source: 'Referans',
+                budgetMin: 0,
+                budgetMax: 0,
+                address: 'Bandırma, Balıkesir',
+                notes: 'Villa satışı için başvurdu',
+                lastActivity: '2024-12-14'
+            },
+            {
+                id: 3,
+                name: 'Mehmet Kaya',
+                email: 'mehmet@email.com',
+                phone: '+90 535 456 7890',
+                type: 'Yatırımcı',
+                status: 'Potansiyel',
+                source: 'Sosyal Medya',
+                budgetMin: 5000000,
+                budgetMax: 10000000,
+                address: 'İstanbul, Türkiye',
+                notes: 'Büyük yatırım projeleri arıyor',
+                lastActivity: '2024-12-10'
+            }
+        ];
 
-        function closeCustomerModal() {
-            document.getElementById('customerModal').classList.add('hidden');
-        }
-
-        // Customer Actions
-        function viewCustomerDetail(customerId) {
-            window.location.href = `crm-customer-detail.html?id=${customerId}`;
-        }
-
-        function viewCustomerProperties(customerId) {
-            window.location.href = `crm-properties.html?owner=${customerId}`;
-        }
-
-        function contactCustomer(customerId) {
-            // Open contact options (phone, whatsapp, email)
-            alert('İletişim seçenekleri açılacak');
-        }
-
-        function sendProperty(customerId) {
-            alert('İlan gönderme penceresi açılacak');
-        }
-
-        function scheduleAppointment(customerId) {
-            alert('Randevu oluşturma penceresi açılacak');
-        }
-
-        function viewSellerProperties(customerId) {
-            window.location.href = `crm-properties.html?seller=${customerId}`;
-        }
-
-        function createOffer(customerId) {
-            alert('Teklif oluşturma penceresi açılacak');
-        }
-
-        function importCustomers() {
-            alert('Excel/CSV dosyası yükleme penceresi açılacak');
-        }
-
-        // Form Submit
-        document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Müşteri kaydedildi!');
-            closeCustomerModal();
+        // Initialize customers page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('adminLoggedIn') !== 'true') {
+                window.location.href = 'admin.html';
+            }
+            
+            // Set active menu item
+            setActiveMenuItem();
+            
+            // Load customers
+            loadCustomers();
         });
+
+        // Set active menu item based on current page
+        function setActiveMenuItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            const menuItems = document.querySelectorAll('.sidebar-item');
+            
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                const icon = item.querySelector('i');
+                icon.classList.remove('text-primary-green');
+                icon.classList.add('text-gray-600');
+            });
+            
+            // Find and activate current page menu item
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                    const icon = item.querySelector('i');
+                    icon.classList.remove('text-gray-600');
+                    icon.classList.add('text-primary-green');
+                }
+            });
+        }
+
+        // Load customers
+        function loadCustomers() {
+            const tbody = document.getElementById('customersTableBody');
+            tbody.innerHTML = customers.map(customer => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=${encodeURIComponent(customer.name)}&background=52B947&color=fff" alt="">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${customer.name}</div>
+                                <div class="text-sm text-gray-500">ID: ${customer.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${customer.email}</div>
+                        <div class="text-sm text-gray-500">${customer.phone}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeColor(customer.type)}">${customer.type}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(customer.status)}">${customer.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.source}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.lastActivity}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="viewCustomer(${customer.id})" class="text-primary-blue hover:text-blue-dark">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="editCustomer(${customer.id})" class="text-primary-green hover:text-green-dark">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCustomer(${customer.id})" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Get type color
+        function getTypeColor(type) {
+            const colors = {
+                'Alıcı': 'bg-blue-100 text-blue-800',
+                'Satıcı': 'bg-green-100 text-green-800',
+                'Yatırımcı': 'bg-purple-100 text-purple-800',
+                'Potansiyel': 'bg-yellow-100 text-yellow-800'
+            };
+            return colors[type] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Get status color
+        function getStatusColor(status) {
+            const colors = {
+                'Aktif': 'bg-green-100 text-green-800',
+                'Pasif': 'bg-red-100 text-red-800',
+                'Potansiyel': 'bg-yellow-100 text-yellow-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Search customers
+        function searchCustomers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredCustomers = customers.filter(customer => 
+                customer.name.toLowerCase().includes(searchTerm) ||
+                customer.email.toLowerCase().includes(searchTerm) ||
+                customer.phone.includes(searchTerm) ||
+                customer.type.toLowerCase().includes(searchTerm)
+            );
+            
+            // Update display with filtered customers
+            const tbody = document.getElementById('customersTableBody');
+            tbody.innerHTML = filteredCustomers.map(customer => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=${encodeURIComponent(customer.name)}&background=52B947&color=fff" alt="">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${customer.name}</div>
+                                <div class="text-sm text-gray-500">ID: ${customer.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${customer.email}</div>
+                        <div class="text-sm text-gray-500">${customer.phone}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getTypeColor(customer.type)}">${customer.type}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(customer.status)}">${customer.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.source}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${customer.lastActivity}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="viewCustomer(${customer.id})" class="text-primary-blue hover:text-blue-dark">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="editCustomer(${customer.id})" class="text-primary-green hover:text-green-dark">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCustomer(${customer.id})" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Modal functions
+        function showAddCustomerModal() {
+            document.getElementById('addCustomerModal').classList.remove('hidden');
+        }
+
+        function closeAddCustomerModal() {
+            document.getElementById('addCustomerModal').classList.add('hidden');
+            document.getElementById('addCustomerForm').reset();
+        }
+
+        // View customer
+        function viewCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (customer) {
+                alert(`Müşteri Detayları:\n\nAd: ${customer.name}\nE-posta: ${customer.email}\nTelefon: ${customer.phone}\nTür: ${customer.type}\nDurum: ${customer.status}\nNotlar: ${customer.notes}`);
+            }
+        }
+
+        // Edit customer
+        function editCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (customer) {
+                alert(`Müşteri düzenleme: ${customer.name}`);
+                // Edit functionality will be implemented
+            }
+        }
+
+        // Delete customer
+        function deleteCustomer(id) {
+            if (confirm('Bu müşteriyi silmek istediğinizden emin misiniz?')) {
+                customers = customers.filter(c => c.id !== id);
+                loadCustomers();
+                alert('Müşteri başarıyla silindi!');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('addCustomerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newCustomer = {
+                id: customers.length + 1,
+                name: document.getElementById('customerName').value,
+                email: document.getElementById('customerEmail').value,
+                phone: document.getElementById('customerPhone').value,
+                type: document.getElementById('customerType').value,
+                status: document.getElementById('customerStatus').value,
+                source: document.getElementById('customerSource').value,
+                budgetMin: parseInt(document.getElementById('budgetMin').value) || 0,
+                budgetMax: parseInt(document.getElementById('budgetMax').value) || 0,
+                address: document.getElementById('customerAddress').value,
+                notes: document.getElementById('customerNotes').value,
+                lastActivity: new Date().toISOString().split('T')[0]
+            };
+            
+            customers.push(newCustomer);
+            closeAddCustomerModal();
+            loadCustomers();
+            
+            alert('Müşteri başarıyla eklendi!');
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminEmail');
+                window.location.href = 'admin.html';
+            }
+        }
     </script>
 </body>
 </html>

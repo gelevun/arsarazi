@@ -84,15 +84,15 @@
                     <i class="fas fa-file-alt w-6 text-primary-green"></i>
                     <span class="ml-3">Dokümanlar</span>
                 </a>
-                <a href="#calendar" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-calendar w-6 text-gray-600"></i>
-                    <span class="ml-3">Takvim</span>
-                </a>
-                <a href="#reports" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-reports.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-bar w-6 text-gray-600"></i>
                     <span class="ml-3">Raporlar</span>
                 </a>
-                <a href="#settings" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-calendar.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="crm-settings.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-cog w-6 text-gray-600"></i>
                     <span class="ml-3">Ayarlar</span>
                 </a>
@@ -572,7 +572,33 @@
             if (localStorage.getItem('adminLoggedIn') !== 'true') {
                 window.location.href = 'admin.html';
             }
+            
+            // Set active menu item
+            setActiveMenuItem();
         });
+
+        // Set active menu item based on current page
+        function setActiveMenuItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            const menuItems = document.querySelectorAll('.sidebar-item');
+            
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                const icon = item.querySelector('i');
+                icon.classList.remove('text-primary-green');
+                icon.classList.add('text-gray-600');
+            });
+            
+            // Find and activate current page menu item
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                    const icon = item.querySelector('i');
+                    icon.classList.remove('text-gray-600');
+                    icon.classList.add('text-primary-green');
+                }
+            });
+        }
     </script>
 </body>
 </html>

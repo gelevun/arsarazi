@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raporlar ve Analitik - Arsarazi CRM</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item:hover { background-color: rgba(82, 185, 71, 0.1); }
+        .sidebar-item.active { background-color: rgba(82, 185, 71, 0.2); border-left: 4px solid #52B947; }
+        .sidebar { height: 100vh; position: fixed; left: 0; top: 0; }
+        .main-content { margin-left: 16rem; }
+        .chart-container { 
+            position: relative; 
+            height: 300px; 
+            width: 100%; 
+        }
+        @media (max-width: 768px) {
+            .sidebar { position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 bg-white shadow-lg flex flex-col">
+            <div class="p-4 border-b">
+                <div class="flex items-center logo-container">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                         alt="Arsarazi Logo" 
+                         class="h-10 w-auto mr-2">
+                    <span class="text-xl font-bold text-primary-blue">ARSARAZI CRM</span>
+                </div>
+            </div>
+            
+            <nav class="p-4 flex-1">
+                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-line w-6 text-gray-600"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="crm-properties.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-building w-6 text-gray-600"></i>
+                    <span class="ml-3">Gayrimenkuller</span>
+                </a>
+                <a href="crm-customers.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-users w-6 text-gray-600"></i>
+                    <span class="ml-3">Müşteriler</span>
+                </a>
+                <a href="crm-transactions.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">İşlemler</span>
+                </a>
+                <a href="crm-documents.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-file-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">Dokümanlar</span>
+                </a>
+                <a href="crm-reports.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-bar w-6 text-primary-green"></i>
+                    <span class="ml-3">Raporlar</span>
+                </a>
+                <a href="crm-calendar.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="crm-settings.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-cog w-6 text-gray-600"></i>
+                    <span class="ml-3">Ayarlar</span>
+                </a>
+                
+                <div class="border-t pt-4 mt-4">
+                    <a href="index.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                        <i class="fas fa-globe w-6 text-gray-600"></i>
+                        <span class="ml-3">Web Sitesine Git</span>
+                    </a>
+                    <button onclick="logout()" class="sidebar-item w-full flex items-center p-3 rounded-lg text-red-600 hover:bg-red-50">
+                        <i class="fas fa-sign-out-alt w-6"></i>
+                        <span class="ml-3">Çıkış Yap</span>
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="p-4 border-t mt-auto">
+                <div class="flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=52B947&color=fff" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@arsarazi.com</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-2xl font-bold text-gray-800">Raporlar ve Analitik</h1>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="exportReport()" class="bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition flex items-center">
+                            <i class="fas fa-download mr-2"></i> Rapor İndir
+                        </button>
+                        <button class="relative p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                        </button>
+                        <a href="index.html" class="p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-home text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Report Filters -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <select id="reportType" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="sales">Satış Raporu</option>
+                                <option value="customers">Müşteri Analizi</option>
+                                <option value="properties">Gayrimenkul Analizi</option>
+                                <option value="performance">Performans Raporu</option>
+                            </select>
+                            <select id="timeRange" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="7">Son 7 Gün</option>
+                                <option value="30" selected>Son 30 Gün</option>
+                                <option value="90">Son 3 Ay</option>
+                                <option value="365">Son 1 Yıl</option>
+                            </select>
+                            <button onclick="generateReport()" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
+                                <i class="fas fa-chart-bar mr-2"></i> Rapor Oluştur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Toplam Satış</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1">₺2.4M</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> %18 Artış
+                                </p>
+                            </div>
+                            <div class="bg-green-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-lira-sign text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Satış Adedi</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1">42</p>
+                                <p class="text-blue-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> %12 Artış
+                                </p>
+                            </div>
+                            <div class="bg-blue-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-chart-line text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Ortalama Fiyat</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1">₺57K</p>
+                                <p class="text-yellow-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> %5 Artış
+                                </p>
+                            </div>
+                            <div class="bg-yellow-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-calculator text-2xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Müşteri Memnuniyeti</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1">4.8/5</p>
+                                <p class="text-purple-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-star mr-1"></i> Yüksek
+                                </p>
+                            </div>
+                            <div class="bg-purple-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-star text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Sales Trend Chart -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Satış Trendi</h3>
+                            <select class="border rounded px-3 py-1 text-sm">
+                                <option>Son 6 Ay</option>
+                                <option>Son 1 Yıl</option>
+                                <option>Tümü</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Property Type Distribution -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Gayrimenkul Dağılımı</h3>
+                            <button class="text-primary-green text-sm">Detaylı Rapor</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="propertyDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Reports -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Top Performing Properties -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-semibold">En İyi Performans Gösteren Gayrimenkuller</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Karesi Merkez Arsa</p>
+                                        <p class="text-sm text-gray-500">3 görüntüleme, 1 teklif</p>
+                                    </div>
+                                    <span class="text-green-600 font-medium">₺1.25M</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Bandırma Villa</p>
+                                        <p class="text-sm text-gray-500">5 görüntüleme, 2 teklif</p>
+                                    </div>
+                                    <span class="text-green-600 font-medium">₺3.5M</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Altıeylül Tarla</p>
+                                        <p class="text-sm text-gray-500">2 görüntüleme, 0 teklif</p>
+                                    </div>
+                                    <span class="text-green-600 font-medium">₺500K</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Insights -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-semibold">Müşteri İçgörüleri</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">En Aktif Müşteri</p>
+                                        <p class="text-sm text-gray-500">Ahmet Yılmaz</p>
+                                    </div>
+                                    <span class="text-blue-600 font-medium">5 işlem</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Ortalama Bütçe</p>
+                                        <p class="text-sm text-gray-500">Müşteri başına</p>
+                                    </div>
+                                    <span class="text-blue-600 font-medium">₺1.2M</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">Yeni Müşteri Oranı</p>
+                                        <p class="text-sm text-gray-500">Bu ay</p>
+                                    </div>
+                                    <span class="text-blue-600 font-medium">%25</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize charts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('adminLoggedIn') !== 'true') {
+                window.location.href = 'admin.html';
+            }
+            
+            // Set active menu item
+            setActiveMenuItem();
+            
+            // Initialize charts
+            initializeCharts();
+        });
+
+        // Set active menu item based on current page
+        function setActiveMenuItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            const menuItems = document.querySelectorAll('.sidebar-item');
+            
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                const icon = item.querySelector('i');
+                icon.classList.remove('text-primary-green');
+                icon.classList.add('text-gray-600');
+            });
+            
+            // Find and activate current page menu item
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                    const icon = item.querySelector('i');
+                    icon.classList.remove('text-gray-600');
+                    icon.classList.add('text-primary-green');
+                }
+            });
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Sales Trend Chart
+            const salesCtx = document.getElementById('salesTrendChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+                    datasets: [{
+                        label: 'Satış Geliri (₺)',
+                        data: [1200000, 1800000, 1500000, 2500000, 2200000, 3000000],
+                        borderColor: '#52B947',
+                        backgroundColor: 'rgba(82, 185, 71, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₺' + (value / 1000000) + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Property Distribution Chart
+            const propertyCtx = document.getElementById('propertyDistributionChart').getContext('2d');
+            new Chart(propertyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Arsa', 'Villa', 'Daire', 'Tarla', 'Dükkan'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#52B947',
+                            '#0B5394',
+                            '#FFC000',
+                            '#7FD276',
+                            '#2B73B4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Generate report
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const timeRange = document.getElementById('timeRange').value;
+            
+            alert(`${reportType} raporu ${timeRange} günlük periyot için oluşturuluyor...`);
+            // Report generation logic will be implemented
+        }
+
+        // Export report
+        function exportReport() {
+            alert('Rapor PDF formatında indiriliyor...');
+            // Export functionality will be implemented
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminEmail');
+                window.location.href = 'admin.html';
+            }
+        }
+    </script>
+</body>
+</html>

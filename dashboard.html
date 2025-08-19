@@ -73,35 +73,35 @@
             </div>
             
             <nav class="p-4 flex-1">
-                <a href="#dashboard" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
+                <a href="dashboard.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-line w-6 text-primary-green"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                <a href="#properties" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-properties.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-building w-6 text-gray-600"></i>
                     <span class="ml-3">Gayrimenkuller</span>
                 </a>
-                <a href="#customers" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-customers.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-users w-6 text-gray-600"></i>
                     <span class="ml-3">Müşteriler</span>
                 </a>
-                <a href="#transactions" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-transactions.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
                     <span class="ml-3">İşlemler</span>
                 </a>
-                <a href="#documents" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-documents.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-file-alt w-6 text-gray-600"></i>
                     <span class="ml-3">Dokümanlar</span>
                 </a>
-                <a href="#calendar" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-calendar w-6 text-gray-600"></i>
-                    <span class="ml-3">Takvim</span>
-                </a>
-                <a href="#reports" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-reports.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-bar w-6 text-gray-600"></i>
                     <span class="ml-3">Raporlar</span>
                 </a>
-                <a href="#settings" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="crm-calendar.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="crm-settings.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-cog w-6 text-gray-600"></i>
                     <span class="ml-3">Ayarlar</span>
                 </a>
@@ -417,43 +417,7 @@
             setupNavigation();
         });
 
-        // Navigation Handler
-        function setupNavigation() {
-            const sidebarItems = document.querySelectorAll('.sidebar-item');
-            sidebarItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    sidebarItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const target = this.getAttribute('href').replace('#', '');
-                    loadContent(target);
-                });
-            });
-        }
 
-        // Load Content Based on Navigation
-        function loadContent(section) {
-            const contentArea = document.getElementById('dashboard-content');
-            
-            switch(section) {
-                case 'properties':
-                    window.location.href = 'crm-properties.html';
-                    break;
-                case 'customers':
-                    window.location.href = 'crm-customers.html';
-                    break;
-                case 'transactions':
-                    window.location.href = 'crm-transactions.html';
-                    break;
-                case 'documents':
-                    window.location.href = 'crm-documents.html';
-                    break;
-                default:
-                    // Stay on dashboard
-                    break;
-            }
-        }
 
         // Open Modal
         function openModal(type) {
@@ -486,7 +450,33 @@
             if (localStorage.getItem('adminLoggedIn') !== 'true') {
                 window.location.href = 'admin.html';
             }
+            
+            // Set active menu item
+            setActiveMenuItem();
         });
+
+        // Set active menu item based on current page
+        function setActiveMenuItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            const menuItems = document.querySelectorAll('.sidebar-item');
+            
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                const icon = item.querySelector('i');
+                icon.classList.remove('text-primary-green');
+                icon.classList.add('text-gray-600');
+            });
+            
+            // Find and activate current page menu item
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                    const icon = item.querySelector('i');
+                    icon.classList.remove('text-gray-600');
+                    icon.classList.add('text-primary-green');
+                }
+            });
+        }
     </script>
 </body>
 </html>
