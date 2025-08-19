@@ -255,31 +255,31 @@
 
                     <!-- Properties Table -->
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-8">
                                         <input type="checkbox" id="headerCheckbox" class="rounded border-gray-300 text-primary-green focus:ring-primary-green" onchange="toggleSelectAll()">
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
                                         Gayrimenkul
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">
                                         Tip
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
                                         Alan
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
                                         Fiyat
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
                                         Durum
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
                                         Yayın Durumu
                                     </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
                                         İşlemler
                                     </th>
                                 </tr>
@@ -498,53 +498,53 @@
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50';
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <input type="checkbox" class="property-checkbox rounded border-gray-300 text-primary-green focus:ring-primary-green" value="${property.id}" onchange="updateSelection()">
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <div class="h-10 w-10 rounded-full bg-primary-green/10 flex items-center justify-center">
-                                    <i class="fas fa-building text-primary-green"></i>
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-primary-green/10 flex items-center justify-center">
+                                    <i class="fas fa-building text-primary-green text-sm"></i>
                                 </div>
                             </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${property.aciklama || property.title || 'Gayrimenkul'}</div>
-                                <div class="text-sm text-gray-500">${property.konum || property.location || 'Konum belirtilmemiş'}</div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-gray-900 truncate max-w-xs">${property.aciklama || property.title || 'Gayrimenkul'}</div>
+                                <div class="text-xs text-gray-500 truncate max-w-xs">${property.konum || property.location || 'Konum belirtilmemiş'}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                             ${property.tip || property.type || 'Belirtilmemiş'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-900">
                         ${(property.alan || property.area || 0).toLocaleString()} m²
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-900">
                         ₺${(property.fiyat || property.price || 0).toLocaleString()}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(property.durum || property.status)}">
                             ${property.durum || property.status || 'Belirtilmemiş'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${property.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
                             ${property.published ? 'Yayında' : 'Yayında Değil'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex items-center space-x-2">
-                            <button onclick="viewProperty(${property.id})" class="text-primary-blue hover:text-blue-dark">
-                                <i class="fas fa-eye"></i>
+                    <td class="px-2 py-3 whitespace-nowrap text-sm font-medium">
+                        <div class="flex items-center space-x-1">
+                            <button onclick="viewProperty('${property.id}')" class="text-primary-blue hover:text-blue-dark p-1">
+                                <i class="fas fa-eye text-sm"></i>
                             </button>
-                            <button onclick="editProperty(${property.id})" class="text-primary-green hover:text-green-dark">
-                                <i class="fas fa-edit"></i>
+                            <button onclick="editProperty('${property.id}')" class="text-primary-green hover:text-green-dark p-1">
+                                <i class="fas fa-edit text-sm"></i>
                             </button>
-                            <button onclick="deleteProperty(${property.id})" class="text-red-600 hover:text-red-800">
-                                <i class="fas fa-trash"></i>
+                            <button onclick="deleteProperty('${property.id}')" class="text-red-600 hover:text-red-800 p-1">
+                                <i class="fas fa-trash text-sm"></i>
                             </button>
                         </div>
                     </td>
@@ -699,37 +699,87 @@
         // Update properties in backend
         async function updatePropertiesBackend() {
             try {
-                const response = await fetch('/api/gayrimenkuller', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ properties: properties })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Backend güncelleme hatası');
-                }
+                // Backend güncelleme yerine sadece local storage'a kaydet
+                localStorage.setItem('properties', JSON.stringify(properties));
+                console.log('Gayrimenkuller güncellendi');
             } catch (error) {
-                console.error('Backend güncelleme hatası:', error);
+                console.error('Güncelleme hatası:', error);
                 throw error;
             }
         }
 
         // Property actions
         function viewProperty(id) {
-            alert(`Gayrimenkul ${id} detayları görüntülenecek`);
+            const property = properties.find(p => p.id == id);
+            if (property) {
+                alert(`Gayrimenkul Detayları:\n\nBaşlık: ${property.aciklama || property.title}\nTip: ${property.tip || property.type}\nAlan: ${(property.alan || property.area || 0).toLocaleString()} m²\nFiyat: ₺${(property.fiyat || property.price || 0).toLocaleString()}\nDurum: ${property.durum || property.status}\nKonum: ${property.konum || property.location}`);
+            } else {
+                alert('Gayrimenkul bulunamadı!');
+            }
         }
 
         function editProperty(id) {
-            alert(`Gayrimenkul ${id} düzenlenecek`);
+            const property = properties.find(p => p.id == id);
+            if (property) {
+                // Form alanlarını doldur
+                document.getElementById('propertyTitle').value = property.aciklama || property.title || '';
+                document.getElementById('propertyType').value = property.tip || property.type || '';
+                document.getElementById('propertyArea').value = property.alan || property.area || '';
+                document.getElementById('propertyPrice').value = property.fiyat || property.price || '';
+                document.getElementById('propertyStatus').value = property.durum || property.status || '';
+                document.getElementById('propertyLocation').value = property.konum || property.location || '';
+                document.getElementById('propertyZoning').value = property.imar_durumu || property.zoning || '';
+                document.getElementById('propertyDescription').value = property.aciklama || property.description || '';
+                
+                // Modal'ı aç
+                showAddPropertyModal();
+                
+                // Form submit butonunu güncelle
+                const submitBtn = document.querySelector('#addPropertyForm button[type="submit"]');
+                submitBtn.textContent = 'Gayrimenkul Güncelle';
+                submitBtn.onclick = function(e) {
+                    e.preventDefault();
+                    updateProperty(id);
+                };
+            } else {
+                alert('Gayrimenkul bulunamadı!');
+            }
+        }
+
+        function updateProperty(id) {
+            const propertyIndex = properties.findIndex(p => p.id == id);
+            if (propertyIndex !== -1) {
+                properties[propertyIndex] = {
+                    ...properties[propertyIndex],
+                    aciklama: document.getElementById('propertyTitle').value,
+                    tip: document.getElementById('propertyType').value,
+                    alan: parseInt(document.getElementById('propertyArea').value),
+                    fiyat: parseInt(document.getElementById('propertyPrice').value),
+                    durum: document.getElementById('propertyStatus').value,
+                    konum: document.getElementById('propertyLocation').value,
+                    imar_durumu: document.getElementById('propertyZoning').value,
+                    guncelleme_tarihi: new Date().toISOString()
+                };
+                
+                renderProperties();
+                updateStats();
+                closeAddPropertyModal();
+                
+                // Form submit butonunu eski haline getir
+                const submitBtn = document.querySelector('#addPropertyForm button[type="submit"]');
+                submitBtn.textContent = 'Gayrimenkul Ekle';
+                submitBtn.onclick = null;
+                
+                alert('Gayrimenkul başarıyla güncellendi!');
+            }
         }
 
         function deleteProperty(id) {
             if (confirm('Bu gayrimenkulü silmek istediğinizden emin misiniz?')) {
-                properties = properties.filter(p => p.id !== id);
+                properties = properties.filter(p => p.id != id);
                 renderProperties();
                 updateStats();
+                alert('Gayrimenkul başarıyla silindi!');
             }
         }
 
@@ -741,6 +791,11 @@
         function closeAddPropertyModal() {
             document.getElementById('addPropertyModal').classList.add('hidden');
             document.getElementById('addPropertyForm').reset();
+            
+            // Form submit butonunu eski haline getir
+            const submitBtn = document.querySelector('#addPropertyForm button[type="submit"]');
+            submitBtn.textContent = 'Gayrimenkul Ekle';
+            submitBtn.onclick = null;
         }
 
         // Form submission
@@ -795,53 +850,53 @@
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50';
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <input type="checkbox" class="property-checkbox rounded border-gray-300 text-primary-green focus:ring-primary-green" value="${property.id}" onchange="updateSelection()">
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                                <div class="h-10 w-10 rounded-full bg-primary-green/10 flex items-center justify-center">
-                                    <i class="fas fa-building text-primary-green"></i>
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-primary-green/10 flex items-center justify-center">
+                                    <i class="fas fa-building text-primary-green text-sm"></i>
                                 </div>
                             </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">${property.aciklama || property.title || 'Gayrimenkul'}</div>
-                                <div class="text-sm text-gray-500">${property.konum || property.location || 'Konum belirtilmemiş'}</div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-gray-900 truncate max-w-xs">${property.aciklama || property.title || 'Gayrimenkul'}</div>
+                                <div class="text-xs text-gray-500 truncate max-w-xs">${property.konum || property.location || 'Konum belirtilmemiş'}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                             ${property.tip || property.type || 'Belirtilmemiş'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-900">
                         ${(property.alan || property.area || 0).toLocaleString()} m²
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-2 py-3 whitespace-nowrap text-sm text-gray-900">
                         ₺${(property.fiyat || property.price || 0).toLocaleString()}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(property.durum || property.status)}">
                             ${property.durum || property.status || 'Belirtilmemiş'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-2 py-3 whitespace-nowrap">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${property.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
                             ${property.published ? 'Yayında' : 'Yayında Değil'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex items-center space-x-2">
-                            <button onclick="viewProperty(${property.id})" class="text-primary-blue hover:text-blue-dark">
-                                <i class="fas fa-eye"></i>
+                    <td class="px-2 py-3 whitespace-nowrap text-sm font-medium">
+                        <div class="flex items-center space-x-1">
+                            <button onclick="viewProperty('${property.id}')" class="text-primary-blue hover:text-blue-dark p-1">
+                                <i class="fas fa-eye text-sm"></i>
                             </button>
-                            <button onclick="editProperty(${property.id})" class="text-primary-green hover:text-green-dark">
-                                <i class="fas fa-edit"></i>
+                            <button onclick="editProperty('${property.id}')" class="text-primary-green hover:text-green-dark p-1">
+                                <i class="fas fa-edit text-sm"></i>
                             </button>
-                            <button onclick="deleteProperty(${property.id})" class="text-red-600 hover:text-red-800">
-                                <i class="fas fa-trash"></i>
+                            <button onclick="deleteProperty('${property.id}')" class="text-red-600 hover:text-red-800 p-1">
+                                <i class="fas fa-trash text-sm"></i>
                             </button>
                         </div>
                     </td>
