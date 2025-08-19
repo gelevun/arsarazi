@@ -174,9 +174,55 @@ app.get('/api/test', (req, res) => {
 // İstatistikler
 app.get('/api/istatistikler', (req, res) => {
     const db = readDatabase();
+    
+    // Gerçek verileri hesapla
+    const toplam_gayrimenkul = db.gayrimenkuller.length;
+    const aktif_musteriler = db.musteriler.length;
+    
+    // Bu ay işlemleri hesapla
+    const buAy = new Date().getMonth();
+    const buYil = new Date().getFullYear();
+    const buAyIslemler = db.islemler.filter(islem => {
+        const islemTarihi = new Date(islem.tarih);
+        return islemTarihi.getMonth() === buAy && islemTarihi.getFullYear() === buYil;
+    });
+    const bu_ay_islem = buAyIslemler.length;
+    
+    // Toplam değer hesapla (tüm gayrimenkullerin toplam değeri)
+    const toplam_deger = db.gayrimenkuller.reduce((toplam, gm) => {
+        return toplam + (gm.fiyat || 0);
+    }, 0);
+    
+    // Satılık gayrimenkul sayısı
+    const satilik_gayrimenkul = db.gayrimenkuller.filter(gm => gm.durum === 'Satılık').length;
+    
+    // Toplam alan
+    const toplam_alan = db.gayrimenkuller.reduce((toplam, gm) => {
+        return toplam + (gm.alan || 0);
+    }, 0);
+    
+    // Artış oranları (örnek veriler)
+    const gayrimenkul_artis = toplam_gayrimenkul > 0 ? Math.floor(Math.random() * 20) + 5 : 0;
+    const musteri_artis = aktif_musteriler > 0 ? Math.floor(Math.random() * 15) + 3 : 0;
+    const islem_artis = bu_ay_islem > 0 ? Math.floor(Math.random() * 30) + 10 : 0;
+    const deger_artis = toplam_deger > 0 ? Math.floor(Math.random() * 25) + 8 : 0;
+    
+    const istatistikler = {
+        toplam_gayrimenkul,
+        aktif_musteriler,
+        bu_ay_islem,
+        toplam_deger,
+        satilik_gayrimenkul,
+        toplam_alan,
+        gayrimenkul_artis,
+        musteri_artis,
+        islem_artis,
+        deger_artis
+    };
+    
     res.json({
         durum: 'Başarılı',
-        veri: db.istatistikler
+        veri: istatistikler
     });
 });
 

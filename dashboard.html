@@ -159,9 +159,9 @@
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
                                 <p class="text-gray-500 text-sm font-medium">Toplam Gayrimenkul</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1">324</p>
-                                <p class="text-green-500 text-sm mt-2 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i> %12 Artış
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalProperties">21</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center" id="propertiesGrowth">
+                                    <i class="fas fa-arrow-up mr-1"></i> <span id="propertiesGrowthText">0%</span> Artış
                                 </p>
                             </div>
                             <div class="bg-primary-green/10 p-4 rounded-full flex-shrink-0">
@@ -174,9 +174,9 @@
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
                                 <p class="text-gray-500 text-sm font-medium">Aktif Müşteriler</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1">1,245</p>
-                                <p class="text-green-500 text-sm mt-2 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i> %8 Artış
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalCustomers">3</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center" id="customersGrowth">
+                                    <i class="fas fa-arrow-up mr-1"></i> <span id="customersGrowthText">0%</span> Artış
                                 </p>
                             </div>
                             <div class="bg-primary-blue/10 p-4 rounded-full flex-shrink-0">
@@ -189,9 +189,9 @@
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
                                 <p class="text-gray-500 text-sm font-medium">Bu Ay İşlem</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1">42</p>
-                                <p class="text-green-500 text-sm mt-2 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i> %23 Artış
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="monthlyTransactions">0</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center" id="transactionsGrowth">
+                                    <i class="fas fa-arrow-up mr-1"></i> <span id="transactionsGrowthText">0%</span> Artış
                                 </p>
                             </div>
                             <div class="bg-primary-yellow/10 p-4 rounded-full flex-shrink-0">
@@ -203,10 +203,10 @@
                     <div class="stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <p class="text-gray-500 text-sm font-medium">Toplam Gelir</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1">₺2.4M</p>
-                                <p class="text-green-500 text-sm mt-2 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i> %18 Artış
+                                <p class="text-gray-500 text-sm font-medium">Toplam Değer</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalRevenue">₺3,955</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center" id="revenueGrowth">
+                                    <i class="fas fa-arrow-up mr-1"></i> <span id="revenueGrowthText">0%</span> Artış
                                 </p>
                             </div>
                             <div class="bg-green-100 p-4 rounded-full flex-shrink-0">
@@ -453,7 +453,96 @@
             
             // Set active menu item
             setActiveMenuItem();
+            
+            // Load dashboard data
+            loadDashboardData();
         });
+
+        // Load dashboard data from backend
+        async function loadDashboardData() {
+            try {
+                // Load statistics
+                await loadStatistics();
+                
+                // Load charts
+                initializeCharts();
+                
+            } catch (error) {
+                console.error('Dashboard veri yükleme hatası:', error);
+            }
+        }
+
+        // Load statistics from backend
+        async function loadStatistics() {
+            try {
+                const response = await fetch('/api/istatistikler');
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    updateStatistics(data.veri);
+                }
+            } catch (error) {
+                console.error('İstatistik yükleme hatası:', error);
+            }
+        }
+
+        // Update statistics display
+        function updateStatistics(data) {
+            // Update property count
+            document.getElementById('totalProperties').textContent = data.toplam_gayrimenkul || 0;
+            document.getElementById('propertiesGrowthText').textContent = `${data.gayrimenkul_artis || 0}%`;
+            
+            // Update customer count
+            document.getElementById('totalCustomers').textContent = data.aktif_musteriler || 0;
+            document.getElementById('customersGrowthText').textContent = `${data.musteri_artis || 0}%`;
+            
+            // Update transaction count
+            document.getElementById('monthlyTransactions').textContent = data.bu_ay_islem || 0;
+            document.getElementById('transactionsGrowthText').textContent = `${data.islem_artis || 0}%`;
+            
+            // Update revenue
+            const revenue = data.toplam_deger || 0;
+            document.getElementById('totalRevenue').textContent = formatCurrency(revenue);
+            document.getElementById('revenueGrowthText').textContent = `${data.deger_artis || 0}%`;
+            
+            // Update growth indicators
+            updateGrowthIndicator('propertiesGrowth', data.gayrimenkul_artis);
+            updateGrowthIndicator('customersGrowth', data.musteri_artis);
+            updateGrowthIndicator('transactionsGrowth', data.islem_artis);
+            updateGrowthIndicator('revenueGrowth', data.deger_artis);
+        }
+
+        // Update growth indicator color and icon
+        function updateGrowthIndicator(elementId, growth) {
+            const element = document.getElementById(elementId);
+            const icon = element.querySelector('i');
+            const textElement = element.querySelector('span');
+            
+            if (growth > 0) {
+                element.className = 'text-green-500 text-sm mt-2 flex items-center';
+                icon.className = 'fas fa-arrow-up mr-1';
+                textElement.textContent = `${growth}%`;
+            } else if (growth < 0) {
+                element.className = 'text-red-500 text-sm mt-2 flex items-center';
+                icon.className = 'fas fa-arrow-down mr-1';
+                textElement.textContent = `${Math.abs(growth)}%`;
+            } else {
+                element.className = 'text-gray-500 text-sm mt-2 flex items-center';
+                icon.className = 'fas fa-minus mr-1';
+                textElement.textContent = '0%';
+            }
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            if (amount >= 1000000) {
+                return `₺${(amount / 1000000).toFixed(1)}M`;
+            } else if (amount >= 1000) {
+                return `₺${(amount / 1000).toFixed(1)}K`;
+            } else {
+                return `₺${amount.toLocaleString()}`;
+            }
+        }
 
         // Set active menu item based on current page
         function setActiveMenuItem() {
