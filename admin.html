@@ -1,478 +1,227 @@
 <!DOCTYPE html>
-<html lang="tr" class="scroll-smooth">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Arsarazi CRM</title>
-    <meta name="description" content="Arsarazi admin paneli - Portföy yönetimi, müşteri takibi ve CRM sistemi">
+    <title>Admin Giriş - Arsarazi CRM</title>
     
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
     
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Chart.js for Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .sidebar-item { transition: all 0.3s ease; }
-        .sidebar-item:hover { background-color: rgba(59, 130, 246, 0.1); }
-        .sidebar-item.active { background-color: #3b82f6; color: white; }
-        .card-stat { transition: all 0.3s ease; }
-        .card-stat:hover { transform: translateY(-2px); }
+        .login-card { 
+            background: linear-gradient(135deg, #52B947 0%, #0B5394 100%);
+        }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar -->
-    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform lg:translate-x-0 lg:static lg:inset-0" id="sidebar">
-        <div class="flex items-center justify-center h-16 bg-blue-600 text-white">
-            <i class="fas fa-map-marked-alt text-2xl mr-3"></i>
-            <span class="text-xl font-bold">Arsarazi CRM</span>
-        </div>
-        
-        <nav class="mt-8 px-4">
-            <div class="space-y-2">
-                <button onclick="showSection('dashboard')" class="sidebar-item active w-full flex items-center px-4 py-3 text-left rounded-lg">
-                    <i class="fas fa-tachometer-alt mr-3 w-5"></i>
-                    Dashboard
-                </button>
-                
-                <button onclick="showSection('properties')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                    <i class="fas fa-home mr-3 w-5"></i>
-                    Portföy Yönetimi
-                </button>
-                
-                <button onclick="showSection('customers')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                    <i class="fas fa-users mr-3 w-5"></i>
-                    Müşteri Yönetimi
-                </button>
-                
-                <button onclick="showSection('leads')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                    <i class="fas fa-user-plus mr-3 w-5"></i>
-                    Potansiyel Müşteriler
-                </button>
-                
-                <button onclick="showSection('analytics')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                    <i class="fas fa-chart-bar mr-3 w-5"></i>
-                    Analitik & Raporlar
-                </button>
-                
-                <button onclick="showSection('settings')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                    <i class="fas fa-cog mr-3 w-5"></i>
-                    Ayarlar
-                </button>
-                
-                <div class="border-t pt-4 mt-4">
-                    <a href="index.html" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
-                        <i class="fas fa-globe mr-3 w-5"></i>
-                        Web Sitesine Git
-                    </a>
-                    
-                    <button onclick="handleLogout()" class="sidebar-item w-full flex items-center px-4 py-3 text-red-600 text-left rounded-lg">
-                        <i class="fas fa-sign-out-alt mr-3 w-5"></i>
-                        Çıkış Yap
-                    </button>
-                </div>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md">
+        <!-- Logo and Title -->
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                     alt="Arsarazi Logo" 
+                     class="h-16 w-auto mr-3">
+                <span class="text-3xl font-bold text-primary-blue">ARSARAZI</span>
             </div>
-        </nav>
-    </div>
+            <h1 class="text-2xl font-bold text-gray-800">Admin Giriş</h1>
+            <p class="text-gray-600 mt-2">CRM sistemine erişim</p>
+        </div>
 
-    <!-- Mobile sidebar overlay -->
-    <div class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden" id="sidebarOverlay" style="display: none;"></div>
-
-    <!-- Main Content -->
-    <div class="lg:ml-64 flex flex-col min-h-screen">
-        <!-- Top Navigation -->
-        <header class="bg-white shadow-sm border-b border-gray-200">
-            <div class="flex items-center justify-between px-6 py-4">
-                <div class="flex items-center">
-                    <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                    <h1 id="pageTitle" class="text-2xl font-bold text-gray-900 ml-4">Dashboard</h1>
-                </div>
-                
-                <div class="flex items-center space-x-4">
+        <!-- Login Form -->
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        E-posta Adresi
+                    </label>
                     <div class="relative">
-                        <button class="text-gray-600 hover:text-gray-900">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               required 
+                               class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                               placeholder="admin@arsarazi.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Şifre
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" 
+                               id="password" 
+                               name="password" 
+                               required 
+                               class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                               placeholder="••••••••">
+                        <button type="button" 
+                                onclick="togglePassword()" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <i id="passwordIcon" class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                         </button>
                     </div>
-                    
+                </div>
+
+                <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" 
-                            alt="Admin" class="w-8 h-8 rounded-full mr-3">
-                        <span class="text-sm font-medium text-gray-700" id="adminName">Admin User</span>
+                        <input type="checkbox" 
+                               id="remember" 
+                               name="remember" 
+                               class="h-4 w-4 text-primary-green focus:ring-primary-green border-gray-300 rounded">
+                        <label for="remember" class="ml-2 block text-sm text-gray-700">
+                            Beni hatırla
+                        </label>
                     </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Page Content -->
-        <main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
-            
-            <!-- Dashboard Section -->
-            <div id="dashboard-section" class="section-content">
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-blue-100 rounded-full">
-                                <i class="fas fa-home text-blue-600 text-xl"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-600">Toplam Arsa</p>
-                                <p class="text-2xl font-bold text-gray-900" id="totalPropertiesCount">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-green-100 rounded-full">
-                                <i class="fas fa-users text-green-600 text-xl"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-600">Aktif Müşteri</p>
-                                <p class="text-2xl font-bold text-gray-900" id="activeCustomersCount">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-yellow-100 rounded-full">
-                                <i class="fas fa-user-plus text-yellow-600 text-xl"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-600">Yeni Potansiyel</p>
-                                <p class="text-2xl font-bold text-gray-900" id="newLeadsCount">0</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
-                        <div class="flex items-center">
-                            <div class="p-3 bg-purple-100 rounded-full">
-                                <i class="fas fa-chart-line text-purple-600 text-xl"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-600">Bu Ay Satış</p>
-                                <p class="text-2xl font-bold text-gray-900" id="monthlySalesCount">0</p>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="#" class="text-sm text-primary-green hover:text-green-dark">
+                        Şifremi unuttum
+                    </a>
                 </div>
 
-                <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Arsa Türü Dağılımı</h3>
-                        <canvas id="propertyTypeChart" style="height: 300px;"></canvas>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aylık Satış Trendi</h3>
-                        <canvas id="salesTrendChart" style="height: 300px;"></canvas>
-                    </div>
-                </div>
-
-                <!-- Recent Activities -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Son Aktiviteler</h3>
-                        <div id="recentActivities" class="space-y-4">
-                            <!-- Activities will be loaded here -->
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Yaklaşan Görevler</h3>
-                        <div id="upcomingTasks" class="space-y-4">
-                            <!-- Tasks will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Properties Section -->
-            <div id="properties-section" class="section-content hidden">
-                <div class="bg-white rounded-xl shadow-sm">
-                    <div class="p-6 border-b border-gray-200">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                            <h2 class="text-xl font-semibold text-gray-900">Portföy Yönetimi</h2>
-                            <button onclick="showAddPropertyModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mt-4 sm:mt-0">
-                                <i class="fas fa-plus mr-2"></i>Yeni Arsa Ekle
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div id="propertiesTable" class="overflow-x-auto">
-                            <!-- Properties table will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customers Section -->
-            <div id="customers-section" class="section-content hidden">
-                <div class="bg-white rounded-xl shadow-sm">
-                    <div class="p-6 border-b border-gray-200">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                            <h2 class="text-xl font-semibold text-gray-900">Müşteri Yönetimi</h2>
-                            <button onclick="showAddCustomerModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mt-4 sm:mt-0">
-                                <i class="fas fa-user-plus mr-2"></i>Yeni Müşteri Ekle
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div id="customersTable" class="overflow-x-auto">
-                            <!-- Customers table will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leads Section -->
-            <div id="leads-section" class="section-content hidden">
-                <div class="bg-white rounded-xl shadow-sm">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-xl font-semibold text-gray-900">Potansiyel Müşteriler</h2>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div id="leadsTable" class="overflow-x-auto">
-                            <!-- Leads table will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analytics Section -->
-            <div id="analytics-section" class="section-content hidden">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Analitik & Raporlar</h2>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Müşteri Türü Dağılımı</h3>
-                        <canvas id="customerTypeChart" style="height: 300px;"></canvas>
-                    </div>
-                    
-                    <div class="bg-white rounded-xl shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aylık Müşteri Artışı</h3>
-                        <canvas id="customerGrowthChart" style="height: 300px;"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings Section -->
-            <div id="settings-section" class="section-content hidden">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Ayarlar</h2>
-                
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Sistem Ayarları</h3>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Firma Adı</label>
-                            <input type="text" value="Arsarazi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
-                            <input type="email" value="info@arsarazi.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
-                            <input type="tel" value="+90 (212) 555-0123" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="flex items-center">
-                            <input type="checkbox" id="emailNotifications" class="mr-2">
-                            <label for="emailNotifications" class="text-sm text-gray-700">E-posta bildirimleri</label>
-                        </div>
-                        
-                        <div class="flex items-center">
-                            <input type="checkbox" id="smsNotifications" class="mr-2">
-                            <label for="smsNotifications" class="text-sm text-gray-700">SMS bildirimleri</label>
-                        </div>
-                        
-                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                            Ayarları Kaydet
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Add Property Modal -->
-    <div id="addPropertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-900">Yeni Arsa Ekle</h3>
-                <button onclick="closeAddPropertyModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-xl"></i>
+                <button type="submit" 
+                        class="w-full bg-primary-green text-white py-3 px-4 rounded-lg hover:bg-green-dark transition duration-200 font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Giriş Yap
                 </button>
-            </div>
-            
-            <form id="addPropertyForm" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
-                        <input type="text" id="propertyTitle" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Konum</label>
-                        <input type="text" id="propertyLocation" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Alan (m²)</label>
-                        <input type="number" id="propertyArea" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Fiyat (₺)</label>
-                        <input type="number" id="propertyPrice" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Arsa Tipi</label>
-                        <select id="propertyType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="">Seçin</option>
-                            <option value="Konut">Konut</option>
-                            <option value="Villa">Villa</option>
-                            <option value="Sanayi">Sanayi</option>
-                            <option value="Ticari">Ticari</option>
-                            <option value="Tarım">Tarım</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">İmar Durumu</label>
-                        <input type="text" id="propertyZoning" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Yatırım Potansiyeli</label>
-                        <select id="investmentPotential" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="">Seçin</option>
-                            <option value="Çok Yüksek">Çok Yüksek</option>
-                            <option value="Yüksek">Yüksek</option>
-                            <option value="Orta">Orta</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
-                    <textarea id="propertyDescription" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">İletişim Kişisi</label>
-                        <input type="text" id="contactPerson" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
-                        <input type="tel" id="contactPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-4 pt-6">
-                    <button type="button" onclick="closeAddPropertyModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                        İptal
-                    </button>
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Arsa Ekle
-                    </button>
-                </div>
             </form>
+
+            <!-- Demo Credentials -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h3 class="text-sm font-medium text-gray-700 mb-2">Demo Giriş Bilgileri:</h3>
+                <div class="text-sm text-gray-600 space-y-1">
+                    <p><strong>E-posta:</strong> admin@arsarazi.com</p>
+                    <p><strong>Şifre:</strong> admin123</p>
+                </div>
+            </div>
+
+            <!-- Back to Website -->
+            <div class="mt-6 text-center">
+                <a href="index.html" class="text-sm text-gray-600 hover:text-primary-green">
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Web sitesine geri dön
+                </a>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <span id="errorText">Giriş bilgileri hatalı!</span>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Giriş başarılı! Yönlendiriliyorsunuz...</span>
         </div>
     </div>
 
-    <!-- Add Customer Modal -->
-    <div id="addCustomerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-900">Yeni Müşteri Ekle</h3>
-                <button onclick="closeAddCustomerModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
             
-            <form id="addCustomerForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Ad Soyad</label>
-                    <input type="text" id="customerName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
-                        <input type="email" id="customerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
-                        <input type="tel" id="customerPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Müşteri Tipi</label>
-                    <select id="customerType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Seçin</option>
-                        <option value="Alıcı">Alıcı</option>
-                        <option value="Satıcı">Satıcı</option>
-                        <option value="Yatırımcı">Yatırımcı</option>
-                        <option value="Potansiyel Alıcı">Potansiyel Alıcı</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Bütçe Aralığı</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="budgetMin" placeholder="Min ₺" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <input type="number" id="budgetMax" placeholder="Max ₺" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Notlar</label>
-                    <textarea id="customerNotes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-                
-                <div class="flex justify-end space-x-4 pt-6">
-                    <button type="button" onclick="closeAddCustomerModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                        İptal
-                    </button>
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Müşteri Ekle
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.className = 'fas fa-eye-slash text-gray-400 hover:text-gray-600';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.className = 'fas fa-eye text-gray-400 hover:text-gray-600';
+            }
+        }
 
-    <script src="js/main.js"></script>
-    <script src="js/admin.js"></script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Hide previous messages
+            document.getElementById('errorMessage').classList.add('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            
+            try {
+                const response = await fetch('/api/admin/giris', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    // Show success message
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    
+                    // Store admin session
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    localStorage.setItem('adminEmail', email);
+                    
+                    // Redirect to CRM dashboard after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                } else {
+                    // Show error message
+                    document.getElementById('errorText').textContent = data.mesaj || 'Giriş başarısız!';
+                    document.getElementById('errorMessage').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                document.getElementById('errorText').textContent = 'Bağlantı hatası!';
+                document.getElementById('errorMessage').classList.remove('hidden');
+            }
+        });
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Auto-fill demo credentials on double click
+        document.addEventListener('dblclick', function() {
+            document.getElementById('email').value = 'admin@arsarazi.com';
+            document.getElementById('password').value = 'admin123';
+        });
+    </script>
 </body>
 </html>

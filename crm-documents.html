@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doküman Yönetimi - Arsarazi CRM</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item:hover { background-color: rgba(82, 185, 71, 0.1); }
+        .sidebar-item.active { background-color: rgba(82, 185, 71, 0.2); border-left: 4px solid #52B947; }
+        .sidebar { height: 100vh; position: fixed; left: 0; top: 0; }
+        .main-content { margin-left: 16rem; }
+        .document-card { transition: all 0.3s ease; }
+        .document-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        @media (max-width: 768px) {
+            .sidebar { position: relative; height: auto; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 bg-white shadow-lg flex flex-col">
+            <div class="p-4 border-b">
+                <div class="flex items-center logo-container">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                         alt="Arsarazi Logo" 
+                         class="h-10 w-auto mr-2">
+                    <span class="text-xl font-bold text-primary-blue">ARSARAZI CRM</span>
+                </div>
+            </div>
+            
+            <nav class="p-4 flex-1">
+                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-line w-6 text-gray-600"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="crm-properties.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-building w-6 text-gray-600"></i>
+                    <span class="ml-3">Gayrimenkuller</span>
+                </a>
+                <a href="crm-customers.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-users w-6 text-gray-600"></i>
+                    <span class="ml-3">Müşteriler</span>
+                </a>
+                <a href="crm-transactions.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">İşlemler</span>
+                </a>
+                <a href="crm-documents.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-file-alt w-6 text-primary-green"></i>
+                    <span class="ml-3">Dokümanlar</span>
+                </a>
+                <a href="#calendar" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="#reports" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-bar w-6 text-gray-600"></i>
+                    <span class="ml-3">Raporlar</span>
+                </a>
+                <a href="#settings" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-cog w-6 text-gray-600"></i>
+                    <span class="ml-3">Ayarlar</span>
+                </a>
+                
+                <div class="border-t pt-4 mt-4">
+                    <a href="index.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                        <i class="fas fa-globe w-6 text-gray-600"></i>
+                        <span class="ml-3">Web Sitesine Git</span>
+                    </a>
+                    <button onclick="logout()" class="sidebar-item w-full flex items-center p-3 rounded-lg text-red-600 hover:bg-red-50">
+                        <i class="fas fa-sign-out-alt w-6"></i>
+                        <span class="ml-3">Çıkış Yap</span>
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="p-4 border-t mt-auto">
+                <div class="flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=52B947&color=fff" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@arsarazi.com</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-1">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-2xl font-bold text-gray-800">Doküman Yönetimi</h1>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="openUploadModal()" class="bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition flex items-center">
+                            <i class="fas fa-upload mr-2"></i> Doküman Yükle
+                        </button>
+                        <button class="relative p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                        </button>
+                        <a href="index.html" class="p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-home text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Toplam Doküman</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalDocuments">0</p>
+                                <p class="text-green-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> Bu ay
+                                </p>
+                            </div>
+                            <div class="bg-primary-green/10 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-file-alt text-2xl text-primary-green"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Tapu Belgeleri</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="deedDocuments">0</p>
+                                <p class="text-blue-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-file-contract mr-1"></i> Tapu
+                                </p>
+                            </div>
+                            <div class="bg-blue-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-file-contract text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Sözleşmeler</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="contractDocuments">0</p>
+                                <p class="text-yellow-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-file-signature mr-1"></i> Sözleşme
+                                </p>
+                            </div>
+                            <div class="bg-yellow-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-file-signature text-2xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <p class="text-gray-500 text-sm font-medium">Toplam Boyut</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalSize">0 MB</p>
+                                <p class="text-purple-500 text-sm mt-2 flex items-center">
+                                    <i class="fas fa-hdd mr-1"></i> Depolama
+                                </p>
+                            </div>
+                            <div class="bg-purple-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-hdd text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Search -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <select id="categoryFilter" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="">Tüm Kategoriler</option>
+                                <option value="Tapu">Tapu Belgeleri</option>
+                                <option value="Sözleşme">Sözleşmeler</option>
+                                <option value="Fotoğraf">Fotoğraflar</option>
+                                <option value="Rapor">Raporlar</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                            <select id="propertyFilter" class="border rounded-lg px-4 py-2 text-sm">
+                                <option value="">Tüm Gayrimenkuller</option>
+                            </select>
+                            <input type="date" id="dateFilter" class="border rounded-lg px-4 py-2 text-sm">
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="searchInput" placeholder="Doküman ara..." class="border rounded-lg px-4 py-2 text-sm flex-1">
+                            <button onclick="searchDocuments()" class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="documentsGrid">
+                    <!-- Documents will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+                <div class="p-6 border-b">
+                    <h3 class="text-lg font-semibold">Doküman Yükle</h3>
+                </div>
+                <form id="uploadForm" class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Doküman Adı</label>
+                            <input type="text" id="documentName" class="w-full border rounded-lg px-3 py-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                            <select id="documentCategory" class="w-full border rounded-lg px-3 py-2" required>
+                                <option value="">Kategori seçin</option>
+                                <option value="Tapu">Tapu Belgeleri</option>
+                                <option value="Sözleşme">Sözleşmeler</option>
+                                <option value="Fotoğraf">Fotoğraflar</option>
+                                <option value="Rapor">Raporlar</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Gayrimenkul</label>
+                            <select id="documentProperty" class="w-full border rounded-lg px-3 py-2">
+                                <option value="">Gayrimenkul seçin (opsiyonel)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Yükleme Tarihi</label>
+                            <input type="date" id="uploadDate" class="w-full border rounded-lg px-3 py-2" required>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Dosya Seç</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <input type="file" id="documentFile" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                            <label for="documentFile" class="cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-600">Dosyayı seçmek için tıklayın veya sürükleyin</p>
+                                <p class="text-sm text-gray-500 mt-2">PDF, DOC, JPG, PNG (Max: 10MB)</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                        <textarea id="documentDescription" class="w-full border rounded-lg px-3 py-2" rows="3" placeholder="Doküman açıklaması..."></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" onclick="closeUploadModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                            İptal
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-green-dark">
+                            Yükle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample documents data
+        const sampleDocuments = [
+            {
+                id: "DOC-001",
+                name: "Karesi Arsa Tapu Belgesi",
+                category: "Tapu",
+                property: "KRS-2024-001",
+                size: "2.5 MB",
+                type: "pdf",
+                uploadDate: "2024-01-15",
+                description: "Karesi merkez arsa tapu belgesi"
+            },
+            {
+                id: "DOC-002",
+                name: "Bandırma Villa Sözleşmesi",
+                category: "Sözleşme",
+                property: "BND-2024-002",
+                size: "1.8 MB",
+                type: "docx",
+                uploadDate: "2024-01-10",
+                description: "Bandırma villa satış sözleşmesi"
+            },
+            {
+                id: "DOC-003",
+                name: "Altıeylül Tarla Fotoğrafları",
+                category: "Fotoğraf",
+                property: "ALT-2024-003",
+                size: "8.2 MB",
+                type: "jpg",
+                uploadDate: "2024-01-08",
+                description: "Tarla fotoğrafları ve drone görüntüleri"
+            },
+            {
+                id: "DOC-004",
+                name: "Aylık Satış Raporu",
+                category: "Rapor",
+                property: "",
+                size: "1.2 MB",
+                type: "pdf",
+                uploadDate: "2024-01-01",
+                description: "Ocak 2024 aylık satış raporu"
+            }
+        ];
+
+        // Load documents on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDocuments();
+            loadProperties();
+            setCurrentDate();
+        });
+
+        // Load and display documents
+        function loadDocuments() {
+            displayDocuments(sampleDocuments);
+            updateStats(sampleDocuments);
+        }
+
+        // Display documents in grid
+        function displayDocuments(documents) {
+            const grid = document.getElementById('documentsGrid');
+            grid.innerHTML = '';
+
+            if (documents.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg">Henüz doküman bulunmuyor</p>
+                        <button onclick="openUploadModal()" class="mt-4 bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark">
+                            İlk Dokümanı Yükle
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            documents.forEach(doc => {
+                const card = document.createElement('div');
+                card.className = 'document-card bg-white rounded-lg shadow p-6';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-lg ${getFileTypeColor(doc.type)} flex items-center justify-center mr-3">
+                                <i class="${getFileTypeIcon(doc.type)} text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${doc.name}</h4>
+                                <p class="text-sm text-gray-500">${doc.category}</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="downloadDocument('${doc.id}')" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button onclick="deleteDocument('${doc.id}')" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>Boyut:</span>
+                            <span>${doc.size}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tarih:</span>
+                            <span>${formatDate(doc.uploadDate)}</span>
+                        </div>
+                        ${doc.property ? `<div class="flex justify-between">
+                            <span>Gayrimenkul:</span>
+                            <span>${doc.property}</span>
+                        </div>` : ''}
+                    </div>
+                    ${doc.description ? `<p class="mt-3 text-sm text-gray-500">${doc.description}</p>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Update statistics
+        function updateStats(documents) {
+            document.getElementById('totalDocuments').textContent = documents.length;
+            
+            const deeds = documents.filter(d => d.category === 'Tapu').length;
+            const contracts = documents.filter(d => d.category === 'Sözleşme').length;
+            const totalSize = documents.reduce((sum, d) => sum + parseFloat(d.size), 0);
+            
+            document.getElementById('deedDocuments').textContent = deeds;
+            document.getElementById('contractDocuments').textContent = contracts;
+            document.getElementById('totalSize').textContent = totalSize.toFixed(1) + ' MB';
+        }
+
+        // Get file type color
+        function getFileTypeColor(type) {
+            switch(type) {
+                case 'pdf': return 'bg-red-500';
+                case 'doc':
+                case 'docx': return 'bg-blue-500';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return 'bg-green-500';
+                default: return 'bg-gray-500';
+            }
+        }
+
+        // Get file type icon
+        function getFileTypeIcon(type) {
+            switch(type) {
+                case 'pdf': return 'fas fa-file-pdf';
+                case 'doc':
+                case 'docx': return 'fas fa-file-word';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return 'fas fa-file-image';
+                default: return 'fas fa-file';
+            }
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('tr-TR');
+        }
+
+        // Load properties for select
+        async function loadProperties() {
+            try {
+                const response = await fetch('/api/gayrimenkuller');
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    const select = document.getElementById('documentProperty');
+                    const filterSelect = document.getElementById('propertyFilter');
+                    
+                    data.veri.forEach(property => {
+                        const option = document.createElement('option');
+                        option.value = property.id;
+                        option.textContent = `${property.baslik} - ${property.konum}`;
+                        select.appendChild(option);
+                        
+                        const filterOption = option.cloneNode(true);
+                        filterSelect.appendChild(filterOption);
+                    });
+                }
+            } catch (error) {
+                console.error('Gayrimenkuller yüklenirken hata:', error);
+            }
+        }
+
+        // Set current date
+        function setCurrentDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('uploadDate').value = today;
+        }
+
+        // Modal functions
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+            document.getElementById('uploadForm').reset();
+        }
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('documentName').value);
+            formData.append('category', document.getElementById('documentCategory').value);
+            formData.append('property', document.getElementById('documentProperty').value);
+            formData.append('uploadDate', document.getElementById('uploadDate').value);
+            formData.append('description', document.getElementById('documentDescription').value);
+            formData.append('file', document.getElementById('documentFile').files[0]);
+
+            try {
+                // Simulate upload
+                setTimeout(() => {
+                    closeUploadModal();
+                    alert('Doküman başarıyla yüklendi!');
+                    // In real implementation, you would send to server
+                }, 1000);
+            } catch (error) {
+                console.error('Doküman yüklenirken hata:', error);
+                alert('Doküman yüklenirken hata oluştu!');
+            }
+        });
+
+        // Search function
+        function searchDocuments() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.document-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        // Download document
+        function downloadDocument(id) {
+            alert(`Doküman indirme: ${id}`);
+            // Download functionality will be implemented
+        }
+
+        // Delete document
+        function deleteDocument(id) {
+            if (confirm('Bu dokümanı silmek istediğinizden emin misiniz?')) {
+                alert(`Doküman silme: ${id}`);
+                // Delete functionality will be implemented
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminEmail');
+                window.location.href = 'admin.html';
+            }
+        }
+
+        // Check login status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('adminLoggedIn') !== 'true') {
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
+</body>
+</html>

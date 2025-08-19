@@ -99,7 +99,14 @@
       "notlar": "Müşteri 3.2M teklif etti"
     }
   ],
-  "admin_girisleri": [],
+  "admin_girisleri": [
+    {
+      "id": "GIRIS-1755635545006",
+      "email": "admin@arsarazi.com",
+      "tarih": "2025-08-19T20:32:25.006Z",
+      "ip": "::1"
+    }
+  ],
   "iletisim_mesajlari": [],
   "istatistikler": {
     "toplam_gayrimenkul": 324,
