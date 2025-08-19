@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gayrimenkul Yönetimi - Arsarazi CRM</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwindcss.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .property-card { transition: all 0.3s ease; }
+        .property-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar (Same as dashboard) -->
+        <aside class="w-64 bg-white shadow-lg">
+            <div class="p-4 border-b">
+                <div class="flex items-center">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                         alt="Arsarazi Logo" 
+                         class="h-10 w-auto mr-2">
+                    <span class="text-xl font-bold text-primary-blue">ARSARAZI CRM</span>
+                </div>
+            </div>
+            
+            <nav class="p-4">
+                <a href="dashboard.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                    <i class="fas fa-chart-line w-6 text-gray-600"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="crm-properties.html" class="flex items-center p-3 rounded-lg mb-2 bg-primary-green/20 border-l-4 border-primary-green">
+                    <i class="fas fa-building w-6 text-primary-green"></i>
+                    <span class="ml-3 font-medium">Gayrimenkuller</span>
+                </a>
+                <a href="crm-customers.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                    <i class="fas fa-users w-6 text-gray-600"></i>
+                    <span class="ml-3">Müşteriler</span>
+                </a>
+                <a href="crm-transactions.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                    <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">İşlemler</span>
+                </a>
+                <a href="crm-documents.html" class="flex items-center p-3 rounded-lg mb-2 hover:bg-gray-100">
+                    <i class="fas fa-file-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">Dokümanlar</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Gayrimenkul Yönetimi</h1>
+                        <p class="text-sm text-gray-500">Toplam 324 gayrimenkul</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="openPropertyModal()" class="bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Yeni Gayrimenkul
+                        </button>
+                        <button onclick="exportData()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fas fa-download mr-2"></i> Dışa Aktar
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Filters -->
+            <div class="bg-white p-4 border-b">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <select class="border rounded-lg px-3 py-2">
+                        <option>Tüm Tipler</option>
+                        <option>Arsa</option>
+                        <option>Villa</option>
+                        <option>Daire</option>
+                        <option>Tarla</option>
+                        <option>Dükkan</option>
+                    </select>
+                    <select class="border rounded-lg px-3 py-2">
+                        <option>Tüm Durumlar</option>
+                        <option>Satılık</option>
+                        <option>Satıldı</option>
+                        <option>Kiralık</option>
+                        <option>Kiralandı</option>
+                    </select>
+                    <select class="border rounded-lg px-3 py-2">
+                        <option>Tüm İlçeler</option>
+                        <option>Karesi</option>
+                        <option>Altıeylül</option>
+                        <option>Bandırma</option>
+                        <option>Edremit</option>
+                    </select>
+                    <input type="text" placeholder="Min. Alan (m²)" class="border rounded-lg px-3 py-2">
+                    <input type="text" placeholder="Max. Fiyat" class="border rounded-lg px-3 py-2">
+                    <button class="bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition">
+                        <i class="fas fa-search mr-2"></i> Filtrele
+                    </button>
+                </div>
+            </div>
+
+            <!-- View Toggle -->
+            <div class="p-4 flex justify-between items-center">
+                <div class="flex space-x-2">
+                    <button onclick="setView('grid')" id="gridView" class="px-3 py-1 rounded bg-primary-green text-white">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button onclick="setView('list')" id="listView" class="px-3 py-1 rounded bg-gray-200 text-gray-600">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+                <div class="text-sm text-gray-600">
+                    324 kayıttan 1-20 arası gösteriliyor
+                </div>
+            </div>
+
+            <!-- Properties Grid/List -->
+            <div class="p-4">
+                <!-- Grid View -->
+                <div id="gridContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <!-- Property Card 1 -->
+                    <div class="property-card bg-white rounded-lg shadow overflow-hidden cursor-pointer" onclick="openPropertyDetail('KRS-2024-001')">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400" 
+                                 class="w-full h-48 object-cover">
+                            <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">Satılık</span>
+                            <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                                <i class="fas fa-expand mr-1"></i>2,500 m²
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-800 mb-1">Karesi Merkez Arsa</h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <i class="fas fa-map-marker-alt mr-1"></i>Paşa Alanı Mah.
+                            </p>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-lg font-bold text-primary-green">₺1,250,000</span>
+                                <span class="text-sm text-gray-500">₺500/m²</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs text-gray-500">
+                                <span><i class="fas fa-user mr-1"></i>Ahmet Yılmaz</span>
+                                <span><i class="fas fa-calendar mr-1"></i>15.03.2024</span>
+                            </div>
+                            <div class="mt-3 pt-3 border-t flex justify-between">
+                                <button class="text-primary-blue hover:text-blue-dark">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-primary-green hover:text-green-dark">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-yellow-600 hover:text-yellow-700">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-600">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Property Card 2 -->
+                    <div class="property-card bg-white rounded-lg shadow overflow-hidden cursor-pointer">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" 
+                                 class="w-full h-48 object-cover">
+                            <span class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs">Satıldı</span>
+                            <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                                <i class="fas fa-home mr-1"></i>Villa
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-800 mb-1">Bandırma Deniz Manzaralı Villa</h3>
+                            <p class="text-sm text-gray-500 mb-2">
+                                <i class="fas fa-map-marker-alt mr-1"></i>Çınarlı Mah.
+                            </p>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-lg font-bold text-primary-green">₺3,500,000</span>
+                                <span class="text-sm text-gray-500">450 m²</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs text-gray-500">
+                                <span><i class="fas fa-user mr-1"></i>Mehmet Demir</span>
+                                <span><i class="fas fa-calendar mr-1"></i>10.03.2024</span>
+                            </div>
+                            <div class="mt-2">
+                                <div class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded inline-block">
+                                    <i class="fas fa-check mr-1"></i>İşlem Tamamlandı
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-3 border-t flex justify-between">
+                                <button class="text-primary-blue hover:text-blue-dark">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-primary-green hover:text-green-dark">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-yellow-600 hover:text-yellow-700">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-600">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More property cards... -->
+                </div>
+
+                <!-- List View (Hidden by default) -->
+                <div id="listContent" class="hidden">
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kod</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Başlık</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tip</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Konum</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alan</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fiyat</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Durum</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 text-sm">KRS-2024-001</td>
+                                    <td class="px-4 py-3 text-sm font-medium">Karesi Merkez Arsa</td>
+                                    <td class="px-4 py-3 text-sm">Arsa</td>
+                                    <td class="px-4 py-3 text-sm">Paşa Alanı Mah.</td>
+                                    <td class="px-4 py-3 text-sm">2,500 m²</td>
+                                    <td class="px-4 py-3 text-sm font-medium">₺1,250,000</td>
+                                    <td class="px-4 py-3">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Satılık</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-800 mr-2">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-6 flex justify-between items-center">
+                    <div class="text-sm text-gray-600">
+                        Toplam 324 kayıt
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">←</button>
+                        <button class="px-3 py-1 border rounded bg-primary-green text-white">1</button>
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">2</button>
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">3</button>
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">...</button>
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">17</button>
+                        <button class="px-3 py-1 border rounded hover:bg-gray-100">→</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Property Modal -->
+    <div id="propertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold">Yeni Gayrimenkul Ekle</h2>
+            </div>
+            <div class="p-6">
+                <form id="propertyForm">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Gayrimenkul Kodu *</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="KRS-2024-XXX">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Başlık *</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Gayrimenkul başlığı">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Tip *</label>
+                            <select class="w-full border rounded-lg px-3 py-2">
+                                <option>Arsa</option>
+                                <option>Villa</option>
+                                <option>Daire</option>
+                                <option>Tarla</option>
+                                <option>Dükkan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Durum *</label>
+                            <select class="w-full border rounded-lg px-3 py-2">
+                                <option>Satılık</option>
+                                <option>Kiralık</option>
+                                <option>Rezerve</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">İlçe *</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="İlçe">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Mahalle</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Mahalle">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Ada</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Ada no">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Parsel</label>
+                            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="Parsel no">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Alan (m²) *</label>
+                            <input type="number" class="w-full border rounded-lg px-3 py-2" placeholder="0">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Fiyat (₺) *</label>
+                            <input type="number" class="w-full border rounded-lg px-3 py-2" placeholder="0">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-2">İmar Durumu</label>
+                            <textarea class="w-full border rounded-lg px-3 py-2" rows="2"></textarea>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-2">Notlar</label>
+                            <textarea class="w-full border rounded-lg px-3 py-2" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button type="button" onclick="closePropertyModal()" class="px-4 py-2 border rounded-lg hover:bg-gray-100">
+                            İptal
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-green-dark">
+                            Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // View Toggle
+        function setView(view) {
+            const gridContent = document.getElementById('gridContent');
+            const listContent = document.getElementById('listContent');
+            const gridView = document.getElementById('gridView');
+            const listView = document.getElementById('listView');
+            
+            if (view === 'grid') {
+                gridContent.classList.remove('hidden');
+                listContent.classList.add('hidden');
+                gridView.classList.add('bg-primary-green', 'text-white');
+                gridView.classList.remove('bg-gray-200', 'text-gray-600');
+                listView.classList.remove('bg-primary-green', 'text-white');
+                listView.classList.add('bg-gray-200', 'text-gray-600');
+            } else {
+                gridContent.classList.add('hidden');
+                listContent.classList.remove('hidden');
+                listView.classList.add('bg-primary-green', 'text-white');
+                listView.classList.remove('bg-gray-200', 'text-gray-600');
+                gridView.classList.remove('bg-primary-green', 'text-white');
+                gridView.classList.add('bg-gray-200', 'text-gray-600');
+            }
+        }
+
+        // Modal Functions
+        function openPropertyModal() {
+            document.getElementById('propertyModal').classList.remove('hidden');
+        }
+
+        function closePropertyModal() {
+            document.getElementById('propertyModal').classList.add('hidden');
+        }
+
+        function openPropertyDetail(propertyCode) {
+            // Navigate to detail page
+            window.location.href = `crm-property-detail.html?code=${propertyCode}`;
+        }
+
+        function exportData() {
+            alert('Veriler dışa aktarılacak (Excel/PDF)');
+        }
+
+        // Form Submit
+        document.getElementById('propertyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Gayrimenkul kaydedildi!');
+            closePropertyModal();
+        });
+    </script>
+</body>
+</html>

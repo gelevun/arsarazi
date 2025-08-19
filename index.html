@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsarazi - Balıkesir Arsa ve Arazi Uzmanı | Gayrimenkul Yatırım Danışmanlığı</title>
+    <meta name="description" content="Balıkesir'in arsa ve arazi uzmanı Arsarazi. Karesi bölgesinde profesyonel gayrimenkul danışmanlığı ile hayalinizdeki arsaya kavuşun.">
+    <meta name="keywords" content="arsa, arazi, gayrimenkul, yatırım, satış, alım, danışmanlık, arsarazi, balıkesir, karesi">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center logo-container">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                             alt="Arsarazi Logo" 
+                             class="logo-img">
+                        <span class="text-2xl font-bold text-primary-blue">ARSARAZI</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Ana Sayfa</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Portföy</a>
+                    <a href="about.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Hakkımızda</a>
+                    <a href="blog.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Blog</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">İletişim</a>
+                    <button id="loginBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-dark transition-colors">
+                        Giriş Yap
+                    </button>
+                    <button id="adminBtn" class="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-dark transition-colors">
+                        Admin Panel
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Ana Sayfa</a>
+                <a href="portfolio.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Portföy</a>
+                <a href="about.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Hakkımızda</a>
+                <a href="blog.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Blog</a>
+                <a href="contact.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">İletişim</a>
+                <button class="w-full text-left bg-blue-600 text-white px-3 py-2 text-base font-medium">Giriş Yap</button>
+                <a href="admin.html" class="block bg-gray-800 text-white px-3 py-2 text-base font-medium">Admin Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-green via-primary-blue to-blue-dark text-white pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    Balıkesir'in Arsa ve Arazi
+                    <span class="block text-yellow-300">Uzmanı</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
+                    Balıkesir Karesi bölgesinde arsa ve arazi yatırımında uzman ekibimizle, size en uygun gayrimenkul fırsatlarını sunuyoruz.
+                </p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-4xl mx-auto bg-white rounded-2xl p-6 shadow-2xl">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Konum</label>
+                            <input type="text" id="searchLocation" placeholder="Balıkesir, Karesi, Mahalle..." 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Minimum m²</label>
+                            <input type="number" id="minArea" placeholder="1000" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Maksimum Fiyat</label>
+                            <input type="number" id="maxPrice" placeholder="500.000 ₺" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                        </div>
+                        <button id="searchBtn" class="bg-primary-green text-white px-8 py-3 rounded-lg font-medium hover:bg-green-dark transition-colors">
+                            <i class="fas fa-search mr-2"></i>Ara
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                        <div class="text-3xl font-bold text-primary-yellow">500+</div>
+                        <div class="text-sm text-white">Satılan Arsa</div>
+                    </div>
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                        <div class="text-3xl font-bold text-primary-yellow">15</div>
+                        <div class="text-sm text-white">Yıl Deneyim</div>
+                    </div>
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                        <div class="text-3xl font-bold text-primary-yellow">1000+</div>
+                        <div class="text-sm text-white">Mutlu Müşteri</div>
+                    </div>
+                    <div class="text-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                        <div class="text-3xl font-bold text-primary-yellow">Balıkesir</div>
+                        <div class="text-sm text-white">Merkez Uzman</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section id="portfolio" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Öne Çıkan Arsalar</h2>
+                <p class="text-xl text-gray-600">Yatırım potansiyeli yüksek, dikkatle seçilmiş arsalarımız</p>
+            </div>
+
+            <div id="featuredProperties" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Property cards will be dynamically loaded here -->
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="viewAllPropertiesBtn" class="bg-primary-blue text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-dark transition-colors">
+                    Tüm Portföyü Görüntüle
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Hizmetlerimiz</h2>
+                <p class="text-xl text-gray-600">Arsa yatırımında A'dan Z'ye profesyonel destek</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover border-t-4 border-primary-green">
+                    <div class="text-primary-green text-4xl mb-4">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Arsa Arama & Değerlendirme</h3>
+                    <p class="text-gray-600">İhtiyaçlarınıza uygun arsaları bulur, detaylı değerlendirme raporları sunarız.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Yatırım Danışmanlığı</h3>
+                    <p class="text-gray-600">Piyasa analizleri ve uzman görüşleriyle en karlı yatırım fırsatlarını belirliyoruz.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Hukuki Süreç Yönetimi</h3>
+                    <p class="text-gray-600">Tapu işlemlerinden imar planlarına kadar tüm yasal süreçleri yönetiyoruz.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">İmar Durum Analizi</h3>
+                    <p class="text-gray-600">Arsanızın imar durumunu detaylı olarak analiz ederek potansiyelini ortaya çıkarıyoruz.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Alım-Satım Süreç Yönetimi</h3>
+                    <p class="text-gray-600">Başından sonuna kadar tüm alım-satım sürecini profesyonelce yönetiyoruz.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Müşteri İlişkileri Yönetimi</h3>
+                    <p class="text-gray-600">Satış sonrası da devam eden profesyonel destek ve takip hizmetlerimiz.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6">Neden Arsarazi?</h2>
+                    <p class="text-lg text-gray-600 mb-6">
+                        Balıkesir Karesi bölgesinde uzun yıllardır hizmet veren deneyimli ekibimizle, arsa ve arazi yatırımında güvenilir partneriniziz. 
+                        Müşterilerimizin hayallerini gerçeğe dönüştürürken, en yüksek karlılıkla buluşturmayı hedefliyoruz.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Uzman Kadro</h4>
+                                <p class="text-gray-600">Gayrimenkul uzmanları, hukuk danışmanları ve piyasa analiz uzmanlarından oluşan profesyonel ekibimiz.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Şeffaf Süreç</h4>
+                                <p class="text-gray-600">Tüm işlemlerimizde tam şeffaflık. Her adımı detaylı olarak bilgilendiriyoruz.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 text-xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Güvenilir Partnerlik</h4>
+                                <p class="text-gray-600">Satış sonrası da devam eden uzun vadeli iş ortaklığı anlayışı.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-xl text-center">
+                        <i class="fas fa-award text-blue-600 text-3xl mb-4"></i>
+                        <h4 class="font-bold text-gray-900 mb-2">Sektör Lideri</h4>
+                        <p class="text-sm text-gray-600">Arsa yatırımında öncü firmalar arasındayız</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-xl text-center">
+                        <i class="fas fa-shield-alt text-green-600 text-3xl mb-4"></i>
+                        <h4 class="font-bold text-gray-900 mb-2">Güvenli Yatırım</h4>
+                        <p class="text-sm text-gray-600">Tüm yasal süreçlerde %100 güvence</p>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-6 rounded-xl text-center">
+                        <i class="fas fa-clock text-yellow-600 text-3xl mb-4"></i>
+                        <h4 class="font-bold text-gray-900 mb-2">7/24 Destek</h4>
+                        <p class="text-sm text-gray-600">Her zaman yanınızda profesyonel destek</p>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-xl text-center">
+                        <i class="fas fa-chart-bar text-purple-600 text-3xl mb-4"></i>
+                        <h4 class="font-bold text-gray-900 mb-2">Yüksek Karlılık</h4>
+                        <p class="text-sm text-gray-600">Ortalama %30 yatırım getirisi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Blog & Haberler</h2>
+                <p class="text-xl text-gray-600">Gayrimenkul sektöründen güncel haberler ve yatırım rehberleri</p>
+            </div>
+
+            <div id="blogPosts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog posts will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">İletişime Geçin</h2>
+                <p class="text-xl text-gray-600">Arsa yatırımı konusunda uzmanlarımızla görüşün</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <div class="space-y-8">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-4 rounded-full mr-6">
+                                <i class="fas fa-phone text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Telefon</h4>
+                                <p class="text-gray-600">+90 (266) 245-1234</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-4 rounded-full mr-6">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">E-posta</h4>
+                                <p class="text-gray-600">info@arsarazi.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-4 rounded-full mr-6">
+                                <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Adres</h4>
+                                <p class="text-gray-600">Paşa Alanı Mahallesi, Çengel Cad. No: 108A<br>Karesi / Balıkesir</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-8">
+                            <h4 class="font-bold text-gray-900 mb-4">Sosyal Medya</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-blue-700 text-white p-3 rounded-full hover:bg-blue-800">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <form id="contactForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Ad Soyad</label>
+                                <input type="text" id="contactName" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                                <input type="tel" id="contactPhone" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                            <input type="email" id="contactEmail" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Konu</label>
+                            <select id="contactSubject" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent">
+                                <option value="">Konu Seçin</option>
+                                <option value="arsa-arama">Arsa Arama</option>
+                                <option value="yatirim-danismanligi">Yatırım Danışmanlığı</option>
+                                <option value="satis">Satış</option>
+                                <option value="diger">Diğer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mesaj</label>
+                            <textarea id="contactMessage" rows="5" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary-green text-white py-3 rounded-lg font-medium hover:bg-green-dark transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>Mesaj Gönder
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                             alt="Arsarazi Logo" 
+                             class="h-8 w-auto mr-3">
+                        <span class="text-2xl font-bold">ARSARAZI</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Arsa ve arazi yatırımında Türkiye'nin güvenilir adresi. 15 yıllık deneyimimizle yanınızdayız.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-pink-600 text-white p-2 rounded hover:bg-pink-700">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-blue-700 text-white p-2 rounded hover:bg-blue-800">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Hızlı Linkler</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Ana Sayfa</a></li>
+                        <li><a href="#portfolio" class="hover:text-white">Portföy</a></li>
+                        <li><a href="#about" class="hover:text-white">Hakkımızda</a></li>
+                        <li><a href="#blog" class="hover:text-white">Blog</a></li>
+                        <li><a href="#contact" class="hover:text-white">İletişim</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Hizmetlerimiz</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Arsa Arama</a></li>
+                        <li><a href="#" class="hover:text-white">Yatırım Danışmanlığı</a></li>
+                        <li><a href="#" class="hover:text-white">Hukuki Süreç</a></li>
+                        <li><a href="#" class="hover:text-white">İmar Analizi</a></li>
+                        <li><a href="#" class="hover:text-white">Süreç Yönetimi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">İletişim</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-phone mr-2"></i>+90 (266) 245-1234</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@arsarazi.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Karesi / Balıkesir</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 Arsarazi. Tüm hakları saklıdır. | 
+                    <a href="#" class="text-blue-400 hover:text-white">Gizlilik Politikası</a> | 
+                    <a href="#" class="text-blue-400 hover:text-white">Kullanım Koşulları</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/902662451234" target="_blank" 
+        class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors z-40">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Giriş Yap</h3>
+                <p class="text-gray-600">Hesabınıza erişim sağlayın</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                    <input type="email" id="loginEmail" required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Şifre</label>
+                    <input type="password" id="loginPassword" required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 mb-4">
+                    Giriş Yap
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="text-blue-600 hover:underline">Şifrenizi mi unuttunuz?</a>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <span class="text-gray-600">Hesabınız yok mu? </span>
+                    <button type="button" id="showRegisterBtn" class="text-blue-600 hover:underline font-medium">Kayıt Olun</button>
+                </div>
+            </form>
+            
+            <button id="closeLoginModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

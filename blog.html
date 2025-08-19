@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Arsarazi Gayrimenkul</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .blog-card {
+            transition: all 0.3s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .category-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center logo-container">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                             alt="Arsarazi Logo" 
+                             class="logo-img">
+                        <span class="text-2xl font-bold text-primary-blue">ARSARAZI</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition">Ana Sayfa</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-blue-600 transition">Portföy</a>
+                    <a href="blog.html" class="text-blue-600 font-semibold">Blog</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 transition">Hakkımızda</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition">İletişim</a>
+                </div>
+                <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-2 space-y-1">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600">Ana Sayfa</a>
+                <a href="portfolio.html" class="block py-2 text-gray-700 hover:text-blue-600">Portföy</a>
+                <a href="blog.html" class="block py-2 text-blue-600 font-semibold">Blog</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-blue-600">Hakkımızda</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-blue-600">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary-green via-primary-blue to-blue-dark text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Gayrimenkul Blog</h1>
+                <p class="text-xl opacity-90">Sektörden haberler, yatırım önerileri ve uzman görüşleri</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="py-8 bg-white border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button onclick="filterBlog('all')" class="category-btn px-6 py-2 rounded-full bg-blue-600 text-white font-medium transition">
+                    Tümü
+                </button>
+                <button onclick="filterBlog('yatirim')" class="category-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition">
+                    Yatırım
+                </button>
+                <button onclick="filterBlog('piyasa')" class="category-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition">
+                    Piyasa Analizi
+                </button>
+                <button onclick="filterBlog('hukuk')" class="category-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition">
+                    Hukuk
+                </button>
+                <button onclick="filterBlog('ipucu')" class="category-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium transition">
+                    İpuçları
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blogGrid">
+                <!-- Blog Post 1 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="yatirim">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800" alt="Balıkesir Arsa Yatırımı" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">Yatırım</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">Balıkesir'de Arsa Yatırımı İçin En İyi Bölgeler</h3>
+                        <p class="text-gray-600 mb-4">2024 yılında Balıkesir'de arsa yatırımı için öne çıkan bölgeleri ve değerlenme potansiyellerini inceliyoruz...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 15 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="piyasa">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800" alt="Gayrimenkul Piyasası" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">Piyasa Analizi</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">2024 Gayrimenkul Piyasası Trend Analizi</h3>
+                        <p class="text-gray-600 mb-4">Uzmanlar 2024 yılı için gayrimenkul piyasasında beklenen gelişmeleri ve fiyat hareketlerini değerlendiriyor...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 12 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="hukuk">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800" alt="Tapu İşlemleri" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">Hukuk</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">Tapu İşlemlerinde Dikkat Edilmesi Gerekenler</h3>
+                        <p class="text-gray-600 mb-4">Gayrimenkul alım-satımında tapu işlemleri sırasında yapılan yaygın hatalar ve bunlardan nasıl kaçınılır...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 10 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ipucu">
+                    <img src="https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=800" alt="İlk Ev Alımı" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">İpuçları</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">İlk Kez Ev Alacaklara 10 Altın Öneri</h3>
+                        <p class="text-gray-600 mb-4">İlk evinizi alırken dikkat etmeniz gereken önemli noktalar ve uzman tavsiyeleri...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 8 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="yatirim">
+                    <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800" alt="Tarla Yatırımı" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">Yatırım</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">Tarım Arazisi Yatırımının Avantajları</h3>
+                        <p class="text-gray-600 mb-4">Tarım arazilerine yatırım yapmanın getirisi ve dikkat edilmesi gereken hususlar...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 5 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 6 -->
+                <article class="blog-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="piyasa">
+                    <img src="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=800" alt="Emlak Değerleme" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="category-badge text-white text-xs px-3 py-1 rounded-full">Piyasa Analizi</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2">Emlak Değerleme Kriterleri Nelerdir?</h3>
+                        <p class="text-gray-600 mb-4">Bir gayrimenkulün değerini belirleyen faktörler ve profesyonel değerleme süreci...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> 3 Kasım 2024
+                            </span>
+                            <a href="blog-detail.html" class="text-blue-600 hover:text-blue-700 font-medium">
+                                Devamını Oku <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-12">
+                <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-medium">
+                    <i class="fas fa-plus-circle mr-2"></i>Daha Fazla Yazı Yükle
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Bültenimize Abone Olun</h2>
+                <p class="mb-8 opacity-90">Gayrimenkul dünyasından en güncel haberler ve fırsatlar için e-posta listemize katılın.</p>
+                <form class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="E-posta adresiniz" 
+                           class="flex-1 px-6 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
+                    <button type="submit" class="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-gray-100 transition font-semibold">
+                        Abone Ol
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-building mr-2"></i>Arsarazi
+                    </h3>
+                    <p class="text-gray-400">Balıkesir'in güvenilir gayrimenkul danışmanı</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Hızlı Linkler</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Ana Sayfa</a></li>
+                        <li><a href="portfolio.html" class="text-gray-400 hover:text-white">Portföy</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white">Hakkımızda</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">İletişim</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-phone mr-2"></i>+90 266 245 1234</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@arsarazi.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Karesi, Balıkesir</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Bizi Takip Edin</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Arsarazi Gayrimenkul. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Blog filter
+        function filterBlog(category) {
+            const articles = document.querySelectorAll('.blog-card');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // Update button styles
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-blue-600', 'text-white');
+            
+            // Filter articles
+            articles.forEach(article => {
+                if (category === 'all') {
+                    article.style.display = 'block';
+                } else {
+                    if (article.dataset.category === category) {
+                        article.style.display = 'block';
+                    } else {
+                        article.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="js/navigation.js"></script>
+</body>
+</html>

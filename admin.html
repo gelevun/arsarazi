@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Arsarazi CRM</title>
+    <meta name="description" content="Arsarazi admin paneli - Portföy yönetimi, müşteri takibi ve CRM sistemi">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item { transition: all 0.3s ease; }
+        .sidebar-item:hover { background-color: rgba(59, 130, 246, 0.1); }
+        .sidebar-item.active { background-color: #3b82f6; color: white; }
+        .card-stat { transition: all 0.3s ease; }
+        .card-stat:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform lg:translate-x-0 lg:static lg:inset-0" id="sidebar">
+        <div class="flex items-center justify-center h-16 bg-blue-600 text-white">
+            <i class="fas fa-map-marked-alt text-2xl mr-3"></i>
+            <span class="text-xl font-bold">Arsarazi CRM</span>
+        </div>
+        
+        <nav class="mt-8 px-4">
+            <div class="space-y-2">
+                <button onclick="showSection('dashboard')" class="sidebar-item active w-full flex items-center px-4 py-3 text-left rounded-lg">
+                    <i class="fas fa-tachometer-alt mr-3 w-5"></i>
+                    Dashboard
+                </button>
+                
+                <button onclick="showSection('properties')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                    <i class="fas fa-home mr-3 w-5"></i>
+                    Portföy Yönetimi
+                </button>
+                
+                <button onclick="showSection('customers')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                    <i class="fas fa-users mr-3 w-5"></i>
+                    Müşteri Yönetimi
+                </button>
+                
+                <button onclick="showSection('leads')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                    <i class="fas fa-user-plus mr-3 w-5"></i>
+                    Potansiyel Müşteriler
+                </button>
+                
+                <button onclick="showSection('analytics')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                    <i class="fas fa-chart-bar mr-3 w-5"></i>
+                    Analitik & Raporlar
+                </button>
+                
+                <button onclick="showSection('settings')" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                    <i class="fas fa-cog mr-3 w-5"></i>
+                    Ayarlar
+                </button>
+                
+                <div class="border-t pt-4 mt-4">
+                    <a href="index.html" class="sidebar-item w-full flex items-center px-4 py-3 text-gray-700 text-left rounded-lg">
+                        <i class="fas fa-globe mr-3 w-5"></i>
+                        Web Sitesine Git
+                    </a>
+                    
+                    <button onclick="handleLogout()" class="sidebar-item w-full flex items-center px-4 py-3 text-red-600 text-left rounded-lg">
+                        <i class="fas fa-sign-out-alt mr-3 w-5"></i>
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden" id="sidebarOverlay" style="display: none;"></div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64 flex flex-col min-h-screen">
+        <!-- Top Navigation -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 id="pageTitle" class="text-2xl font-bold text-gray-900 ml-4">Dashboard</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="text-gray-600 hover:text-gray-900">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" 
+                            alt="Admin" class="w-8 h-8 rounded-full mr-3">
+                        <span class="text-sm font-medium text-gray-700" id="adminName">Admin User</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section-content">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-blue-100 rounded-full">
+                                <i class="fas fa-home text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Toplam Arsa</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalPropertiesCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-green-100 rounded-full">
+                                <i class="fas fa-users text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Aktif Müşteri</p>
+                                <p class="text-2xl font-bold text-gray-900" id="activeCustomersCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-yellow-100 rounded-full">
+                                <i class="fas fa-user-plus text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Yeni Potansiyel</p>
+                                <p class="text-2xl font-bold text-gray-900" id="newLeadsCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 card-stat">
+                        <div class="flex items-center">
+                            <div class="p-3 bg-purple-100 rounded-full">
+                                <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Bu Ay Satış</p>
+                                <p class="text-2xl font-bold text-gray-900" id="monthlySalesCount">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Arsa Türü Dağılımı</h3>
+                        <canvas id="propertyTypeChart" style="height: 300px;"></canvas>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aylık Satış Trendi</h3>
+                        <canvas id="salesTrendChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Son Aktiviteler</h3>
+                        <div id="recentActivities" class="space-y-4">
+                            <!-- Activities will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Yaklaşan Görevler</h3>
+                        <div id="upcomingTasks" class="space-y-4">
+                            <!-- Tasks will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Properties Section -->
+            <div id="properties-section" class="section-content hidden">
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <h2 class="text-xl font-semibold text-gray-900">Portföy Yönetimi</h2>
+                            <button onclick="showAddPropertyModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mt-4 sm:mt-0">
+                                <i class="fas fa-plus mr-2"></i>Yeni Arsa Ekle
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="propertiesTable" class="overflow-x-auto">
+                            <!-- Properties table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers Section -->
+            <div id="customers-section" class="section-content hidden">
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <h2 class="text-xl font-semibold text-gray-900">Müşteri Yönetimi</h2>
+                            <button onclick="showAddCustomerModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mt-4 sm:mt-0">
+                                <i class="fas fa-user-plus mr-2"></i>Yeni Müşteri Ekle
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="customersTable" class="overflow-x-auto">
+                            <!-- Customers table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads Section -->
+            <div id="leads-section" class="section-content hidden">
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-900">Potansiyel Müşteriler</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="leadsTable" class="overflow-x-auto">
+                            <!-- Leads table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="section-content hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Analitik & Raporlar</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Müşteri Türü Dağılımı</h3>
+                        <canvas id="customerTypeChart" style="height: 300px;"></canvas>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aylık Müşteri Artışı</h3>
+                        <canvas id="customerGrowthChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section-content hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Ayarlar</h2>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Sistem Ayarları</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Firma Adı</label>
+                            <input type="text" value="Arsarazi" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                            <input type="email" value="info@arsarazi.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                            <input type="tel" value="+90 (212) 555-0123" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="emailNotifications" class="mr-2">
+                            <label for="emailNotifications" class="text-sm text-gray-700">E-posta bildirimleri</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="smsNotifications" class="mr-2">
+                            <label for="smsNotifications" class="text-sm text-gray-700">SMS bildirimleri</label>
+                        </div>
+                        
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                            Ayarları Kaydet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Property Modal -->
+    <div id="addPropertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Yeni Arsa Ekle</h3>
+                <button onclick="closeAddPropertyModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="addPropertyForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
+                        <input type="text" id="propertyTitle" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Konum</label>
+                        <input type="text" id="propertyLocation" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Alan (m²)</label>
+                        <input type="number" id="propertyArea" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fiyat (₺)</label>
+                        <input type="number" id="propertyPrice" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Arsa Tipi</label>
+                        <select id="propertyType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Seçin</option>
+                            <option value="Konut">Konut</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Sanayi">Sanayi</option>
+                            <option value="Ticari">Ticari</option>
+                            <option value="Tarım">Tarım</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">İmar Durumu</label>
+                        <input type="text" id="propertyZoning" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yatırım Potansiyeli</label>
+                        <select id="investmentPotential" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Seçin</option>
+                            <option value="Çok Yüksek">Çok Yüksek</option>
+                            <option value="Yüksek">Yüksek</option>
+                            <option value="Orta">Orta</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                    <textarea id="propertyDescription" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">İletişim Kişisi</label>
+                        <input type="text" id="contactPerson" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                        <input type="tel" id="contactPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-6">
+                    <button type="button" onclick="closeAddPropertyModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        İptal
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Arsa Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Customer Modal -->
+    <div id="addCustomerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-lg w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Yeni Müşteri Ekle</h3>
+                <button onclick="closeAddCustomerModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="addCustomerForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Ad Soyad</label>
+                    <input type="text" id="customerName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                        <input type="email" id="customerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                        <input type="tel" id="customerPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Müşteri Tipi</label>
+                    <select id="customerType" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="">Seçin</option>
+                        <option value="Alıcı">Alıcı</option>
+                        <option value="Satıcı">Satıcı</option>
+                        <option value="Yatırımcı">Yatırımcı</option>
+                        <option value="Potansiyel Alıcı">Potansiyel Alıcı</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Bütçe Aralığı</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="budgetMin" placeholder="Min ₺" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <input type="number" id="budgetMax" placeholder="Max ₺" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notlar</label>
+                    <textarea id="customerNotes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-6">
+                    <button type="button" onclick="closeAddCustomerModal()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        İptal
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Müşteri Ekle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Test Sayfası - Arsarazi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #52B947, #0B5394);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #0B5394;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #52B947;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #3A8232;
+        }
+        .result {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .status.online {
+            background: #52B947;
+        }
+        .status.offline {
+            background: #dc3545;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" alt="Arsarazi Logo">
+        </div>
+        
+        <h1>Backend Test Sayfası 
+            <span id="status" class="status offline">Offline</span>
+        </h1>
+        
+        <div class="test-box">
+            <div class="test-title">1️⃣ Backend Bağlantı Testi</div>
+            <button onclick="testConnection()">Test Et</button>
+            <div id="connection-result" class="result">Test butonuna basın...</div>
+        </div>
+        
+        <div class="test-box">
+            <div class="test-title">2️⃣ Gayrimenkul Listesi</div>
+            <button onclick="getProperties()">Gayrimenkulleri Getir</button>
+            <div id="properties-result" class="result">Test butonuna basın...</div>
+        </div>
+        
+        <div class="test-box">
+            <div class="test-title">3️⃣ Müşteri Listesi</div>
+            <button onclick="getCustomers()">Müşterileri Getir</button>
+            <div id="customers-result" class="result">Test butonuna basın...</div>
+        </div>
+        
+        <div class="test-box">
+            <div class="test-title">4️⃣ Yeni Gayrimenkul Ekle</div>
+            <button onclick="addProperty()">Test Verisi Ekle</button>
+            <div id="add-result" class="result">Test butonuna basın...</div>
+        </div>
+        
+        <div class="test-box">
+            <div class="test-title">5️⃣ İstatistikler</div>
+            <button onclick="getStats()">İstatistikleri Getir</button>
+            <div id="stats-result" class="result">Test butonuna basın...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        
+        // Sayfa yüklendiğinde otomatik test
+        window.onload = () => {
+            testConnection();
+        };
+        
+        // Backend bağlantı testi
+        async function testConnection() {
+            const resultDiv = document.getElementById('connection-result');
+            const statusSpan = document.getElementById('status');
+            
+            try {
+                resultDiv.innerHTML = '⏳ Test ediliyor...';
+                
+                const response = await fetch(`${API_URL}/test`);
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    resultDiv.innerHTML = `<span class="success">✅ BACKEND ÇALIŞIYOR!</span>\n\n` + JSON.stringify(data, null, 2);
+                    statusSpan.className = 'status online';
+                    statusSpan.textContent = 'Online';
+                } else {
+                    throw new Error('Backend yanıt vermiyor');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ BACKEND ÇALIŞMIYOR!</span>\n\nHata: ${error.message}\n\nÇözüm:\n1. Terminal/CMD açın\n2. Proje klasörüne gidin\n3. "node server-basit.js" yazın\n4. Enter'a basın`;
+                statusSpan.className = 'status offline';
+                statusSpan.textContent = 'Offline';
+            }
+        }
+        
+        // Gayrimenkulleri getir
+        async function getProperties() {
+            const resultDiv = document.getElementById('properties-result');
+            
+            try {
+                resultDiv.innerHTML = '⏳ Yükleniyor...';
+                
+                const response = await fetch(`${API_URL}/gayrimenkuller`);
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    resultDiv.innerHTML = `<span class="success">✅ ${data.toplam} gayrimenkul bulundu!</span>\n\n` + JSON.stringify(data.veri, null, 2);
+                } else {
+                    throw new Error('Veri alınamadı');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ HATA!</span>\n\n${error.message}`;
+            }
+        }
+        
+        // Müşterileri getir
+        async function getCustomers() {
+            const resultDiv = document.getElementById('customers-result');
+            
+            try {
+                resultDiv.innerHTML = '⏳ Yükleniyor...';
+                
+                const response = await fetch(`${API_URL}/musteriler`);
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    resultDiv.innerHTML = `<span class="success">✅ ${data.toplam} müşteri bulundu!</span>\n\n` + JSON.stringify(data.veri, null, 2);
+                } else {
+                    throw new Error('Veri alınamadı');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ HATA!</span>\n\n${error.message}`;
+            }
+        }
+        
+        // Yeni gayrimenkul ekle
+        async function addProperty() {
+            const resultDiv = document.getElementById('add-result');
+            
+            try {
+                resultDiv.innerHTML = '⏳ Ekleniyor...';
+                
+                const testData = {
+                    baslik: "Test Arsa " + Date.now(),
+                    tip: "Arsa",
+                    konum: "Test Mahallesi",
+                    alan: 1000,
+                    fiyat: 750000,
+                    durum: "Satılık",
+                    aciklama: "Bu bir test verisidir"
+                };
+                
+                const response = await fetch(`${API_URL}/gayrimenkuller`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    resultDiv.innerHTML = `<span class="success">✅ Gayrimenkul eklendi!</span>\n\n` + JSON.stringify(data.veri, null, 2);
+                } else {
+                    throw new Error('Eklenemedi');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ HATA!</span>\n\n${error.message}`;
+            }
+        }
+        
+        // İstatistikleri getir
+        async function getStats() {
+            const resultDiv = document.getElementById('stats-result');
+            
+            try {
+                resultDiv.innerHTML = '⏳ Yükleniyor...';
+                
+                const response = await fetch(`${API_URL}/istatistikler`);
+                const data = await response.json();
+                
+                if (data.durum === 'Başarılı') {
+                    resultDiv.innerHTML = `<span class="success">✅ İstatistikler yüklendi!</span>\n\n` + JSON.stringify(data.veri, null, 2);
+                } else {
+                    throw new Error('Veri alınamadı');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ HATA!</span>\n\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

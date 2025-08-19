@@ -1,0 +1,110 @@
+{
+  "gayrimenkuller": [
+    {
+      "id": "KRS-2024-001",
+      "baslik": "Karesi Merkez Arsa",
+      "tip": "Arsa",
+      "konum": "Paşa Alanı Mahallesi",
+      "alan": 2500,
+      "fiyat": 1250000,
+      "durum": "Satılık",
+      "aciklama": "İmarlı, köşe parsel",
+      "tarih": "2025-08-19T20:14:01.567Z"
+    },
+    {
+      "id": "BND-2024-002",
+      "baslik": "Bandırma Deniz Manzaralı Villa",
+      "tip": "Villa",
+      "konum": "Çınarlı Mahallesi",
+      "alan": 450,
+      "fiyat": 3500000,
+      "durum": "Satılık",
+      "aciklama": "3+1, havuzlu, deniz manzaralı",
+      "tarih": "2025-08-19T20:14:01.568Z"
+    },
+    {
+      "id": "ALT-2024-003",
+      "baslik": "Altıeylül Tarla",
+      "tip": "Tarla",
+      "konum": "Çayırhisar Köyü",
+      "alan": 10000,
+      "fiyat": 500000,
+      "durum": "Satılık",
+      "aciklama": "Zeytinlik, su kuyusu mevcut",
+      "tarih": "2025-08-19T20:14:01.568Z"
+    }
+  ],
+  "musteriler": [
+    {
+      "id": "MUS-001",
+      "ad": "Ahmet Yılmaz",
+      "telefon": "0532 123 45 67",
+      "email": "ahmet.yilmaz@email.com",
+      "tip": "Yatırımcı",
+      "sehir": "Balıkesir",
+      "butce_min": 500000,
+      "butce_max": 2000000,
+      "ilgilendigi": [
+        "Arsa",
+        "Villa"
+      ],
+      "notlar": "Güvenilir müşteri, nakit ödeme",
+      "tarih": "2025-08-19T20:14:01.568Z"
+    },
+    {
+      "id": "MUS-002",
+      "ad": "Ayşe Demir",
+      "telefon": "0544 987 65 43",
+      "email": "ayse.demir@email.com",
+      "tip": "Alıcı",
+      "sehir": "Bandırma",
+      "butce_min": 300000,
+      "butce_max": 1000000,
+      "ilgilendigi": [
+        "Arsa"
+      ],
+      "notlar": "İlk defa alıcı, kredi kullanacak",
+      "tarih": "2025-08-19T20:14:01.568Z"
+    },
+    {
+      "id": "MUS-003",
+      "ad": "Mehmet Kaya",
+      "telefon": "0555 678 90 12",
+      "email": "mehmet.kaya@email.com",
+      "tip": "Satıcı",
+      "sehir": "Altıeylül",
+      "sahip_oldugu": 3,
+      "notlar": "3 adet tarlası var, acil satış",
+      "tarih": "2025-08-19T20:14:01.568Z"
+    }
+  ],
+  "islemler": [
+    {
+      "id": "ISL-001",
+      "gayrimenkul_id": "KRS-2024-001",
+      "musteri_id": "MUS-001",
+      "tip": "Görüntüleme",
+      "durum": "Tamamlandı",
+      "tarih": "2025-08-19T20:14:01.568Z",
+      "notlar": "Müşteri arsayı beğendi, düşünecek"
+    },
+    {
+      "id": "ISL-002",
+      "gayrimenkul_id": "BND-2024-002",
+      "musteri_id": "MUS-002",
+      "tip": "Teklif",
+      "teklif_fiyat": 3200000,
+      "durum": "Beklemede",
+      "tarih": "2025-08-19T20:14:01.568Z",
+      "notlar": "Müşteri 3.2M teklif etti"
+    }
+  ],
+  "istatistikler": {
+    "toplam_gayrimenkul": 324,
+    "toplam_musteri": 1245,
+    "aktif_ilan": 142,
+    "bu_ay_satis": 23,
+    "bu_ay_kiralama": 45,
+    "toplam_gelir": 2400000
+  }
+}

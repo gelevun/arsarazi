@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Dashboard - Arsarazi Gayrimenkul</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .sidebar-item:hover { background-color: rgba(82, 185, 71, 0.1); }
+        .sidebar-item.active { background-color: rgba(82, 185, 71, 0.2); border-left: 4px solid #52B947; }
+        .stat-card { transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg">
+            <div class="p-4 border-b">
+                <div class="flex items-center logo-container">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                         alt="Arsarazi Logo" 
+                         class="h-10 w-auto mr-2">
+                    <span class="text-xl font-bold text-primary-blue">ARSARAZI CRM</span>
+                </div>
+            </div>
+            
+            <nav class="p-4">
+                <a href="#dashboard" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-line w-6 text-primary-green"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="#properties" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-building w-6 text-gray-600"></i>
+                    <span class="ml-3">Gayrimenkuller</span>
+                </a>
+                <a href="#customers" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-users w-6 text-gray-600"></i>
+                    <span class="ml-3">Müşteriler</span>
+                </a>
+                <a href="#transactions" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">İşlemler</span>
+                </a>
+                <a href="#documents" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-file-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">Dokümanlar</span>
+                </a>
+                <a href="#calendar" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-calendar w-6 text-gray-600"></i>
+                    <span class="ml-3">Takvim</span>
+                </a>
+                <a href="#reports" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-chart-bar w-6 text-gray-600"></i>
+                    <span class="ml-3">Raporlar</span>
+                </a>
+                <a href="#settings" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-cog w-6 text-gray-600"></i>
+                    <span class="ml-3">Ayarlar</span>
+                </a>
+            </nav>
+            
+            <div class="absolute bottom-0 w-64 p-4 border-t">
+                <div class="flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=52B947&color=fff" 
+                         class="w-10 h-10 rounded-full">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@arsarazi.com</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                        </button>
+                        <button onclick="toggleFullScreen()" class="p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-expand text-xl"></i>
+                        </button>
+                        <a href="index.html" class="p-2 text-gray-600 hover:text-primary-green">
+                            <i class="fas fa-home text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="p-6" id="dashboard-content">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="stat-card bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Toplam Gayrimenkul</p>
+                                <p class="text-3xl font-bold text-gray-800">324</p>
+                                <p class="text-green-500 text-sm mt-2">
+                                    <i class="fas fa-arrow-up"></i> %12 Artış
+                                </p>
+                            </div>
+                            <div class="bg-primary-green/10 p-4 rounded-full">
+                                <i class="fas fa-building text-2xl text-primary-green"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Aktif Müşteriler</p>
+                                <p class="text-3xl font-bold text-gray-800">1,245</p>
+                                <p class="text-green-500 text-sm mt-2">
+                                    <i class="fas fa-arrow-up"></i> %8 Artış
+                                </p>
+                            </div>
+                            <div class="bg-primary-blue/10 p-4 rounded-full">
+                                <i class="fas fa-users text-2xl text-primary-blue"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Bu Ay İşlem</p>
+                                <p class="text-3xl font-bold text-gray-800">42</p>
+                                <p class="text-green-500 text-sm mt-2">
+                                    <i class="fas fa-arrow-up"></i> %23 Artış
+                                </p>
+                            </div>
+                            <div class="bg-primary-yellow/10 p-4 rounded-full">
+                                <i class="fas fa-handshake text-2xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Toplam Gelir</p>
+                                <p class="text-3xl font-bold text-gray-800">₺2.4M</p>
+                                <p class="text-green-500 text-sm mt-2">
+                                    <i class="fas fa-arrow-up"></i> %18 Artış
+                                </p>
+                            </div>
+                            <div class="bg-green-100 p-4 rounded-full">
+                                <i class="fas fa-lira-sign text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Sales Chart -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Satış Grafiği</h3>
+                            <select class="border rounded px-3 py-1 text-sm">
+                                <option>Son 6 Ay</option>
+                                <option>Son 1 Yıl</option>
+                                <option>Tümü</option>
+                            </select>
+                        </div>
+                        <canvas id="salesChart" height="150"></canvas>
+                    </div>
+
+                    <!-- Property Types Chart -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Gayrimenkul Dağılımı</h3>
+                            <button class="text-primary-green text-sm">Detaylı Rapor</button>
+                        </div>
+                        <canvas id="propertyChart" height="150"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activities & Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Recent Transactions -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="text-lg font-semibold">Son İşlemler</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">İşlem Kodu</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gayrimenkul</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Müşteri</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tutar</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">#TRX-2024-001</td>
+                                        <td class="px-4 py-3 text-sm">Karesi Merkez Arsa</td>
+                                        <td class="px-4 py-3 text-sm">Ahmet Yılmaz</td>
+                                        <td class="px-4 py-3 text-sm font-medium">₺450,000</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Tamamlandı</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">#TRX-2024-002</td>
+                                        <td class="px-4 py-3 text-sm">Bandırma Villa</td>
+                                        <td class="px-4 py-3 text-sm">Mehmet Demir</td>
+                                        <td class="px-4 py-3 text-sm font-medium">₺1,200,000</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Beklemede</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">#TRX-2024-003</td>
+                                        <td class="px-4 py-3 text-sm">Altıeylül Tarla</td>
+                                        <td class="px-4 py-3 text-sm">Ayşe Kaya</td>
+                                        <td class="px-4 py-3 text-sm font-medium">₺280,000</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">İşlemde</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t">
+                            <a href="#transactions" class="text-primary-green text-sm font-medium">Tüm İşlemleri Görüntüle →</a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Hızlı İşlemler</h3>
+                        <div class="space-y-3">
+                            <button onclick="openModal('property')" class="w-full bg-primary-green text-white py-3 px-4 rounded-lg hover:bg-green-dark transition flex items-center justify-center">
+                                <i class="fas fa-plus mr-2"></i> Yeni Gayrimenkul
+                            </button>
+                            <button onclick="openModal('customer')" class="w-full bg-primary-blue text-white py-3 px-4 rounded-lg hover:bg-blue-dark transition flex items-center justify-center">
+                                <i class="fas fa-user-plus mr-2"></i> Yeni Müşteri
+                            </button>
+                            <button onclick="openModal('transaction')" class="w-full bg-primary-yellow text-gray-800 py-3 px-4 rounded-lg hover:bg-yellow-dark transition flex items-center justify-center">
+                                <i class="fas fa-file-contract mr-2"></i> Yeni İşlem
+                            </button>
+                            <button onclick="openModal('document')" class="w-full bg-gray-600 text-white py-3 px-4 rounded-lg hover:bg-gray-700 transition flex items-center justify-center">
+                                <i class="fas fa-upload mr-2"></i> Doküman Yükle
+                            </button>
+                        </div>
+
+                        <div class="mt-6 pt-6 border-t">
+                            <h4 class="text-sm font-semibold mb-3">Yaklaşan Randevular</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-sm">
+                                    <div>
+                                        <p class="font-medium">Ahmet Bey - Arsa Görüşmesi</p>
+                                        <p class="text-gray-500">Bugün 14:00</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <div>
+                                        <p class="font-medium">Mehmet Bey - Tapu İşlemi</p>
+                                        <p class="text-gray-500">Yarın 10:00</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals will be added here -->
+    <div id="modalContainer"></div>
+
+    <script>
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+                    datasets: [{
+                        label: 'Satış',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: '#52B947',
+                        backgroundColor: 'rgba(82, 185, 71, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Kiralama',
+                        data: [8, 12, 10, 14, 16, 19],
+                        borderColor: '#0B5394',
+                        backgroundColor: 'rgba(11, 83, 148, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Property Types Chart
+            const propertyCtx = document.getElementById('propertyChart').getContext('2d');
+            new Chart(propertyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Arsa', 'Villa', 'Daire', 'Tarla', 'Dükkan'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#52B947',
+                            '#0B5394',
+                            '#FFC000',
+                            '#7FD276',
+                            '#2B73B4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // Setup navigation
+            setupNavigation();
+        });
+
+        // Navigation Handler
+        function setupNavigation() {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const target = this.getAttribute('href').replace('#', '');
+                    loadContent(target);
+                });
+            });
+        }
+
+        // Load Content Based on Navigation
+        function loadContent(section) {
+            const contentArea = document.getElementById('dashboard-content');
+            
+            switch(section) {
+                case 'properties':
+                    window.location.href = 'crm-properties.html';
+                    break;
+                case 'customers':
+                    window.location.href = 'crm-customers.html';
+                    break;
+                case 'transactions':
+                    window.location.href = 'crm-transactions.html';
+                    break;
+                case 'documents':
+                    window.location.href = 'crm-documents.html';
+                    break;
+                default:
+                    // Stay on dashboard
+                    break;
+            }
+        }
+
+        // Open Modal
+        function openModal(type) {
+            alert(`${type} ekleme modalı açılacak`);
+            // Modal implementation will be added
+        }
+
+        // Toggle Fullscreen
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

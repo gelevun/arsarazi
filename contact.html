@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Arsarazi Gayrimenkul</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-green': '#52B947',
+                        'primary-blue': '#0B5394',
+                        'primary-yellow': '#FFC000',
+                        'green-light': '#7FD276',
+                        'green-dark': '#3A8232',
+                        'blue-light': '#2B73B4',
+                        'blue-dark': '#083E6B',
+                        'yellow-light': '#FFD347',
+                        'yellow-dark': '#E6A800'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center logo-container">
+                        <img src="https://page.gensparksite.com/v1/base64_upload/db906ae7116ab45188a186d28c235383" 
+                             alt="Arsarazi Logo" 
+                             class="logo-img">
+                        <span class="text-2xl font-bold text-primary-blue">ARSARAZI</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition">Ana Sayfa</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-blue-600 transition">Portföy</a>
+                    <a href="blog.html" class="text-gray-700 hover:text-blue-600 transition">Blog</a>
+                    <a href="about.html" class="text-gray-700 hover:text-blue-600 transition">Hakkımızda</a>
+                    <a href="contact.html" class="text-blue-600 font-semibold">İletişim</a>
+                </div>
+                <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-2 space-y-1">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600">Ana Sayfa</a>
+                <a href="portfolio.html" class="block py-2 text-gray-700 hover:text-blue-600">Portföy</a>
+                <a href="blog.html" class="block py-2 text-gray-700 hover:text-blue-600">Blog</a>
+                <a href="about.html" class="block py-2 text-gray-700 hover:text-blue-600">Hakkımızda</a>
+                <a href="contact.html" class="block py-2 text-blue-600 font-semibold">İletişim</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary-green via-primary-blue to-blue-dark text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Bize Ulaşın</h1>
+                <p class="text-xl opacity-90">Gayrimenkul ihtiyaçlarınız için buradayız</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information Cards -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Phone Card -->
+                <div class="contact-card bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-phone text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Telefon</h3>
+                    <p class="text-gray-600 mb-4">Haftanın 7 günü ulaşabilirsiniz</p>
+                    <a href="tel:+902662451234" class="text-blue-600 font-medium hover:underline">
+                        +90 (266) 245-1234
+                    </a>
+                </div>
+
+                <!-- Email Card -->
+                <div class="contact-card bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">E-posta</h3>
+                    <p class="text-gray-600 mb-4">24 saat içinde dönüş garantisi</p>
+                    <a href="mailto:info@arsarazi.com" class="text-purple-600 font-medium hover:underline">
+                        info@arsarazi.com
+                    </a>
+                </div>
+
+                <!-- Address Card -->
+                <div class="contact-card bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-map-marker-alt text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Adres</h3>
+                    <p class="text-gray-600">
+                        Paşa Alanı Mahallesi<br>
+                        Çengel Cad. No: 108A<br>
+                        Karesi / Balıkesir
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact Form and Map -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-6">Mesaj Gönderin</h2>
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="name">Ad Soyad *</label>
+                                <input type="text" id="name" name="name" required
+                                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="phone">Telefon *</label>
+                                <input type="tel" id="phone" name="phone" required
+                                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2" for="email">E-posta *</label>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2" for="subject">Konu *</label>
+                            <select id="subject" name="subject" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seçiniz...</option>
+                                <option value="arsa">Arsa/Arazi Hakkında</option>
+                                <option value="villa">Villa Hakkında</option>
+                                <option value="yatirim">Yatırım Danışmanlığı</option>
+                                <option value="deger">Değerleme Talebi</option>
+                                <option value="diger">Diğer</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="message">Mesajınız *</label>
+                            <textarea id="message" name="message" rows="5" required
+                                      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
+                            <i class="fas fa-paper-plane mr-2"></i>Mesajı Gönder
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Map Section -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-6">Konumumuz</h2>
+                    <div class="bg-gray-200 rounded-lg h-96 mb-6 relative overflow-hidden">
+                        <!-- Embed Google Maps or placeholder -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3084.4674901309695!2d27.88!3d39.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMznCsDM5JzAwLjAiTiAyN8KwNTMnMDAuMCJF!5e0!3m2!1str!2str!4v1234567890" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                    
+                    <!-- Working Hours -->
+                    <div class="border-t pt-6">
+                        <h3 class="font-semibold mb-4">Çalışma Saatleri</h3>
+                        <div class="space-y-2 text-gray-600">
+                            <div class="flex justify-between">
+                                <span>Pazartesi - Cuma</span>
+                                <span class="font-medium">09:00 - 18:00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Cumartesi</span>
+                                <span class="font-medium">10:00 - 16:00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Pazar</span>
+                                <span class="font-medium">Randevu ile</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">Sıkça Sorulan Sorular</h2>
+                
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white rounded-lg shadow">
+                        <button onclick="toggleFAQ(1)" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-semibold">Arsarazi'nin çalışma prensibi nedir?</span>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-1"></i>
+                        </button>
+                        <div id="faq-content-1" class="hidden px-6 pb-4 text-gray-600">
+                            <p>Arsarazi olarak müşterilerimize dürüst, şeffaf ve profesyonel hizmet sunuyoruz. Her müşterimizin ihtiyacına özel çözümler üretir, gayrimenkul alım-satım sürecinde baştan sona yanınızda oluruz.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white rounded-lg shadow">
+                        <button onclick="toggleFAQ(2)" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-semibold">Komisyon oranlarınız nedir?</span>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-2"></i>
+                        </button>
+                        <div id="faq-content-2" class="hidden px-6 pb-4 text-gray-600">
+                            <p>Komisyon oranlarımız gayrimenkul türüne ve değerine göre değişiklik göstermektedir. Detaylı bilgi için bizimle iletişime geçebilirsiniz.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white rounded-lg shadow">
+                        <button onclick="toggleFAQ(3)" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-semibold">Gayrimenkul değerlemesi yapıyor musunuz?</span>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-3"></i>
+                        </button>
+                        <div id="faq-content-3" class="hidden px-6 pb-4 text-gray-600">
+                            <p>Evet, uzman kadromuz ile gayrimenkulünüzün gerçek piyasa değerini belirleyebilir, size en doğru fiyat önerisinde bulunabiliriz. Değerleme hizmetimiz ücretsizdir.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white rounded-lg shadow">
+                        <button onclick="toggleFAQ(4)" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50">
+                            <span class="font-semibold">Yatırım danışmanlığı hizmeti veriyor musunuz?</span>
+                            <i class="fas fa-chevron-down transition-transform" id="faq-icon-4"></i>
+                        </button>
+                        <div id="faq-content-4" class="hidden px-6 pb-4 text-gray-600">
+                            <p>Evet, Balıkesir bölgesindeki gayrimenkul yatırım fırsatları hakkında profesyonel danışmanlık hizmeti sunuyoruz. Bütçenize ve yatırım hedeflerinize uygun en iyi alternatifleri sizinle paylaşıyoruz.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 gradient-bg text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold mb-4">Hayalinizdeki Gayrimenkulü Bulmaya Hazır mısınız?</h2>
+                <p class="text-xl mb-8 opacity-90">Uzman ekibimiz size yardımcı olmak için hazır</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="tel:+902662451234" class="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-gray-100 transition font-semibold">
+                        <i class="fas fa-phone mr-2"></i>Hemen Arayın
+                    </a>
+                    <a href="portfolio.html" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg hover:bg-white hover:text-blue-600 transition font-semibold">
+                        <i class="fas fa-search mr-2"></i>Portföyü İncele
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-building mr-2"></i>Arsarazi
+                    </h3>
+                    <p class="text-gray-400">Balıkesir'in güvenilir gayrimenkul danışmanı</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Hızlı Linkler</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Ana Sayfa</a></li>
+                        <li><a href="portfolio.html" class="text-gray-400 hover:text-white">Portföy</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white">Hakkımızda</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">İletişim</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-phone mr-2"></i>+90 266 245 1234</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@arsarazi.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Karesi, Balıkesir</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Bizi Takip Edin</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Arsarazi Gayrimenkul. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // FAQ toggle
+        function toggleFAQ(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Contact form submission
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would normally send the data to your backend
+            console.log('Form data:', data);
+            
+            // Show success message
+            alert('Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.');
+            
+            // Reset form
+            event.target.reset();
+        }
+    </script>
+    <script src="js/navigation.js"></script>
+</body>
+</html>

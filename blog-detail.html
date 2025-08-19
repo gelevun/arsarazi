@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Detayı - Arsarazi</title>
+    <meta name="description" content="Arsarazi blog yazısı detayları">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .blog-content p { margin-bottom: 1rem; }
+        .blog-content h2 { font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem 0; }
+        .blog-content h3 { font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="index.html" class="flex items-center">
+                            <i class="fas fa-map-marked-alt text-2xl text-blue-600 mr-3"></i>
+                            <span class="text-2xl font-bold text-gray-900">Arsarazi</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Ana Sayfa</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Portföy</a>
+                    <a href="index.html#blog" class="text-blue-600 px-3 py-2 text-sm font-medium border-b-2 border-blue-600">Blog</a>
+                    <a href="index.html#contact" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">İletişim</a>
+                    <button id="loginBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+                        Giriş Yap
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            
+            <div id="blogDetail" class="hidden">
+                <!-- Blog Header -->
+                <header class="mb-8">
+                    <nav class="mb-4">
+                        <a href="index.html#blog" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-arrow-left mr-2"></i>Blog'a Dön
+                        </a>
+                    </nav>
+                    
+                    <div class="mb-4">
+                        <span id="blogCategory" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"></span>
+                    </div>
+                    
+                    <h1 id="blogTitle" class="text-4xl font-bold text-gray-900 mb-4"></h1>
+                    
+                    <div class="flex items-center text-gray-600 mb-6">
+                        <div class="flex items-center mr-6">
+                            <i class="fas fa-user mr-2"></i>
+                            <span id="blogAuthor"></span>
+                        </div>
+                        <div class="flex items-center mr-6">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span id="blogDate"></span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>5 dk okuma</span>
+                        </div>
+                    </div>
+                    
+                    <img id="blogImage" src="" alt="" class="w-full h-96 object-cover rounded-xl mb-8">
+                </header>
+
+                <!-- Blog Content -->
+                <article class="prose max-w-none">
+                    <div id="blogContent" class="blog-content text-gray-700 leading-relaxed text-lg">
+                        <!-- Blog content will be loaded here -->
+                    </div>
+                </article>
+
+                <!-- Tags -->
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Etiketler</h3>
+                    <div id="blogTags" class="flex flex-wrap gap-2">
+                        <!-- Tags will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Share -->
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Paylaş</h3>
+                    <div class="flex space-x-4">
+                        <button onclick="shareOnFacebook()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fab fa-facebook-f mr-2"></i>Facebook
+                        </button>
+                        <button onclick="shareOnTwitter()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                            <i class="fab fa-twitter mr-2"></i>Twitter
+                        </button>
+                        <button onclick="shareOnLinkedIn()" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">
+                            <i class="fab fa-linkedin-in mr-2"></i>LinkedIn
+                        </button>
+                        <button onclick="copyLink()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                            <i class="fas fa-link mr-2"></i>Linki Kopyala
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Related Posts -->
+                <div class="mt-12 pt-12 border-t border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">İlgili Yazılar</h3>
+                    <div id="relatedPosts" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Related posts will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="mt-12 bg-blue-50 rounded-xl p-8 text-center">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Blog Güncellemelerini Kaçırmayın</h3>
+                    <p class="text-gray-600 mb-6">Gayrimenkul sektöründen en güncel haberler ve yatırım rehberleri için e-posta listemize katılın.</p>
+                    
+                    <form class="max-w-md mx-auto flex">
+                        <input type="email" placeholder="E-posta adresiniz" 
+                            class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-r-lg hover:bg-blue-700">
+                            Abone Ol
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-16">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <p class="mt-4 text-gray-600">Blog yazısı yükleniyor...</p>
+            </div>
+
+            <!-- Not Found State -->
+            <div id="notFoundState" class="hidden text-center py-16">
+                <i class="fas fa-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Blog Yazısı Bulunamadı</h2>
+                <p class="text-gray-600 mb-8">Aradığınız blog yazısı bulunamadı veya kaldırılmış olabilir.</p>
+                <a href="index.html#blog" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700">
+                    Blog'a Dön
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <i class="fas fa-map-marked-alt text-2xl text-blue-400 mr-3"></i>
+                    <span class="text-2xl font-bold">Arsarazi</span>
+                </div>
+                <p class="text-gray-400 mb-4">Arsa ve arazi yatırımında Türkiye'nin güvenilir adresi.</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="index.html" class="text-gray-400 hover:text-white">Ana Sayfa</a>
+                    <a href="portfolio.html" class="text-gray-400 hover:text-white">Portföy</a>
+                    <a href="index.html#contact" class="text-gray-400 hover:text-white">İletişim</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Blog detail specific JavaScript
+        let currentPost = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBlogDetail();
+        });
+
+        function loadBlogDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id') || localStorage.getItem('arsarazi_selected_post');
+            
+            if (postId) {
+                const post = blogPosts.find(p => p.id === parseInt(postId));
+                
+                if (post) {
+                    currentPost = post;
+                    displayBlogDetail(post);
+                    loadRelatedPosts(post);
+                    
+                    setTimeout(() => {
+                        document.getElementById('loadingState').classList.add('hidden');
+                        document.getElementById('blogDetail').classList.remove('hidden');
+                    }, 1000);
+                } else {
+                    showNotFoundState();
+                }
+            } else {
+                showNotFoundState();
+            }
+        }
+
+        function displayBlogDetail(post) {
+            document.title = `${post.title} - Arsarazi Blog`;
+            document.getElementById('blogTitle').textContent = post.title;
+            document.getElementById('blogAuthor').textContent = post.author;
+            document.getElementById('blogDate').textContent = new Date(post.date).toLocaleDateString('tr-TR');
+            document.getElementById('blogCategory').textContent = post.category;
+            document.getElementById('blogImage').src = post.image;
+            document.getElementById('blogImage').alt = post.title;
+            
+            // Expanded content for demo
+            const expandedContent = `
+                <p>${post.summary}</p>
+                <p>Gayrimenkul sektöründe başarılı yatırımlar yapabilmek için doğru bilgilere sahip olmak çok önemlidir. Bu yazımızda size arsa yatırımı konusunda dikkat etmeniz gereken önemli faktörleri detaylı bir şekilde açıklayacağız.</p>
+                
+                <h2>Arsa Yatırımının Temel Prensipleri</h2>
+                <p>Arsa yatırımı, gayrimenkul sektörünün en karlı alanlarından biridir. Ancak doğru kararlar alabilmek için bazı temel prensipleri bilmek gerekir:</p>
+                <ul class="list-disc ml-6 mb-4">
+                    <li>Lokasyon analizi ve gelecek projeksiyonları</li>
+                    <li>İmar durumu ve yasal süreçler</li>
+                    <li>Bölgenin gelişim potansiyeli</li>
+                    <li>Ulaşım imkanları ve altyapı durumu</li>
+                </ul>
+                
+                <h2>Dikkat Edilmesi Gereken Hukuki Konular</h2>
+                <p>Arsa alım-satımında hukuki süreçler son derece önemlidir. Tapu durumu, imar planı değişiklikleri ve yasal kısıtlamalar mutlaka kontrol edilmelidir.</p>
+                
+                <h3>İmar Planı Değişiklikleri</h3>
+                <p>İmar planlarındaki değişiklikler arsanızın değerini doğrudan etkileyebilir. Bu nedenle belediyenin gelecek planlarını takip etmek çok önemlidir.</p>
+                
+                <p>Sonuç olarak, arsa yatırımı doğru yapıldığında son derece karlı bir yatırım aracıdır. Ancak detaylı araştırma ve profesyonel destek almadan karar vermemenizi öneriyoruz.</p>
+            `;
+            
+            document.getElementById('blogContent').innerHTML = expandedContent;
+
+            // Display tags
+            const tagsContainer = document.getElementById('blogTags');
+            tagsContainer.innerHTML = post.tags.map(tag => 
+                `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">#${tag}</span>`
+            ).join('');
+        }
+
+        function loadRelatedPosts(currentPost) {
+            const relatedPosts = blogPosts.filter(post => 
+                post.id !== currentPost.id
+            ).slice(0, 2);
+            
+            const container = document.getElementById('relatedPosts');
+            container.innerHTML = relatedPosts.map(post => `
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                    onclick="readBlogPost(${post.id})">
+                    <img src="${post.image}" alt="${post.title}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 mb-2">${post.category}</div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">${post.title}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${post.summary}</p>
+                        <div class="flex items-center text-xs text-gray-500">
+                            <span class="mr-4">${post.author}</span>
+                            <span>${new Date(post.date).toLocaleDateString('tr-TR')}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(currentPost?.title || 'Arsarazi Blog');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(currentPost?.title || 'Arsarazi Blog');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(currentPost?.title || 'Arsarazi Blog');
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showNotification('Link kopyalandı!', 'success');
+            }).catch(() => {
+                showNotification('Link kopyalanamadı.', 'error');
+            });
+        }
+
+        function showNotFoundState() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('notFoundState').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
