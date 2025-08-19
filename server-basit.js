@@ -322,6 +322,40 @@ app.delete('/api/gayrimenkuller/:id', (req, res) => {
     }
 });
 
+// Toplu gayrimenkul güncelleme (yayınlama/yayından kaldırma için)
+app.put('/api/gayrimenkuller', (req, res) => {
+    const db = readDatabase();
+    const { properties } = req.body;
+    
+    if (properties && Array.isArray(properties)) {
+        db.gayrimenkuller = properties;
+        writeDatabase(db);
+        
+        res.json({
+            durum: 'Başarılı',
+            mesaj: 'Gayrimenkuller güncellendi',
+            toplam: properties.length
+        });
+    } else {
+        res.status(400).json({
+            durum: 'Hata',
+            mesaj: 'Geçersiz veri formatı'
+        });
+    }
+});
+
+// Yayınlanan gayrimenkulleri getir (public API)
+app.get('/api/public/gayrimenkuller', (req, res) => {
+    const db = readDatabase();
+    const publishedProperties = db.gayrimenkuller.filter(g => g.published === true);
+    
+    res.json({
+        durum: 'Başarılı',
+        toplam: publishedProperties.length,
+        veri: publishedProperties
+    });
+});
+
 // ========== MÜŞTERİ API ==========
 
 // Tüm müşterileri getir
