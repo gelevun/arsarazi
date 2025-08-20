@@ -199,10 +199,10 @@
                     role: 'administrator'
                 }));
                 
-                // Redirect to CRM dashboard after 2 seconds
+                // Redirect to CRM dashboard after 1 second
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
-                }, 2000);
+                }, 1000);
             } else {
                 // Show error message
                 document.getElementById('errorText').textContent = 'E-posta veya şifre hatalı!';
@@ -212,8 +212,25 @@
 
         // Check if already logged in
         document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('adminLoggedIn') === 'true') {
-                window.location.href = 'dashboard.html';
+            const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+            const currentUser = localStorage.getItem('arsarazi_user');
+            
+            console.log('Admin Login Check:', { adminLoggedIn, currentUser });
+            
+            if (adminLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    if (userData.type === 'admin') {
+                        console.log('User already logged in, redirecting...');
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Invalid user data, clearing...');
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('adminEmail');
+                    localStorage.removeItem('arsarazi_user');
+                }
             }
         });
 

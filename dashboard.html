@@ -440,14 +440,39 @@
             if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
                 localStorage.removeItem('adminLoggedIn');
                 localStorage.removeItem('adminEmail');
+                localStorage.removeItem('arsarazi_user');
                 window.location.href = 'admin.html';
             }
         }
 
         // Check login status on page load
         document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+            const currentUser = localStorage.getItem('arsarazi_user');
+            
+            console.log('Dashboard Login Check:', { adminLoggedIn, currentUser });
+            
+            if (!adminLoggedIn || adminLoggedIn !== 'true' || !currentUser) {
+                console.log('Not authenticated, redirecting to admin login...');
+                // Redirect to admin login if not authenticated
                 window.location.href = 'admin.html';
+                return;
+            }
+            
+            // Parse user data
+            try {
+                const userData = JSON.parse(currentUser);
+                console.log('User data:', userData);
+                if (userData.type !== 'admin') {
+                    console.log('User is not admin, redirecting...');
+                    window.location.href = 'admin.html';
+                    return;
+                }
+                console.log('Authentication successful!');
+            } catch (error) {
+                console.log('Error parsing user data:', error);
+                window.location.href = 'admin.html';
+                return;
             }
             
             // Set active menu item
