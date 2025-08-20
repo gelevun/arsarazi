@@ -293,6 +293,42 @@
         </div>
     </footer>
 
+    <!-- Admin Menu Modal -->
+    <div id="adminMenuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Admin Panel</h3>
+                <p class="text-gray-600">Hoş geldiniz, <span id="adminUserName" class="font-semibold text-primary-green"></span></p>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="dashboard.html" class="block w-full bg-primary-green text-white py-3 rounded-lg font-medium hover:bg-green-dark transition-colors text-center">
+                    <i class="fas fa-cog mr-2"></i>Dashboard
+                </a>
+                
+                <a href="crm-properties.html" class="block w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark transition-colors text-center">
+                    <i class="fas fa-building mr-2"></i>Portföy Yönetimi
+                </a>
+                
+                <a href="crm-customers.html" class="block w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark transition-colors text-center">
+                    <i class="fas fa-users mr-2"></i>Müşteri Yönetimi
+                </a>
+                
+                <button id="adminLogoutBtn" class="block w-full bg-gray-600 text-white py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Çıkış Yap
+                </button>
+                
+                <button onclick="closeAdminModal()" class="block w-full bg-red-600 text-white py-3 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Modal'ı Kapat (Test)
+                </button>
+            </div>
+            
+            <button id="closeAdminMenuModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
@@ -314,9 +350,18 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
                 
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 mb-4">
+                <button type="submit" class="w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark mb-4">
                     Giriş Yap
                 </button>
+                
+                <div class="text-center">
+                    <a href="#" class="text-blue-600 hover:underline">Şifrenizi mi unuttunuz?</a>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <span class="text-gray-600">Hesabınız yok mu? </span>
+                    <button type="button" id="showRegisterBtn" class="text-blue-600 hover:underline font-medium">Kayıt Olun</button>
+                </div>
             </form>
             
             <button id="closeLoginModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
@@ -327,5 +372,196 @@
 
     <script src="js/main.js"></script>
     <script src="js/property-detail.js"></script>
+    
+    <script>
+        // Close admin modal function
+        function closeAdminModal() {
+            const adminModal = document.getElementById('adminMenuModal');
+            adminModal.classList.add('hidden');
+            console.log('Admin modal closed via function');
+        }
+
+        // Handle login button click
+        function handleLoginClick() {
+            // Check if user is already logged in
+            const currentUser = localStorage.getItem('arsarazi_user');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            if (userLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    // User is logged in, redirect based on user type
+                    redirectBasedOnUserType(userData);
+                } catch (error) {
+                    // Invalid user data, show login modal
+                    document.getElementById('loginModal').classList.remove('hidden');
+                }
+            } else {
+                // User is not logged in, show login modal
+                document.getElementById('loginModal').classList.remove('hidden');
+            }
+        }
+
+        // Redirect user based on their type
+        function redirectBasedOnUserType(userData) {
+            switch(userData.type) {
+                case 'admin':
+                    showAdminMenu();
+                    break;
+                case 'gd':
+                    window.location.href = 'gd-dashboard.html';
+                    break;
+                case 'customer':
+                    window.location.href = 'customer-dashboard.html';
+                    break;
+                default:
+                    document.getElementById('loginModal').classList.remove('hidden');
+            }
+        }
+
+        // Show admin menu modal
+        function showAdminMenu() {
+            const currentUser = localStorage.getItem('arsarazi_user');
+            if (currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    document.getElementById('adminUserName').textContent = userData.email || 'Admin';
+                } catch (error) {
+                    document.getElementById('adminUserName').textContent = 'Admin';
+                }
+            }
+            
+            const adminModal = document.getElementById('adminMenuModal');
+            adminModal.classList.remove('hidden');
+            
+            // Debug: Log modal state
+            console.log('Admin modal opened:', adminModal.classList.contains('hidden'));
+            
+            // Add click event to modal background for debugging
+            adminModal.addEventListener('click', function(e) {
+                console.log('Modal clicked:', e.target);
+                if (e.target === this) {
+                    console.log('Closing modal via background click');
+                    this.classList.add('hidden');
+                }
+            });
+        }
+
+        // Setup event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login button (desktop)
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    handleLoginClick();
+                });
+            }
+
+            // Mobile login button
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            if (mobileLoginBtn) {
+                mobileLoginBtn.addEventListener('click', function() {
+                    handleLoginClick();
+                });
+            }
+
+            // Close login modal when clicking outside
+            document.getElementById('loginModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+
+            // Close login modal button
+            document.getElementById('closeLoginModal').addEventListener('click', function() {
+                document.getElementById('loginModal').classList.add('hidden');
+            });
+
+            // Close admin menu modal when clicking outside
+            document.getElementById('adminMenuModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+
+            // Close admin menu modal button
+            document.getElementById('closeAdminMenuModal').addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.getElementById('adminMenuModal').classList.add('hidden');
+            });
+
+            // Close admin menu modal with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const adminModal = document.getElementById('adminMenuModal');
+                    if (!adminModal.classList.contains('hidden')) {
+                        adminModal.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Admin logout button
+            document.getElementById('adminLogoutBtn').addEventListener('click', function() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                    localStorage.removeItem('userLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('arsarazi_user');
+                    document.getElementById('adminMenuModal').classList.add('hidden');
+                    alert('Başarıyla çıkış yapıldı!');
+                }
+            });
+
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // User authentication based on email
+                let userData = null;
+                let userType = null;
+                
+                if (email === 'admin@arsarazi.com' && password === 'admin123') {
+                    userType = 'admin';
+                    userData = {
+                        email: email,
+                        type: 'admin',
+                        name: 'Admin User'
+                    };
+                } else if (email === 'gd@arsarazi.com' && password === 'gd123') {
+                    userType = 'gd';
+                    userData = {
+                        email: email,
+                        type: 'gd',
+                        name: 'GD User'
+                    };
+                } else if (email === 'customer@arsarazi.com' && password === 'customer123') {
+                    userType = 'customer';
+                    userData = {
+                        email: email,
+                        type: 'customer',
+                        name: 'Customer User'
+                    };
+                } else {
+                    alert('Hatalı e-posta veya şifre!');
+                    return;
+                }
+                
+                // Store user session
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('arsarazi_user', JSON.stringify(userData));
+                
+                // Close login modal
+                document.getElementById('loginModal').classList.add('hidden');
+                
+                // Show success message and redirect based on user type
+                alert('Başarıyla giriş yapıldı!');
+                redirectBasedOnUserType(userData);
+            });
+        });
+    </script>
 </body>
 </html>
