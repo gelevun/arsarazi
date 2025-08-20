@@ -666,6 +666,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadPublishedProperties();
             setupEventListeners();
+            updateLoginButton();
         });
 
         // Load published properties from backend
@@ -738,6 +739,41 @@
             } else {
                 // User is not logged in, show login modal
                 document.getElementById('loginModal').classList.remove('hidden');
+            }
+        }
+
+        // Update login button based on user status
+        function updateLoginButton() {
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            const currentUser = localStorage.getItem('arsarazi_user');
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            
+            if (userLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    // Change button text and style for logged in users
+                    loginBtn.textContent = userData.name || 'Kullanıcı';
+                    loginBtn.className = 'bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-dark transition-colors';
+                    
+                    if (mobileLoginBtn) {
+                        mobileLoginBtn.textContent = userData.name || 'Kullanıcı';
+                        mobileLoginBtn.className = 'w-full text-left bg-primary-green text-white px-3 py-2 text-base font-medium';
+                    }
+                } catch (error) {
+                    // Reset to default if error
+                    loginBtn.textContent = 'Giriş Yap';
+                    loginBtn.className = 'bg-primary-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-dark transition-colors';
+                }
+            } else {
+                // Reset to default for logged out users
+                loginBtn.textContent = 'Giriş Yap';
+                loginBtn.className = 'bg-primary-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-dark transition-colors';
+                
+                if (mobileLoginBtn) {
+                    mobileLoginBtn.textContent = 'Giriş Yap';
+                    mobileLoginBtn.className = 'w-full text-left bg-primary-blue text-white px-3 py-2 text-base font-medium';
+                }
             }
         }
 
@@ -821,6 +857,10 @@
                     localStorage.removeItem('userEmail');
                     localStorage.removeItem('arsarazi_user');
                     document.getElementById('adminMenuModal').classList.add('hidden');
+                    
+                    // Update login button
+                    updateLoginButton();
+                    
                     alert('Başarıyla çıkış yapıldı!');
                 }
             });
@@ -869,6 +909,9 @@
                 
                 // Close login modal
                 document.getElementById('loginModal').classList.add('hidden');
+                
+                // Update login button
+                updateLoginButton();
                 
                 // Show success message and redirect based on user type
                 alert('Başarıyla giriş yapıldı!');
