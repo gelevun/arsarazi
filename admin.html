@@ -183,37 +183,29 @@
             document.getElementById('errorMessage').classList.add('hidden');
             document.getElementById('successMessage').classList.add('hidden');
             
-            try {
-                const response = await fetch('/api/admin/giris', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
+            // Client-side authentication
+            if (email === 'admin@arsarazi.com' && password === 'admin123') {
+                // Show success message
+                document.getElementById('successMessage').classList.remove('hidden');
                 
-                if (data.durum === 'Başarılı') {
-                    // Show success message
-                    document.getElementById('successMessage').classList.remove('hidden');
-                    
-                    // Store admin session
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    localStorage.setItem('adminEmail', email);
-                    
-                    // Redirect to CRM dashboard after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 2000);
-                } else {
-                    // Show error message
-                    document.getElementById('errorText').textContent = data.mesaj || 'Giriş başarısız!';
-                    document.getElementById('errorMessage').classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Giriş hatası:', error);
-                document.getElementById('errorText').textContent = 'Bağlantı hatası!';
+                // Store admin session
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminEmail', email);
+                localStorage.setItem('arsarazi_user', JSON.stringify({
+                    id: 1,
+                    name: 'Admin User',
+                    email: email,
+                    type: 'admin',
+                    role: 'administrator'
+                }));
+                
+                // Redirect to CRM dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } else {
+                // Show error message
+                document.getElementById('errorText').textContent = 'E-posta veya şifre hatalı!';
                 document.getElementById('errorMessage').classList.remove('hidden');
             }
         });

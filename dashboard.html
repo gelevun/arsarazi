@@ -457,11 +457,11 @@
             loadDashboardData();
         });
 
-        // Load dashboard data from backend
-        async function loadDashboardData() {
+        // Load dashboard data from localStorage
+        function loadDashboardData() {
             try {
                 // Load statistics
-                await loadStatistics();
+                loadStatistics();
                 
                 // Load charts
                 initializeCharts();
@@ -471,15 +471,37 @@
             }
         }
 
-        // Load statistics from backend
-        async function loadStatistics() {
+        // Load statistics from localStorage
+        function loadStatistics() {
             try {
-                const response = await fetch('/api/istatistikler');
-                const data = await response.json();
+                // Load data from localStorage
+                const properties = JSON.parse(localStorage.getItem('arsarazi_properties') || '[]');
+                const customers = JSON.parse(localStorage.getItem('arsarazi_customers') || '[]');
                 
-                if (data.durum === 'Başarılı') {
-                    updateStatistics(data.veri);
-                }
+                // Calculate statistics
+                const totalProperties = properties.length;
+                const activeCustomers = customers.filter(c => c.status === 'Aktif').length;
+                const monthlyTransactions = Math.floor(Math.random() * 10) + 5; // Mock data
+                const totalRevenue = properties.reduce((sum, p) => sum + p.price, 0);
+                
+                // Mock growth percentages
+                const propertiesGrowth = Math.floor(Math.random() * 20) + 5;
+                const customersGrowth = Math.floor(Math.random() * 15) + 3;
+                const transactionsGrowth = Math.floor(Math.random() * 25) + 10;
+                const revenueGrowth = Math.floor(Math.random() * 30) + 15;
+                
+                const data = {
+                    toplam_gayrimenkul: totalProperties,
+                    gayrimenkul_artis: propertiesGrowth,
+                    aktif_musteriler: activeCustomers,
+                    musteri_artis: customersGrowth,
+                    bu_ay_islem: monthlyTransactions,
+                    islem_artis: transactionsGrowth,
+                    toplam_deger: totalRevenue,
+                    deger_artis: revenueGrowth
+                };
+                
+                updateStatistics(data);
             } catch (error) {
                 console.error('İstatistik yükleme hatası:', error);
             }
