@@ -82,32 +82,24 @@
             
             <nav class="p-4 flex-1">
                 <a href="dashboard.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-chart-line w-6 text-primary-green"></i>
+                    <i class="fas fa-cog w-6 text-primary-green"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
                 <a href="crm-properties.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-building w-6 text-gray-600"></i>
-                    <span class="ml-3">Gayrimenkuller</span>
+                    <span class="ml-3">Portföy Yönetimi</span>
                 </a>
                 <a href="crm-customers.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-users w-6 text-gray-600"></i>
-                    <span class="ml-3">Müşteriler</span>
+                    <span class="ml-3">Müşteri Yönetimi</span>
                 </a>
                 <a href="crm-transactions.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-exchange-alt w-6 text-gray-600"></i>
-                    <span class="ml-3">İşlemler</span>
-                </a>
-                <a href="crm-documents.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-file-alt w-6 text-gray-600"></i>
-                    <span class="ml-3">Dokümanlar</span>
+                    <i class="fas fa-user-plus w-6 text-gray-600"></i>
+                    <span class="ml-3">Potansiyel Müşteriler</span>
                 </a>
                 <a href="crm-reports.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-bar w-6 text-gray-600"></i>
-                    <span class="ml-3">Raporlar</span>
-                </a>
-                <a href="crm-calendar.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
-                    <i class="fas fa-calendar w-6 text-gray-600"></i>
-                    <span class="ml-3">Takvim</span>
+                    <span class="ml-3">Analitik & Raporlar</span>
                 </a>
                 <a href="crm-settings.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-cog w-6 text-gray-600"></i>
@@ -166,8 +158,8 @@
                     <div class="stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <p class="text-gray-500 text-sm font-medium">Toplam Gayrimenkul</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalProperties">21</p>
+                                <p class="text-gray-500 text-sm font-medium">Toplam Arsa</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalProperties">6</p>
                                 <p class="text-green-500 text-sm mt-2 flex items-center" id="propertiesGrowth">
                                     <i class="fas fa-arrow-up mr-1"></i> <span id="propertiesGrowthText">0%</span> Artış
                                 </p>
@@ -181,8 +173,8 @@
                     <div class="stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <p class="text-gray-500 text-sm font-medium">Aktif Müşteriler</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalCustomers">3</p>
+                                <p class="text-gray-500 text-sm font-medium">Aktif Müşteri</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalCustomers">2</p>
                                 <p class="text-green-500 text-sm mt-2 flex items-center" id="customersGrowth">
                                     <i class="fas fa-arrow-up mr-1"></i> <span id="customersGrowthText">0%</span> Artış
                                 </p>
@@ -196,14 +188,14 @@
                     <div class="stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <p class="text-gray-500 text-sm font-medium">Bu Ay İşlem</p>
+                                <p class="text-gray-500 text-sm font-medium">Yeni Potansiyel</p>
                                 <p class="text-3xl font-bold text-gray-800 mt-1" id="monthlyTransactions">0</p>
                                 <p class="text-green-500 text-sm mt-2 flex items-center" id="transactionsGrowth">
                                     <i class="fas fa-arrow-up mr-1"></i> <span id="transactionsGrowthText">0%</span> Artış
                                 </p>
                             </div>
                             <div class="bg-primary-yellow/10 p-4 rounded-full flex-shrink-0">
-                                <i class="fas fa-handshake text-2xl text-yellow-600"></i>
+                                <i class="fas fa-user-plus text-2xl text-yellow-600"></i>
                             </div>
                         </div>
                     </div>
@@ -211,14 +203,14 @@
                     <div class="stat-card bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <p class="text-gray-500 text-sm font-medium">Toplam Değer</p>
-                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalRevenue">₺3,955</p>
+                                <p class="text-gray-500 text-sm font-medium">Bu Ay Satış</p>
+                                <p class="text-3xl font-bold text-gray-800 mt-1" id="totalRevenue">2</p>
                                 <p class="text-green-500 text-sm mt-2 flex items-center" id="revenueGrowth">
                                     <i class="fas fa-arrow-up mr-1"></i> <span id="revenueGrowthText">0%</span> Artış
                                 </p>
                             </div>
-                            <div class="bg-green-100 p-4 rounded-full flex-shrink-0">
-                                <i class="fas fa-lira-sign text-2xl text-green-600"></i>
+                            <div class="bg-purple-100 p-4 rounded-full flex-shrink-0">
+                                <i class="fas fa-chart-line text-2xl text-purple-600"></i>
                             </div>
                         </div>
                     </div>
@@ -226,29 +218,28 @@
 
                 <!-- Charts Section -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <!-- Sales Chart -->
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold">Satış Grafiği</h3>
-                            <select class="border rounded px-3 py-1 text-sm">
-                                <option>Son 6 Ay</option>
-                                <option>Son 1 Yıl</option>
-                                <option>Tümü</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="salesChart"></canvas>
-                        </div>
-                    </div>
-
                     <!-- Property Types Chart -->
                     <div class="bg-white rounded-lg shadow p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold">Gayrimenkul Dağılımı</h3>
+                            <h3 class="text-lg font-semibold">Arsa Türü Dağılımı</h3>
                             <button class="text-primary-green text-sm">Detaylı Rapor</button>
                         </div>
                         <div class="chart-container">
                             <canvas id="propertyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Sales Chart -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold">Aylık Satış Trendi</h3>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                <span class="text-sm text-gray-600">Satış Sayısı</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
                         </div>
                     </div>
                 </div>
