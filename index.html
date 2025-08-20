@@ -585,6 +585,38 @@
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 
+    <!-- Admin Menu Modal -->
+    <div id="adminMenuModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">Admin Panel</h3>
+                <p class="text-gray-600">Hoş geldiniz, <span id="adminUserName" class="font-semibold text-primary-green"></span></p>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="dashboard.html" class="block w-full bg-primary-green text-white py-3 rounded-lg font-medium hover:bg-green-dark transition-colors text-center">
+                    <i class="fas fa-cog mr-2"></i>Dashboard
+                </a>
+                
+                <a href="crm-properties.html" class="block w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark transition-colors text-center">
+                    <i class="fas fa-building mr-2"></i>Portföy Yönetimi
+                </a>
+                
+                <a href="crm-customers.html" class="block w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark transition-colors text-center">
+                    <i class="fas fa-users mr-2"></i>Müşteri Yönetimi
+                </a>
+                
+                <button id="adminLogoutBtn" class="block w-full bg-gray-600 text-white py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Çıkış Yap
+                </button>
+            </div>
+            
+            <button id="closeAdminMenuModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
@@ -692,6 +724,20 @@
             }
         }
 
+        // Show admin menu modal
+        function showAdminMenu() {
+            const currentUser = localStorage.getItem('arsarazi_user');
+            if (currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    document.getElementById('adminUserName').textContent = userData.email || 'Admin';
+                } catch (error) {
+                    document.getElementById('adminUserName').textContent = 'Admin';
+                }
+            }
+            document.getElementById('adminMenuModal').classList.remove('hidden');
+        }
+
         // Setup event listeners
         function setupEventListeners() {
             // Login button
@@ -701,7 +747,28 @@
 
             // Admin button
             document.getElementById('adminBtn').addEventListener('click', function() {
-                window.location.href = 'admin.html';
+                // Check if user is already logged in
+                const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+                const currentUser = localStorage.getItem('arsarazi_user');
+                
+                if (adminLoggedIn === 'true' && currentUser) {
+                    try {
+                        const userData = JSON.parse(currentUser);
+                        if (userData.type === 'admin') {
+                            // User is logged in, show admin menu
+                            showAdminMenu();
+                        } else {
+                            // User is not admin, redirect to login
+                            window.location.href = 'admin.html';
+                        }
+                    } catch (error) {
+                        // Invalid user data, redirect to login
+                        window.location.href = 'admin.html';
+                    }
+                } else {
+                    // User is not logged in, redirect to login
+                    window.location.href = 'admin.html';
+                }
             });
 
             // Mobile menu
@@ -710,10 +777,33 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
-            // Close modal when clicking outside
+            // Close login modal when clicking outside
             document.getElementById('loginModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     this.classList.add('hidden');
+                }
+            });
+
+            // Close admin menu modal when clicking outside
+            document.getElementById('adminMenuModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+
+            // Close admin menu modal button
+            document.getElementById('closeAdminMenuModal').addEventListener('click', function() {
+                document.getElementById('adminMenuModal').classList.add('hidden');
+            });
+
+            // Admin logout button
+            document.getElementById('adminLogoutBtn').addEventListener('click', function() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('adminEmail');
+                    localStorage.removeItem('arsarazi_user');
+                    document.getElementById('adminMenuModal').classList.add('hidden');
+                    alert('Başarıyla çıkış yapıldı!');
                 }
             });
 
