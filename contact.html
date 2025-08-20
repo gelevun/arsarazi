@@ -60,6 +60,7 @@
                     <a href="blog.html" class="text-gray-700 hover:text-blue-600 transition">Blog</a>
                     <a href="about.html" class="text-gray-700 hover:text-blue-600 transition">Hakkımızda</a>
                     <a href="contact.html" class="text-blue-600 font-semibold">İletişim</a>
+                    <button id="loginBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-dark transition-colors">Giriş Yap</button>
                 </div>
                 <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
                     <i class="fas fa-bars text-2xl"></i>
@@ -74,6 +75,7 @@
                 <a href="blog.html" class="block py-2 text-gray-700 hover:text-blue-600">Blog</a>
                 <a href="about.html" class="block py-2 text-gray-700 hover:text-blue-600">Hakkımızda</a>
                 <a href="contact.html" class="block py-2 text-blue-600 font-semibold">İletişim</a>
+                <button id="mobileLoginBtn" class="w-full text-left bg-primary-blue text-white px-3 py-2 text-base font-medium">Giriş Yap</button>
             </div>
         </div>
     </nav>
@@ -363,6 +365,53 @@
             // Reset form
             event.target.reset();
         }
+
+        // Login Functions
+        function handleLoginClick() {
+            const currentUser = localStorage.getItem('arsarazi_user');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            if (userLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    redirectBasedOnUserType(userData);
+                } catch (error) {
+                    window.location.href = 'login.html';
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function redirectBasedOnUserType(userData) {
+            switch(userData.type) {
+                case 'admin':
+                    window.location.href = 'dashboard.html';
+                    break;
+                case 'gd':
+                    window.location.href = 'gd-dashboard.html';
+                    break;
+                case 'customer':
+                    window.location.href = 'customer-dashboard.html';
+                    break;
+                default:
+                    window.location.href = 'login.html';
+            }
+        }
+
+        // Setup login button event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            
+            if (loginBtn) {
+                loginBtn.addEventListener('click', handleLoginClick);
+            }
+            
+            if (mobileLoginBtn) {
+                mobileLoginBtn.addEventListener('click', handleLoginClick);
+            }
+        });
     </script>
     <script src="js/navigation.js"></script>
 </body>

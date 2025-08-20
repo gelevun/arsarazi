@@ -306,6 +306,47 @@
             document.getElementById('loadingState').classList.add('hidden');
             document.getElementById('notFoundState').classList.remove('hidden');
         }
+
+        // Login Functions
+        function handleLoginClick() {
+            const currentUser = localStorage.getItem('arsarazi_user');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            if (userLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    redirectBasedOnUserType(userData);
+                } catch (error) {
+                    window.location.href = 'login.html';
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function redirectBasedOnUserType(userData) {
+            switch(userData.type) {
+                case 'admin':
+                    window.location.href = 'dashboard.html';
+                    break;
+                case 'gd':
+                    window.location.href = 'gd-dashboard.html';
+                    break;
+                case 'customer':
+                    window.location.href = 'customer-dashboard.html';
+                    break;
+                default:
+                    window.location.href = 'login.html';
+            }
+        }
+
+        // Setup login button event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', handleLoginClick);
+            }
+        });
     </script>
 </body>
 </html>
