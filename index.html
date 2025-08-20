@@ -99,8 +99,8 @@
                     <a href="about.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Hakkımızda</a>
                     <a href="blog.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">Blog</a>
                     <a href="contact.html" class="text-gray-700 hover:text-primary-green px-3 py-2 text-sm font-medium transition-colors">İletişim</a>
-                    <button id="adminBtn" class="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-dark transition-colors">
-                        Admin Panel
+                    <button id="loginBtn" class="bg-primary-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-dark transition-colors">
+                        Giriş Yap
                     </button>
                 </div>
 
@@ -121,7 +121,7 @@
                 <a href="about.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Hakkımızda</a>
                 <a href="blog.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">Blog</a>
                 <a href="contact.html" class="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium">İletişim</a>
-                <button id="mobileAdminBtn" class="w-full text-left bg-primary-green text-white px-3 py-2 text-base font-medium">Admin Panel</button>
+                <button id="mobileLoginBtn" class="w-full text-left bg-primary-blue text-white px-3 py-2 text-base font-medium">Giriş Yap</button>
             </div>
         </div>
     </nav>
@@ -617,8 +617,8 @@
     <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
             <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-900">Admin Girişi</h3>
-                <p class="text-gray-600">Yönetim paneline erişim sağlayın</p>
+                <h3 class="text-2xl font-bold text-gray-900">Giriş Yap</h3>
+                <p class="text-gray-600">Hesabınıza erişim sağlayın</p>
             </div>
             
             <form id="loginForm">
@@ -634,8 +634,8 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
                 
-                <button type="submit" class="w-full bg-primary-green text-white py-3 rounded-lg font-medium hover:bg-green-dark mb-4">
-                    Admin Girişi
+                <button type="submit" class="w-full bg-primary-blue text-white py-3 rounded-lg font-medium hover:bg-blue-dark mb-4">
+                    Giriş Yap
                 </button>
                 
                 <div class="text-center">
@@ -720,22 +720,17 @@
             }
         }
 
-        // Handle admin button click
-        function handleAdminClick() {
+        // Handle login button click
+        function handleLoginClick() {
             // Check if user is already logged in
-            const adminLoggedIn = localStorage.getItem('adminLoggedIn');
             const currentUser = localStorage.getItem('arsarazi_user');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
             
-            if (adminLoggedIn === 'true' && currentUser) {
+            if (userLoggedIn === 'true' && currentUser) {
                 try {
                     const userData = JSON.parse(currentUser);
-                    if (userData.type === 'admin') {
-                        // User is logged in, show admin menu
-                        showAdminMenu();
-                    } else {
-                        // User is not admin, show login modal
-                        document.getElementById('loginModal').classList.remove('hidden');
-                    }
+                    // User is logged in, redirect based on user type
+                    redirectBasedOnUserType(userData);
                 } catch (error) {
                     // Invalid user data, show login modal
                     document.getElementById('loginModal').classList.remove('hidden');
@@ -743,6 +738,23 @@
             } else {
                 // User is not logged in, show login modal
                 document.getElementById('loginModal').classList.remove('hidden');
+            }
+        }
+
+        // Redirect user based on their type
+        function redirectBasedOnUserType(userData) {
+            switch(userData.type) {
+                case 'admin':
+                    showAdminMenu();
+                    break;
+                case 'gd':
+                    window.location.href = 'gd-dashboard.html';
+                    break;
+                case 'customer':
+                    window.location.href = 'customer-dashboard.html';
+                    break;
+                default:
+                    document.getElementById('loginModal').classList.remove('hidden');
             }
         }
 
@@ -762,14 +774,14 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Admin button (desktop)
-            document.getElementById('adminBtn').addEventListener('click', function() {
-                handleAdminClick();
+            // Login button (desktop)
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                handleLoginClick();
             });
 
-            // Mobile admin button
-            document.getElementById('mobileAdminBtn').addEventListener('click', function() {
-                handleAdminClick();
+            // Mobile login button
+            document.getElementById('mobileLoginBtn').addEventListener('click', function() {
+                handleLoginClick();
             });
 
             // Mobile menu
@@ -805,8 +817,8 @@
             // Admin logout button
             document.getElementById('adminLogoutBtn').addEventListener('click', function() {
                 if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                    localStorage.removeItem('adminLoggedIn');
-                    localStorage.removeItem('adminEmail');
+                    localStorage.removeItem('userLoggedIn');
+                    localStorage.removeItem('userEmail');
                     localStorage.removeItem('arsarazi_user');
                     document.getElementById('adminMenuModal').classList.add('hidden');
                     alert('Başarıyla çıkış yapıldı!');
@@ -820,26 +832,47 @@
                 const email = document.getElementById('loginEmail').value;
                 const password = document.getElementById('loginPassword').value;
                 
-                // Admin authentication
+                // User authentication based on email
+                let userData = null;
+                let userType = null;
+                
                 if (email === 'admin@arsarazi.com' && password === 'admin123') {
-                    // Store admin session
-                    localStorage.setItem('adminLoggedIn', 'true');
-                    localStorage.setItem('adminEmail', email);
-                    localStorage.setItem('arsarazi_user', JSON.stringify({
+                    userType = 'admin';
+                    userData = {
                         email: email,
                         type: 'admin',
                         name: 'Admin User'
-                    }));
-                    
-                    // Close login modal
-                    document.getElementById('loginModal').classList.add('hidden');
-                    
-                    // Show success message and admin menu
-                    alert('Başarıyla giriş yapıldı!');
-                    showAdminMenu();
+                    };
+                } else if (email === 'gd@arsarazi.com' && password === 'gd123') {
+                    userType = 'gd';
+                    userData = {
+                        email: email,
+                        type: 'gd',
+                        name: 'GD User'
+                    };
+                } else if (email === 'customer@arsarazi.com' && password === 'customer123') {
+                    userType = 'customer';
+                    userData = {
+                        email: email,
+                        type: 'customer',
+                        name: 'Customer User'
+                    };
                 } else {
                     alert('Hatalı e-posta veya şifre!');
+                    return;
                 }
+                
+                // Store user session
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('arsarazi_user', JSON.stringify(userData));
+                
+                // Close login modal
+                document.getElementById('loginModal').classList.add('hidden');
+                
+                // Show success message and redirect based on user type
+                alert('Başarıyla giriş yapıldı!');
+                redirectBasedOnUserType(userData);
             });
         }
 
