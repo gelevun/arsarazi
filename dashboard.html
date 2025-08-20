@@ -81,7 +81,7 @@
             </div>
             
             <nav class="p-4 flex-1">
-                <a href="dashboard.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2">
+                <a href="dashboard.html" class="sidebar-item active flex items-center p-3 rounded-lg mb-2" onclick="handleDashboardClick(event)">
                     <i class="fas fa-cog w-6 text-primary-green"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -475,11 +475,13 @@
                 return;
             }
             
-            // Set active menu item
-            setActiveMenuItem();
-            
-            // Load dashboard data
+            // Load dashboard data first
             loadDashboardData();
+            
+            // Set active menu item after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                setActiveMenuItem();
+            }, 100);
         });
 
         // Load dashboard data from localStorage
@@ -590,27 +592,45 @@
             }
         }
 
+        // Handle dashboard click
+        function handleDashboardClick(event) {
+            event.preventDefault();
+            console.log('Dashboard clicked, preventing navigation');
+            
+            // Dashboard zaten aktif sayfada olduğumuz için sadece menü durumunu koru
+            setActiveMenuItem();
+        }
+
         // Set active menu item based on current page
         function setActiveMenuItem() {
-            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            console.log('Setting active menu item...');
+            
+            // Dashboard sayfasında olduğumuz için dashboard'u aktif yap
             const menuItems = document.querySelectorAll('.sidebar-item');
             
             menuItems.forEach(item => {
+                // Tüm menü öğelerini pasif yap
                 item.classList.remove('active');
                 const icon = item.querySelector('i');
-                icon.classList.remove('text-primary-green');
-                icon.classList.add('text-gray-600');
+                if (icon) {
+                    icon.classList.remove('text-primary-green');
+                    icon.classList.add('text-gray-600');
+                }
             });
             
-            // Find and activate current page menu item
-            menuItems.forEach(item => {
-                if (item.getAttribute('href') === currentPage) {
-                    item.classList.add('active');
-                    const icon = item.querySelector('i');
+            // Dashboard linkini bul ve aktif yap
+            const dashboardLink = document.querySelector('a[href="dashboard.html"]');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+                const icon = dashboardLink.querySelector('i');
+                if (icon) {
                     icon.classList.remove('text-gray-600');
                     icon.classList.add('text-primary-green');
                 }
-            });
+                console.log('Dashboard menu item activated');
+            } else {
+                console.log('Dashboard link not found');
+            }
         }
     </script>
 </body>
