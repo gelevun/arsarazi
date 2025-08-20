@@ -605,6 +605,10 @@
                 <button id="adminLogoutBtn" class="block w-full bg-gray-600 text-white py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors">
                     <i class="fas fa-sign-out-alt mr-2"></i>Çıkış Yap
                 </button>
+                
+                <button onclick="closeAdminModal()" class="block w-full bg-red-600 text-white py-3 rounded-lg font-medium hover:bg-red-700 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Modal'ı Kapat (Test)
+                </button>
             </div>
             
             <button id="closeAdminMenuModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
@@ -742,6 +746,13 @@
             }
         }
 
+        // Close admin modal function
+        function closeAdminModal() {
+            const adminModal = document.getElementById('adminMenuModal');
+            adminModal.classList.add('hidden');
+            console.log('Admin modal closed via function');
+        }
+
         // Update login button based on user status
         function updateLoginButton() {
             const userLoggedIn = localStorage.getItem('userLoggedIn');
@@ -805,7 +816,21 @@
                     document.getElementById('adminUserName').textContent = 'Admin';
                 }
             }
-            document.getElementById('adminMenuModal').classList.remove('hidden');
+            
+            const adminModal = document.getElementById('adminMenuModal');
+            adminModal.classList.remove('hidden');
+            
+            // Debug: Log modal state
+            console.log('Admin modal opened:', adminModal.classList.contains('hidden'));
+            
+            // Add click event to modal background for debugging
+            adminModal.addEventListener('click', function(e) {
+                console.log('Modal clicked:', e.target);
+                if (e.target === this) {
+                    console.log('Closing modal via background click');
+                    this.classList.add('hidden');
+                }
+            });
         }
 
         // Setup event listeners
@@ -846,8 +871,20 @@
             });
 
             // Close admin menu modal button
-            document.getElementById('closeAdminMenuModal').addEventListener('click', function() {
+            document.getElementById('closeAdminMenuModal').addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 document.getElementById('adminMenuModal').classList.add('hidden');
+            });
+
+            // Close admin menu modal with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const adminModal = document.getElementById('adminMenuModal');
+                    if (!adminModal.classList.contains('hidden')) {
+                        adminModal.classList.add('hidden');
+                    }
+                }
             });
 
             // Admin logout button
