@@ -72,7 +72,7 @@
             </div>
             
             <nav class="p-4 flex-1">
-                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2" onclick="handleDashboardClick(event)">
                     <i class="fas fa-chart-line w-6 text-gray-600"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -397,27 +397,42 @@
             loadProperties();
         });
 
-        // Set active menu item based on current page
+        // Handle dashboard click
+        function handleDashboardClick(event) {
+            event.preventDefault();
+            console.log('Dashboard clicked from properties page, navigating...');
+            
+            // Dashboard sayfasına yönlendir
+            window.location.href = 'dashboard.html';
+        }
+
+        // Set active menu item - always keep Dashboard active
         function setActiveMenuItem() {
-            const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+            console.log('Setting active menu item for properties page...');
+            
             const menuItems = document.querySelectorAll('.sidebar-item');
             
+            // Tüm menü öğelerini pasif yap
             menuItems.forEach(item => {
                 item.classList.remove('active');
                 const icon = item.querySelector('i');
-                icon.classList.remove('text-primary-green');
-                icon.classList.add('text-gray-600');
+                if (icon) {
+                    icon.classList.remove('text-primary-green');
+                    icon.classList.add('text-gray-600');
+                }
             });
             
-            // Find and activate current page menu item
-            menuItems.forEach(item => {
-                if (item.getAttribute('href') === currentPage) {
-                    item.classList.add('active');
-                    const icon = item.querySelector('i');
+            // Dashboard linkini bul ve aktif yap (her zaman)
+            const dashboardLink = document.querySelector('a[href="dashboard.html"]');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+                const icon = dashboardLink.querySelector('i');
+                if (icon) {
                     icon.classList.remove('text-gray-600');
                     icon.classList.add('text-primary-green');
                 }
-            });
+                console.log('Dashboard menu item activated (properties page)');
+            }
         }
 
         // Load properties from backend
