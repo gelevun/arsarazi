@@ -758,16 +758,16 @@
                             // User is logged in, show admin menu
                             showAdminMenu();
                         } else {
-                            // User is not admin, redirect to login
-                            window.location.href = 'admin.html';
+                            // User is not admin, show login modal
+                            document.getElementById('loginModal').classList.remove('hidden');
                         }
                     } catch (error) {
-                        // Invalid user data, redirect to login
-                        window.location.href = 'admin.html';
+                        // Invalid user data, show login modal
+                        document.getElementById('loginModal').classList.remove('hidden');
                     }
                 } else {
-                    // User is not logged in, redirect to login
-                    window.location.href = 'admin.html';
+                    // User is not logged in, show login modal
+                    document.getElementById('loginModal').classList.remove('hidden');
                 }
             });
 
@@ -782,6 +782,11 @@
                 if (e.target === this) {
                     this.classList.add('hidden');
                 }
+            });
+
+            // Close login modal button
+            document.getElementById('closeLoginModal').addEventListener('click', function() {
+                document.getElementById('loginModal').classList.add('hidden');
             });
 
             // Close admin menu modal when clicking outside
@@ -810,8 +815,30 @@
             // Login form
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                // Login logic here
-                alert('Giriş özelliği yakında eklenecek!');
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Admin authentication
+                if (email === 'admin@arsarazi.com' && password === 'admin123') {
+                    // Store admin session
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    localStorage.setItem('adminEmail', email);
+                    localStorage.setItem('arsarazi_user', JSON.stringify({
+                        email: email,
+                        type: 'admin',
+                        name: 'Admin User'
+                    }));
+                    
+                    // Close login modal
+                    document.getElementById('loginModal').classList.add('hidden');
+                    
+                    // Show success message and admin menu
+                    alert('Başarıyla giriş yapıldı!');
+                    showAdminMenu();
+                } else {
+                    alert('Hatalı e-posta veya şifre!');
+                }
             });
         }
 
