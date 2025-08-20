@@ -352,8 +352,8 @@
 
         // Initialize calendar on page load
         document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('adminLoggedIn') !== 'true') {
-                window.location.href = 'admin.html';
+            if (localStorage.getItem('userLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
             }
             
             // Set active menu item
@@ -557,9 +557,10 @@
         // Logout function
         function logout() {
             if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                localStorage.removeItem('adminLoggedIn');
-                localStorage.removeItem('adminEmail');
-                window.location.href = 'admin.html';
+                localStorage.removeItem('userLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('arsarazi_user');
+                window.location.href = 'login.html';
             }
         }
     </script>

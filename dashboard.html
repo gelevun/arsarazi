@@ -113,6 +113,10 @@
                     <i class="fas fa-cog w-6 text-gray-600"></i>
                     <span class="ml-3">Ayarlar</span>
                 </a>
+                <a href="#" onclick="openGDManagement()" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
+                    <i class="fas fa-user-tie w-6 text-gray-600"></i>
+                    <span class="ml-3">GD Yönetimi</span>
+                </a>
                 
                 <div class="border-t pt-4 mt-4">
                     <a href="index.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
@@ -350,7 +354,45 @@
     </div>
 
     <!-- Modals will be added here -->
-    <div id="modalContainer"></div>
+    <div id="modalContainer">    </div>
+
+    <!-- GD Management Modal -->
+    <div id="gdManagementModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900">GD (Gayrimenkul Danışmanı) Yönetimi</h3>
+                <button onclick="closeGDManagement()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Add New GD -->
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Yeni GD Ekle</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">E-posta Adresi</label>
+                        <input type="email" id="newGDEmail" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-green">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ad Soyad</label>
+                        <input type="text" id="newGDName" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-green">
+                    </div>
+                </div>
+                <button onclick="addGD()" class="mt-4 bg-primary-green text-white px-4 py-2 rounded-lg hover:bg-green-dark transition-colors">
+                    <i class="fas fa-plus mr-2"></i>GD Ekle
+                </button>
+            </div>
+            
+            <!-- Current GD List -->
+            <div>
+                <h4 class="text-lg font-semibold mb-4">Yetkilendirilmiş GD Listesi</h4>
+                <div id="gdList" class="space-y-2">
+                    <!-- GD list will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Initialize Charts
@@ -449,21 +491,120 @@
                 localStorage.removeItem('adminLoggedIn');
                 localStorage.removeItem('adminEmail');
                 localStorage.removeItem('arsarazi_user');
-                window.location.href = 'admin.html';
+                window.location.href = 'login.html';
             }
+        }
+
+        // GD Management Functions
+        function openGDManagement() {
+            document.getElementById('gdManagementModal').classList.remove('hidden');
+            loadGDList();
+        }
+
+        function closeGDManagement() {
+            document.getElementById('gdManagementModal').classList.add('hidden');
+        }
+
+        function addGD() {
+            const email = document.getElementById('newGDEmail').value.trim();
+            const name = document.getElementById('newGDName').value.trim();
+            
+            if (!email || !name) {
+                alert('Lütfen e-posta ve ad soyad alanlarını doldurun!');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Geçerli bir e-posta adresi girin!');
+                return;
+            }
+            
+            // Get current GD list
+            const gdList = JSON.parse(localStorage.getItem('authorizedGDEmails') || '[]');
+            const gdNames = JSON.parse(localStorage.getItem('authorizedGDNames') || '[]');
+            
+            // Check if email already exists
+            if (gdList.includes(email)) {
+                alert('Bu e-posta adresi zaten yetkilendirilmiş!');
+                return;
+            }
+            
+            // Add new GD
+            gdList.push(email);
+            gdNames.push(name);
+            
+            // Save to localStorage
+            localStorage.setItem('authorizedGDEmails', JSON.stringify(gdList));
+            localStorage.setItem('authorizedGDNames', JSON.stringify(gdNames));
+            
+            // Clear form
+            document.getElementById('newGDEmail').value = '';
+            document.getElementById('newGDName').value = '';
+            
+            // Reload list
+            loadGDList();
+            
+            alert('GD başarıyla eklendi!');
+        }
+
+        function removeGD(email) {
+            if (confirm('Bu GD\'yi kaldırmak istediğinizden emin misiniz?')) {
+                // Get current GD list
+                const gdList = JSON.parse(localStorage.getItem('authorizedGDEmails') || '[]');
+                const gdNames = JSON.parse(localStorage.getItem('authorizedGDNames') || '[]');
+                
+                // Find index
+                const index = gdList.indexOf(email);
+                if (index > -1) {
+                    gdList.splice(index, 1);
+                    gdNames.splice(index, 1);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('authorizedGDEmails', JSON.stringify(gdList));
+                    localStorage.setItem('authorizedGDNames', JSON.stringify(gdNames));
+                    
+                    // Reload list
+                    loadGDList();
+                    
+                    alert('GD başarıyla kaldırıldı!');
+                }
+            }
+        }
+
+        function loadGDList() {
+            const gdList = JSON.parse(localStorage.getItem('authorizedGDEmails') || '[]');
+            const gdNames = JSON.parse(localStorage.getItem('authorizedGDNames') || '[]');
+            const container = document.getElementById('gdList');
+            
+            if (gdList.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">Henüz yetkilendirilmiş GD bulunmuyor.</p>';
+                return;
+            }
+            
+            container.innerHTML = gdList.map((email, index) => `
+                <div class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+                    <div>
+                        <p class="font-medium">${gdNames[index] || 'İsimsiz'}</p>
+                        <p class="text-sm text-gray-600">${email}</p>
+                    </div>
+                    <button onclick="removeGD('${email}')" class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
         // Check login status on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
             const currentUser = localStorage.getItem('arsarazi_user');
             
-            console.log('Dashboard Login Check:', { adminLoggedIn, currentUser });
+            console.log('Dashboard Login Check:', { userLoggedIn, currentUser });
             
-            if (!adminLoggedIn || adminLoggedIn !== 'true' || !currentUser) {
-                console.log('Not authenticated, redirecting to admin login...');
-                // Redirect to admin login if not authenticated
-                window.location.href = 'admin.html';
+            if (userLoggedIn !== 'true' || !currentUser) {
+                console.log('Not authenticated, redirecting to login...');
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
                 return;
             }
             
@@ -473,13 +614,13 @@
                 console.log('User data:', userData);
                 if (userData.type !== 'admin') {
                     console.log('User is not admin, redirecting...');
-                    window.location.href = 'admin.html';
+                    window.location.href = 'login.html';
                     return;
                 }
                 console.log('Authentication successful!');
             } catch (error) {
                 console.log('Error parsing user data:', error);
-                window.location.href = 'admin.html';
+                window.location.href = 'login.html';
                 return;
             }
             

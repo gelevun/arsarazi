@@ -367,12 +367,12 @@
                     // User is logged in, redirect based on user type
                     redirectBasedOnUserType(userData);
                 } catch (error) {
-                    // Invalid user data, redirect to admin page
-                    window.location.href = 'admin.html';
+                    // Invalid user data, redirect to login page
+                    window.location.href = 'login.html';
                 }
             } else {
-                // User is not logged in, redirect to admin page
-                window.location.href = 'admin.html';
+                // User is not logged in, redirect to login page
+                window.location.href = 'login.html';
             }
         }
 
@@ -389,7 +389,7 @@
                     window.location.href = 'customer-dashboard.html';
                     break;
                 default:
-                    window.location.href = 'admin.html';
+                    window.location.href = 'login.html';
             }
         }
 
