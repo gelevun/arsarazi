@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Arsarazi - Global Styles */
 /* Logo Colors: Green (#52B947), Blue (#0B5394), Yellow (#FFC000) */
 
