@@ -177,8 +177,13 @@
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            console.log('Form submitted!');
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            
+            console.log('Email:', email);
+            console.log('Password:', password);
             
             // Hide previous messages
             document.getElementById('errorMessage').classList.add('hidden');
@@ -191,17 +196,23 @@
             let userType = 'customer'; // Default to customer
             let redirectUrl = 'customer-dashboard.html';
             
+            console.log('Checking credentials...');
+            
             if (email === 'admin@arsarazi.com' && password === 'admin123') {
+                console.log('Admin login successful');
                 userType = 'admin';
                 redirectUrl = 'dashboard.html';
             } else if (authorizedGDEmails.includes(email) && password === 'gd123') {
+                console.log('GD login successful');
                 userType = 'gd';
                 redirectUrl = 'gd-dashboard.html';
             } else if (password === 'customer123') {
+                console.log('Customer login successful');
                 // Any other email with customer123 password is a customer
                 userType = 'customer';
                 redirectUrl = 'customer-dashboard.html';
             } else {
+                console.log('Login failed - invalid credentials');
                 // Show error message
                 document.getElementById('errorText').textContent = 'E-posta veya şifre hatalı!';
                 document.getElementById('errorMessage').classList.remove('hidden');
@@ -210,6 +221,8 @@
             
             // Show success message
             document.getElementById('successMessage').classList.remove('hidden');
+            
+            console.log('Storing user session...');
             
             // Store user session
             localStorage.setItem('userLoggedIn', 'true');
@@ -221,6 +234,8 @@
                 type: userType,
                 role: userType === 'admin' ? 'administrator' : userType === 'gd' ? 'gayrimenkul_danismani' : 'customer'
             }));
+            
+            console.log('User session stored, redirecting to:', redirectUrl);
             
             // Redirect based on user type
             setTimeout(() => {
