@@ -688,9 +688,14 @@
 
         // Handle login button click
         function handleLoginClick() {
+            console.log('handleLoginClick function called!');
+            
             // Check if user is already logged in
             const currentUser = localStorage.getItem('arsarazi_user');
             const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            console.log('Current user:', currentUser);
+            console.log('User logged in:', userLoggedIn);
             
             if (userLoggedIn === 'true' && currentUser) {
                 try {
@@ -702,6 +707,7 @@
                     window.location.href = 'login.html';
                 }
             } else {
+                console.log('User not logged in, redirecting to login page...');
                 // User is not logged in, redirect to login page
                 window.location.href = 'login.html';
             }
@@ -797,14 +803,26 @@
         // Setup event listeners
         function setupEventListeners() {
             // Login button (desktop)
-            document.getElementById('loginBtn').addEventListener('click', function() {
-                handleLoginClick();
-            });
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    console.log('Desktop login button clicked!');
+                    handleLoginClick();
+                });
+            } else {
+                console.error('Desktop login button not found!');
+            }
 
             // Mobile login button
-            document.getElementById('mobileLoginBtn').addEventListener('click', function() {
-                handleLoginClick();
-            });
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            if (mobileLoginBtn) {
+                mobileLoginBtn.addEventListener('click', function() {
+                    console.log('Mobile login button clicked!');
+                    handleLoginClick();
+                });
+            } else {
+                console.error('Mobile login button not found!');
+            }
 
             // Mobile menu
             document.getElementById('mobileMenuBtn').addEventListener('click', function() {
