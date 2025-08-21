@@ -271,11 +271,17 @@ function setupEventListeners() {
 
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
-            loginModal.classList.remove('hidden');
+            // Check if loginModal exists before using it
+            if (loginModal) {
+                loginModal.classList.remove('hidden');
+            } else {
+                // If no modal, redirect to login page
+                window.location.href = 'login.html';
+            }
         });
     }
 
-    if (closeLoginModal) {
+    if (closeLoginModal && loginModal) {
         closeLoginModal.addEventListener('click', () => {
             loginModal.classList.add('hidden');
         });
