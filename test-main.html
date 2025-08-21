@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa Login Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .login-btn { background: #0B5394; color: white; border: none; border-radius: 4px; }
+        .login-btn:hover { background: #083E6B; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ana Sayfa Login Butonları Test</h1>
+        
+        <div class="test-section">
+            <h2>1. Login Butonları</h2>
+            <button id="loginBtn" class="login-btn">Giriş Yap</button>
+            <button id="mobileLoginBtn" class="login-btn">Mobile Giriş Yap</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Test Sonuçları</h2>
+            <div id="testResults"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Console Kontrolü</h2>
+            <p>Tarayıcının Developer Tools'unu açın (F12) ve Console sekmesini kontrol edin.</p>
+            <p>Beklenen mesajlar:</p>
+            <ul>
+                <li>"Desktop login button clicked!" veya "Mobile login button clicked!"</li>
+                <li>"handleLoginClick function called!"</li>
+                <li>"User not logged in, redirecting to login page..."</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Sayfa Yönlendirmeleri</h2>
+            <button onclick="goToMain()">Ana Sayfaya Git</button>
+            <button onclick="goToLogin()">Login Sayfasına Git</button>
+            <button onclick="clearStorage()">Storage Temizle</button>
+        </div>
+    </div>
+
+    <script>
+        // Test results
+        function addTestResult(message, type = 'info') {
+            const results = document.getElementById('testResults');
+            const div = document.createElement('div');
+            div.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            div.style.color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            results.appendChild(div);
+        }
+        
+        // Login button event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            addTestResult('DOMContentLoaded event fired');
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    addTestResult('Desktop login button clicked!', 'success');
+                    console.log('Desktop login button clicked!');
+                    handleLoginClick();
+                });
+                addTestResult('Desktop login button event listener added');
+            } else {
+                addTestResult('Desktop login button not found!', 'error');
+            }
+            
+            if (mobileLoginBtn) {
+                mobileLoginBtn.addEventListener('click', function() {
+                    addTestResult('Mobile login button clicked!', 'success');
+                    console.log('Mobile login button clicked!');
+                    handleLoginClick();
+                });
+                addTestResult('Mobile login button event listener added');
+            } else {
+                addTestResult('Mobile login button not found!', 'error');
+            }
+        });
+        
+        // Handle login button click (same as main page)
+        function handleLoginClick() {
+            console.log('handleLoginClick function called!');
+            addTestResult('handleLoginClick function called!', 'success');
+            
+            // Check if user is already logged in
+            const currentUser = localStorage.getItem('arsarazi_user');
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            
+            console.log('Current user:', currentUser);
+            console.log('User logged in:', userLoggedIn);
+            addTestResult('Current user: ' + currentUser);
+            addTestResult('User logged in: ' + userLoggedIn);
+            
+            if (userLoggedIn === 'true' && currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    addTestResult('User is logged in, redirecting based on type: ' + userData.type, 'success');
+                    // User is logged in, redirect based on user type
+                    redirectBasedOnUserType(userData);
+                } catch (error) {
+                    addTestResult('Invalid user data, redirecting to login page', 'error');
+                    // Invalid user data, redirect to login page
+                    window.location.href = 'login.html';
+                }
+            } else {
+                console.log('User not logged in, redirecting to login page...');
+                addTestResult('User not logged in, redirecting to login page...', 'info');
+                // User is not logged in, redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Redirect user based on their type
+        function redirectBasedOnUserType(userData) {
+            addTestResult('Redirecting based on user type: ' + userData.type, 'success');
+            switch(userData.type) {
+                case 'admin':
+                    window.location.href = 'dashboard.html';
+                    break;
+                case 'gd':
+                    window.location.href = 'gd-dashboard.html';
+                    break;
+                case 'customer':
+                    window.location.href = 'customer-dashboard.html';
+                    break;
+                default:
+                    window.location.href = 'login.html';
+            }
+        }
+        
+        function goToMain() {
+            window.location.href = 'index.html';
+        }
+        
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        function clearStorage() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('arsarazi_user');
+            addTestResult('Storage cleared', 'success');
+        }
+        
+        // Initialize
+        addTestResult('Test page loaded');
+    </script>
+</body>
+</html>
