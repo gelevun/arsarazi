@@ -174,7 +174,10 @@
         }
 
         // Handle form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             console.log('Form submitted!');
@@ -241,6 +244,10 @@
             setTimeout(() => {
                 window.location.href = redirectUrl;
             }, 1000);
+                });
+            } else {
+                console.error('Login form not found!');
+            }
         });
 
         // Check if already logged in
