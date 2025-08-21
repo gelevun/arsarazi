@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Test - Arsarazi</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+    </style>
+</head>
+<body>
+    <h1>Login Sistemi Test Sayfası</h1>
+    
+    <div class="test-section">
+        <h2>1. Mevcut Session Kontrolü</h2>
+        <div id="sessionInfo"></div>
+        <button onclick="checkSession()">Session Kontrol Et</button>
+        <button onclick="clearSession()">Session Temizle</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Login Test</h2>
+        <input type="email" id="testEmail" placeholder="E-posta" value="admin@arsarazi.com">
+        <input type="password" id="testPassword" placeholder="Şifre" value="admin123">
+        <button onclick="testLogin()">Login Test Et</button>
+        <div id="loginResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Hızlı Test Butonları</h2>
+        <button onclick="quickLogin('admin@arsarazi.com', 'admin123')">Admin Login</button>
+        <button onclick="quickLogin('gd@arsarazi.com', 'gd123')">GD Login</button>
+        <button onclick="quickLogin('customer@arsarazi.com', 'customer123')">Customer Login</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Sayfa Yönlendirmeleri</h2>
+        <button onclick="goToLogin()">Login Sayfasına Git</button>
+        <button onclick="goToDashboard()">Dashboard'a Git</button>
+        <button onclick="goToGD()">GD Dashboard'a Git</button>
+        <button onclick="goToCustomer()">Customer Dashboard'a Git</button>
+    </div>
+
+    <script>
+        function checkSession() {
+            const userLoggedIn = localStorage.getItem('userLoggedIn');
+            const userEmail = localStorage.getItem('userEmail');
+            const arsaraziUser = localStorage.getItem('arsarazi_user');
+            
+            const sessionInfo = document.getElementById('sessionInfo');
+            sessionInfo.innerHTML = `
+                <p><strong>userLoggedIn:</strong> ${userLoggedIn}</p>
+                <p><strong>userEmail:</strong> ${userEmail}</p>
+                <p><strong>arsarazi_user:</strong> ${arsaraziUser}</p>
+            `;
+            
+            if (userLoggedIn === 'true') {
+                sessionInfo.className = 'success';
+            } else {
+                sessionInfo.className = 'error';
+            }
+        }
+        
+        function clearSession() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('arsarazi_user');
+            checkSession();
+        }
+        
+        function testLogin() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            
+            console.log('Testing login with:', email, password);
+            
+            // Get authorized GD emails from localStorage
+            const authorizedGDEmails = JSON.parse(localStorage.getItem('authorizedGDEmails') || '[]');
+            
+            let userType = 'customer';
+            let redirectUrl = 'customer-dashboard.html';
+            
+            if (email === 'admin@arsarazi.com' && password === 'admin123') {
+                userType = 'admin';
+                redirectUrl = 'dashboard.html';
+            } else if (authorizedGDEmails.includes(email) && password === 'gd123') {
+                userType = 'gd';
+                redirectUrl = 'gd-dashboard.html';
+            } else if (password === 'customer123') {
+                userType = 'customer';
+                redirectUrl = 'customer-dashboard.html';
+            } else {
+                document.getElementById('loginResult').innerHTML = '<p class="error">Login başarısız!</p>';
+                return;
+            }
+            
+            // Store user session
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('arsarazi_user', JSON.stringify({
+                id: Date.now(),
+                name: email.split('@')[0],
+                email: email,
+                type: userType,
+                role: userType === 'admin' ? 'administrator' : userType === 'gd' ? 'gayrimenkul_danismani' : 'customer'
+            }));
+            
+            document.getElementById('loginResult').innerHTML = `
+                <p class="success">Login başarılı! Kullanıcı tipi: ${userType}</p>
+                <p>Yönlendirilecek sayfa: ${redirectUrl}</p>
+            `;
+            
+            checkSession();
+        }
+        
+        function quickLogin(email, password) {
+            document.getElementById('testEmail').value = email;
+            document.getElementById('testPassword').value = password;
+            testLogin();
+        }
+        
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        function goToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        function goToGD() {
+            window.location.href = 'gd-dashboard.html';
+        }
+        
+        function goToCustomer() {
+            window.location.href = 'customer-dashboard.html';
+        }
+        
+        // Sayfa yüklendiğinde session kontrolü yap
+        window.onload = function() {
+            checkSession();
+        };
+    </script>
+</body>
+</html>
