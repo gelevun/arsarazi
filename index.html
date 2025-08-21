@@ -637,6 +637,20 @@
             setupEventListeners();
             updateLoginButton();
             
+            // Additional simple event listeners (like contact page)
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            
+            if (loginBtn) {
+                console.log('Adding simple event listener to desktop login button');
+                loginBtn.addEventListener('click', handleLoginClick);
+            }
+            
+            if (mobileLoginBtn) {
+                console.log('Adding simple event listener to mobile login button');
+                mobileLoginBtn.addEventListener('click', handleLoginClick);
+            }
+            
             // Load properties after a short delay to ensure everything is ready
             setTimeout(() => {
                 loadPublishedProperties();
@@ -818,9 +832,12 @@
 
         // Setup event listeners
         function setupEventListeners() {
+            console.log('Setting up event listeners...');
+            
             // Login button (desktop)
             const loginBtn = document.getElementById('loginBtn');
             if (loginBtn) {
+                console.log('Desktop login button found, adding event listener');
                 loginBtn.addEventListener('click', function() {
                     console.log('Desktop login button clicked!');
                     handleLoginClick();
@@ -832,6 +849,7 @@
             // Mobile login button
             const mobileLoginBtn = document.getElementById('mobileLoginBtn');
             if (mobileLoginBtn) {
+                console.log('Mobile login button found, adding event listener');
                 mobileLoginBtn.addEventListener('click', function() {
                     console.log('Mobile login button clicked!');
                     handleLoginClick();
