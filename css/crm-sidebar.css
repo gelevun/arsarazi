@@ -36,6 +36,20 @@
     color: white !important;
 }
 
+/* Force override for non-active items */
+.sidebar-item:not(.active) {
+    background-color: transparent !important;
+    color: #374151 !important;
+}
+
+.sidebar-item:not(.active) i {
+    color: #6B7280 !important;
+}
+
+.sidebar-item:not(.active) span {
+    color: #374151 !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar { 
