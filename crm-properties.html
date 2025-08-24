@@ -72,7 +72,7 @@
             </div>
             
             <nav class="p-4 flex-1">
-                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2" onclick="handleDashboardClick(event)">
+                <a href="dashboard.html" class="sidebar-item flex items-center p-3 rounded-lg mb-2">
                     <i class="fas fa-chart-line w-6 text-gray-600"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -390,50 +390,15 @@
                 window.location.href = 'login.html';
             }
             
-            // Set active menu item
-            setActiveMenuItem();
+
             
             // Load properties
             loadProperties();
         });
 
-        // Handle dashboard click
-        function handleDashboardClick(event) {
-            event.preventDefault();
-            console.log('Dashboard clicked from properties page, navigating...');
-            
-            // Dashboard sayfasına yönlendir
-            window.location.href = 'dashboard.html';
-        }
 
-        // Set active menu item - Properties page should have Properties active
-        function setActiveMenuItem() {
-            console.log('Setting active menu item for properties page...');
-            
-            const menuItems = document.querySelectorAll('.sidebar-item');
-            
-            // Tüm menü öğelerini pasif yap
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-                const icon = item.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('text-primary-green');
-                    icon.classList.add('text-gray-600');
-                }
-            });
-            
-            // Properties linkini bul ve aktif yap
-            const propertiesLink = document.querySelector('a[href="crm-properties.html"]');
-            if (propertiesLink) {
-                propertiesLink.classList.add('active');
-                const icon = propertiesLink.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('text-gray-600');
-                    icon.classList.add('text-primary-green');
-                }
-                console.log('Properties menu item activated');
-            }
-        }
+
+
 
         // Load properties from backend
         async function loadProperties() {
