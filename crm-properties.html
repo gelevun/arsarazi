@@ -406,7 +406,7 @@
             window.location.href = 'dashboard.html';
         }
 
-        // Set active menu item - always keep Dashboard active
+        // Set active menu item - Properties page should have Properties active
         function setActiveMenuItem() {
             console.log('Setting active menu item for properties page...');
             
@@ -422,16 +422,16 @@
                 }
             });
             
-            // Dashboard linkini bul ve aktif yap (her zaman)
-            const dashboardLink = document.querySelector('a[href="dashboard.html"]');
-            if (dashboardLink) {
-                dashboardLink.classList.add('active');
-                const icon = dashboardLink.querySelector('i');
+            // Properties linkini bul ve aktif yap
+            const propertiesLink = document.querySelector('a[href="crm-properties.html"]');
+            if (propertiesLink) {
+                propertiesLink.classList.add('active');
+                const icon = propertiesLink.querySelector('i');
                 if (icon) {
                     icon.classList.remove('text-gray-600');
                     icon.classList.add('text-primary-green');
                 }
-                console.log('Dashboard menu item activated (properties page)');
+                console.log('Properties menu item activated');
             }
         }
 
