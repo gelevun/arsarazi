@@ -14,6 +14,7 @@
     <meta name="theme-color" content="#00B34C">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/crm-sidebar.css">
     <script>
         tailwind.config = {
             theme: {
@@ -30,47 +31,7 @@
             }
         }
     </script>
-    <style>
-        .sidebar { 
-            position: fixed; 
-            height: 100vh; 
-            overflow-y: auto; 
-        }
-        .main-content { 
-            margin-left: 16rem; 
-        }
-        .sidebar-item {
-            transition: all 0.3s ease;
-        }
-        .sidebar-item:hover {
-            background-color: #f3f4f6;
-        }
-        .sidebar-item {
-            transition: all 0.3s ease;
-        }
-        .sidebar-item:hover {
-            background-color: #f3f4f6;
-        }
-        .sidebar-item.active {
-            background-color: #52B947;
-            color: white;
-        }
-        .sidebar-item.active i {
-            color: white !important;
-        }
-        /* Tüm sidebar item'ların icon'larını gri yap */
-        .sidebar-item i {
-            color: #6B7280 !important;
-        }
-        /* Sadece active olan sidebar item'ın icon'unu beyaz yap */
-        .sidebar-item.active i {
-            color: white !important;
-        }
-        @media (max-width: 768px) {
-            .sidebar { position: relative; height: auto; }
-            .main-content { margin-left: 0; }
-        }
-    </style>
+
 </head>
 <body class="bg-gray-50">
     <div class="flex">
